@@ -1,0 +1,25 @@
+# System files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor directories
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.bak
+*~
+
+# Large binary files (use GitHub Releases instead)
+*.iso
+*.img
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment variables
+.env
+.env.local

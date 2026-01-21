@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bad Antics ISO Archive</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔥 Bad Antics ISO Archive</h1>
+            <p class="subtitle">Operating System Images & Installation Media</p>
+        </header>
+
+        <main>
+            <section class="warning">
+                <h2>⚠️ Important Notice</h2>
+                <p>These ISO files are provided for educational and archival purposes. Ensure you have proper licensing for any software you use. Verify checksums before installation.</p>
+            </section>
+
+            <section class="iso-list">
+                <h2>Available ISOs</h2>
+                
+                <div class="iso-category">
+                    <h3>Linux Distributions</h3>
+                    <div class="iso-grid">
+                        <!-- Example ISO card -->
+                        <div class="iso-card">
+                            <div class="iso-icon">🐧</div>
+                            <h4>Ubuntu 22.04 LTS</h4>
+                            <p class="iso-info">Size: 3.6 GB | Released: April 2022</p>
+                            <p class="iso-checksum">SHA256: [checksum]</p>
+                            <a href="#" class="download-btn" data-iso="ubuntu-22.04">Download</a>
+                        </div>
+                        <!-- Add more ISO cards here -->
+                    </div>
+                </div>
+
+                <div class="iso-category">
+                    <h3>Windows</h3>
+                    <div class="iso-grid">
+                        <!-- Windows ISO cards -->
+                    </div>
+                </div>
+
+                <div class="iso-category">
+                    <h3>Utilities & Tools</h3>
+                    <div class="iso-grid">
+                        <!-- Utility ISO cards -->
+                    </div>
+                </div>
+            </section>
+
+            <section class="instructions">
+                <h2>How to Use</h2>
+                <ol>
+                    <li>Select the ISO you need from the list above</li>
+                    <li>Download the ISO file</li>
+                    <li>Verify the checksum to ensure file integrity</li>
+                    <li>Create a bootable USB drive using tools like Rufus, Etcher, or dd</li>
+                    <li>Boot from the USB and follow installation instructions</li>
+                </ol>
+            </section>
+
+            <section class="tools">
+                <h2>Recommended Tools</h2>
+                <div class="tool-grid">
+                    <div class="tool-card">
+                        <h4>Rufus</h4>
+                        <p>Windows USB creation tool</p>
+                        <a href="https://rufus.ie" target="_blank">Visit Site</a>
+                    </div>
+                    <div class="tool-card">
+                        <h4>Etcher</h4>
+                        <p>Cross-platform USB flasher</p>
+                        <a href="https://www.balena.io/etcher/" target="_blank">Visit Site</a>
+                    </div>
+                    <div class="tool-card">
+                        <h4>Ventoy</h4>
+                        <p>Multi-boot USB solution</p>
+                        <a href="https://www.ventoy.net" target="_blank">Visit Site</a>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2026 Bad Antics | Educational & Archival Use Only</p>
+            <p>Last Updated: <span id="last-updated"></span></p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
