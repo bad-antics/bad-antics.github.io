@@ -3,94 +3,325 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bad Antics ISO Archive</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>0xBAD_ANTICS — ISO ARCHIVE [ROOT]</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            color: #e00;                      /* bright blood red */
+            font-family: 'Share Tech Mono', 'Courier New', monospace;
+            line-height: 1.4;
+            min-height: 100vh;
+            background-image: 
+                linear-gradient(rgba(200,0,0,0.07) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(200,0,0,0.07) 1px, transparent 1px);
+            background-size: 4px 4px;
+            image-rendering: pixelated;
+            overflow-x: hidden;
+        }
+
+        .scanlines {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                to bottom,
+                transparent 0,
+                rgba(0,0,0,0.4) 1px,
+                rgba(0,0,0,0.4) 2px,
+                transparent 3px
+            );
+            background-size: 100% 4px;
+            z-index: 9999;
+            opacity: 0.5;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 1.2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        header {
+            text-align: center;
+            padding: 1.5rem 0 2.5rem;
+            border-bottom: 2px solid #800;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-family: 'VT323', monospace;
+            font-size: 3.8rem;
+            color: #f00;
+            text-shadow: 
+                0 0 10px #f00,
+                0 0 20px #800,
+                0 0 40px #400;
+            letter-spacing: 6px;
+            animation: glitch 4s infinite;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: #c00;
+            opacity: 0.9;
+            margin-top: 0.4rem;
+        }
+
+        .blink {
+            animation: blink 1.1s step-end infinite;
+        }
+
+        .warning {
+            background: rgba(80,0,0,0.4);
+            border: 2px solid #c00;
+            padding: 1.2rem;
+            margin: 1.5rem 0;
+            color: #ff4444;
+        }
+
+        .warning h2 {
+            color: #ff0000;
+            margin-bottom: 0.6rem;
+        }
+
+        .iso-category {
+            margin: 2.5rem 0;
+        }
+
+        .iso-category h3 {
+            color: #ff5555;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            border-left: 6px solid #c00;
+            padding-left: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .iso-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .iso-card {
+            background: #0a0a0a;
+            border: 1px solid #400;
+            padding: 1.3rem;
+            transition: all 0.15s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .iso-card:hover {
+            border-color: #f00;
+            box-shadow: 0 0 20px rgba(255,0,0,0.35);
+            transform: translateY(-3px);
+        }
+
+        .iso-icon {
+            font-size: 2.8rem;
+            margin-bottom: 0.6rem;
+            text-shadow: 0 0 10px currentColor;
+        }
+
+        .iso-card h4 {
+            color: #ff7777;
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .iso-info, .iso-checksum {
+            color: #888;
+            font-size: 0.95rem;
+            margin: 0.3rem 0;
+        }
+
+        .iso-checksum {
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        .download-btn {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.6rem 1.3rem;
+            background: #200;
+            color: #ff4444;
+            text-decoration: none;
+            border: 1px solid #800;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .download-btn:hover {
+            background: #400;
+            border-color: #f00;
+            color: #fff;
+            box-shadow: 0 0 15px #f00;
+        }
+
+        ol {
+            padding-left: 1.8rem;
+            color: #ccc;
+        }
+
+        li {
+            margin: 0.6rem 0;
+        }
+
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .tool-card {
+            background: #111;
+            border: 1px solid #333;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .tool-card h4 {
+            color: #ff8888;
+            margin-bottom: 0.5rem;
+        }
+
+        .tool-card a {
+            color: #ff4444;
+            text-decoration: none;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2.5rem 0 1.5rem;
+            color: #444;
+            font-size: 0.9rem;
+            border-top: 1px solid #222;
+            margin-top: 4rem;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        @keyframes glitch {
+            0%   { text-shadow: 2px 0 #f00, -2px 0 #0f0; }
+            10%  { text-shadow: -2px 0 #f00, 2px 0 #0f0; }
+            20%  { text-shadow: 0 0 #f00; }
+            30%  { text-shadow: 5px 0 #f00, -5px 0 #00f; }
+            40%  { text-shadow: -5px 0 #f00, 5px 0 #0f0; }
+            100% { text-shadow: 2px 0 #f00, -2px 0 #0f0; }
+        }
+
+        .cursor::after {
+            content: "_";
+            animation: blink 0.7s infinite;
+            color: #f00;
+        }
+    </style>
 </head>
 <body>
+    <div class="scanlines"></div>
+
     <div class="container">
         <header>
-            <h1>🔥 Bad Antics ISO Archive</h1>
-            <p class="subtitle">Operating System Images & Installation Media</p>
+            <h1>0xBAD<span class="blink">_</span>ANTICS <span class="cursor"></span></h1>
+            <p class="subtitle">ISO / IMAGES / BOOT SECTORS — ROOT ACCESS GRANTED</p>
         </header>
 
-        <main>
-            <section class="warning">
-                <h2>⚠️ Important Notice</h2>
-                <p>These ISO files are provided for educational and archival purposes. Ensure you have proper licensing for any software you use. Verify checksums before installation.</p>
-            </section>
+        <div class="warning">
+            <h2>⚠ SYSTEM NOTICE — READ OR GTFO</h2>
+            <p>These files are archived for <span style="color:#ff0">educational</span> and <span style="color:#ff0">historical</span> purposes only.<br>
+            You are responsible for legal licensing. Always verify SHA256. No logs. No mercy.</p>
+        </div>
 
-            <section class="iso-list">
-                <h2>Available ISOs</h2>
-                
-                <div class="iso-category">
-                    <h3>Linux Distributions</h3>
-                    <div class="iso-grid">
-                        <!-- Example ISO card -->
-                        <div class="iso-card">
-                            <div class="iso-icon">🐧</div>
-                            <h4>Ubuntu 22.04 LTS</h4>
-                            <p class="iso-info">Size: 3.6 GB | Released: April 2022</p>
-                            <p class="iso-checksum">SHA256: [checksum]</p>
-                            <a href="#" class="download-btn" data-iso="ubuntu-22.04">Download</a>
-                        </div>
-                        <!-- Add more ISO cards here -->
+        <section class="iso-list">
+            <h2 class="blink">AVAILABLE PAYLOADS</h2>
+
+            <div class="iso-category">
+                <h3>[ LINUX ] — Kernel Land</h3>
+                <div class="iso-grid">
+                    <div class="iso-card">
+                        <div class="iso-icon">🐧</div>
+                        <h4>Ubuntu 22.04.4 LTS</h4>
+                        <p class="iso-info">Size: ~3.6 GiB | Drop: Apr 2022</p>
+                        <p class="iso-checksum">SHA256: [redacted_for_demo]</p>
+                        <a href="#" class="download-btn">INITIATE TRANSFER</a>
                     </div>
+                    <!-- more cards here -->
                 </div>
+            </div>
 
-                <div class="iso-category">
-                    <h3>Windows</h3>
-                    <div class="iso-grid">
-                        <!-- Windows ISO cards -->
-                    </div>
+            <div class="iso-category">
+                <h3>[ WINDOWS ] — Corporate Mainframe</h3>
+                <div class="iso-grid">
+                    <!-- windows cards go here -->
                 </div>
+            </div>
 
-                <div class="iso-category">
-                    <h3>Utilities & Tools</h3>
-                    <div class="iso-grid">
-                        <!-- Utility ISO cards -->
-                    </div>
+            <div class="iso-category">
+                <h3>[ UTILITIES ] — Black Tools</h3>
+                <div class="iso-grid">
+                    <!-- utility cards go here -->
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <section class="instructions">
-                <h2>How to Use</h2>
-                <ol>
-                    <li>Select the ISO you need from the list above</li>
-                    <li>Download the ISO file</li>
-                    <li>Verify the checksum to ensure file integrity</li>
-                    <li>Create a bootable USB drive using tools like Rufus, Etcher, or dd</li>
-                    <li>Boot from the USB and follow installation instructions</li>
-                </ol>
-            </section>
+        <section class="instructions">
+            <h2>EXECUTION PROTOCOL</h2>
+            <ol>
+                <li>Target desired payload above</li>
+                <li>Execute download sequence</li>
+                <li>Validate hash — mismatch = compromise</li>
+                <li>Flash to medium (Rufus / dd / Ventoy)</li>
+                <li>Reboot → BIOS → pwn</li>
+            </ol>
+        </section>
 
-            <section class="tools">
-                <h2>Recommended Tools</h2>
-                <div class="tool-grid">
-                    <div class="tool-card">
-                        <h4>Rufus</h4>
-                        <p>Windows USB creation tool</p>
-                        <a href="https://rufus.ie" target="_blank">Visit Site</a>
-                    </div>
-                    <div class="tool-card">
-                        <h4>Etcher</h4>
-                        <p>Cross-platform USB flasher</p>
-                        <a href="https://www.balena.io/etcher/" target="_blank">Visit Site</a>
-                    </div>
-                    <div class="tool-card">
-                        <h4>Ventoy</h4>
-                        <p>Multi-boot USB solution</p>
-                        <a href="https://www.ventoy.net" target="_blank">Visit Site</a>
-                    </div>
+        <section class="tools">
+            <h2>RECOMMENDED EXPLOIT TOOLS</h2>
+            <div class="tool-grid">
+                <div class="tool-card">
+                    <h4>Rufus</h4>
+                    <p>Windows bootkit flasher</p>
+                    <a href="https://rufus.ie" target="_blank">→ ACCESS</a>
                 </div>
-            </section>
-        </main>
+                <div class="tool-card">
+                    <h4>balenaEtcher</h4>
+                    <p>Cross-platform burner</p>
+                    <a href="https://etcher.balena.io" target="_blank">→ ACCESS</a>
+                </div>
+                <div class="tool-card">
+                    <h4>Ventoy</h4>
+                    <p>Multi-ISO dropper</p>
+                    <a href="https://ventoy.net" target="_blank">→ ACCESS</a>
+                </div>
+            </div>
+        </section>
 
         <footer>
-            <p>&copy; 2026 Bad Antics | Educational & Archival Use Only</p>
-            <p>Last Updated: <span id="last-updated"></span></p>
+            <p>© 2026 BAD ANTICS — ALL BYTES LOGGED • NO ESCAPE</p>
+            <p>Last breach: <span id="last-updated">January 2026</span></p>
         </footer>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        // Optional: fake dynamic date
+        document.getElementById("last-updated").textContent = new Date().toLocaleDateString("en-US", {
+            month: "long", year: "numeric"
+        });
+    </script>
 </body>
 </html>
