@@ -1,87 +1,128 @@
-// Update last modified date
-document.getElementById('last-updated').textContent = new Date().toLocaleDateString();
+// NullSec Linux - Download Portal Scripts
 
-// ISO data structure - Add your ISOs here
-const isoData = {
-    linux: [
-        {
-            name: "Ubuntu 22.04 LTS",
-            icon: "🐧",
-            size: "3.6 GB",
-            released: "April 2022",
-            checksum: "84eed5e80d8e3c9d4c9b4e0b0b5b5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5",
-            url: "#" // Replace with actual download URL
-        },
-        // Add more Linux ISOs
-    ],
-    windows: [
-        // Add Windows ISOs
-    ],
-    utilities: [
-        // Add utility ISOs
-    ]
-};
+document.addEventListener('DOMContentLoaded', () => {
+    // Update last modified date
+    const lastUpdated = document.getElementById('last-updated');
+    if (lastUpdated) {
+        lastUpdated.textContent = new Date().toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    }
 
-// Download tracking
-document.querySelectorAll('.download-btn').forEach(btn => {
-    btn.addEventListener('click', function(e) {
-        const isoName = this.getAttribute('data-iso');
-        console.log(`Download initiated for: ${isoName}`);
-        
-        // You can add analytics or download tracking here
-        // For actual hosting, you'll need to handle file storage
-        // (GitHub Pages has size limits, consider using GitHub Releases or external hosting)
-    });
-});
+    // Matrix rain background effect
+    initMatrixRain();
 
-// Dynamic ISO card generation (optional)
-function generateISOCards(category, container) {
-    const data = isoData[category];
-    if (!data || data.length === 0) return;
-    
-    data.forEach(iso => {
-        const card = document.createElement('div');
-        card.className = 'iso-card';
-        card.innerHTML = `
-            <div class="iso-icon">${iso.icon}</div>
-            <h4>${iso.name}</h4>
-            <p class="iso-info">Size: ${iso.size} | Released: ${iso.released}</p>
-            <p class="iso-checksum">SHA256: ${iso.checksum}</p>
-            <a href="${iso.url}" class="download-btn" data-iso="${iso.name.toLowerCase().replace(/\s+/g, '-')}">Download</a>
-        `;
-        container.appendChild(card);
-    });
-}
-
-// Search functionality (optional enhancement)
-function addSearchFeature() {
-    const searchInput = document.createElement('input');
-    searchInput.type = 'text';
-    searchInput.placeholder = 'Search ISOs...';
-    searchInput.style.cssText = `
-        width: 100%;
-        padding: 15px;
-        margin: 20px 0;
-        background: #2a2a2a;
-        border: 2px solid #444;
-        color: #e0e0e0;
-        border-radius: 5px;
-        font-size: 1em;
-    `;
-    
-    searchInput.addEventListener('input', (e) => {
-        const searchTerm = e.target.value.toLowerCase();
-        document.querySelectorAll('.iso-card').forEach(card => {
-            const text = card.textContent.toLowerCase();
-            card.style.display = text.includes(searchTerm) ? 'block' : 'none';
+    // Smooth scroll for navigation
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
         });
     });
+
+    // Add download click tracking (console log for now)
+    document.querySelectorAll('.download-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const card = this.closest('.iso-card');
+            const title = card ? card.querySelector('h4')?.textContent : 'Unknown';
+            console.log(`[NullSec] Download initiated: ${title}`);
+        });
+    });
+
+    // Typewriter effect for header (optional)
+    typewriterEffect();
+});
+
+// Matrix rain effect
+function initMatrixRain() {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const container = document.getElementById('matrix');
     
-    const isoSection = document.querySelector('.iso-list');
-    isoSection.insertBefore(searchInput, isoSection.firstChild);
+    if (!container) return;
+    
+    container.appendChild(canvas);
+    
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    
+    resize();
+    window.addEventListener('resize', resize);
+    
+    const chars = 'NULLSEC01アイウエオカキクケコサシスセソ';
+    const fontSize = 14;
+    const columns = Math.floor(canvas.width / fontSize);
+    const drops = Array(columns).fill(1);
+    
+    function draw() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        ctx.fillStyle = '#ff0040';
+        ctx.font = `${fontSize}px monospace`;
+        
+        for (let i = 0; i < drops.length; i++) {
+            const char = chars[Math.floor(Math.random() * chars.length)];
+            ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+            
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                drops[i] = 0;
+            }
+            drops[i]++;
+        }
+    }
+    
+    setInterval(draw, 50);
 }
 
-// Initialize search on page load
-document.addEventListener('DOMContentLoaded', () => {
-    addSearchFeature();
+// Typewriter effect
+function typewriterEffect() {
+    const subtitle = document.querySelector('.subtitle');
+    if (!subtitle) return;
+    
+    const text = subtitle.textContent;
+    subtitle.textContent = '';
+    subtitle.style.visibility = 'visible';
+    
+    let i = 0;
+    const timer = setInterval(() => {
+        if (i < text.length) {
+            subtitle.textContent += text.charAt(i);
+            i++;
+        } else {
+            clearInterval(timer);
+        }
+    }, 30);
+}
+
+// Copy checksum to clipboard
+function copyChecksum(element) {
+    const text = element.textContent;
+    navigator.clipboard.writeText(text.replace('SHA256: ', '')).then(() => {
+        const original = element.textContent;
+        element.textContent = '✓ Copied to clipboard!';
+        setTimeout(() => {
+            element.textContent = original;
+        }, 2000);
+    });
+}
+
+// Add click-to-copy for checksums
+document.querySelectorAll('.checksum').forEach(el => {
+    el.style.cursor = 'pointer';
+    el.title = 'Click to copy';
+    el.addEventListener('click', () => copyChecksum(el));
 });
