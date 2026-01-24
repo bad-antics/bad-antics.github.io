@@ -3,658 +3,339 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>bad-antics — 443 Repositories | Security & Systems Engineering</title>
-    <meta name="description" content="bad-antics: 443 public repositories across NullSec Framework, NullKia mobile security, and specialized tools. 370+ stars, 20 followers, founded Feb 2024.">
-    <meta name="keywords" content="bad-antics, security, nullsec, nullkia, hacking, penetration testing, linux, mobile security, systems engineering">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&family=JetBrains+Mono&display=swap">
+    <title>bad-antics — 456 Repositories | Security & Systems Engineering</title>
+    <meta name="description" content="bad-antics: 456 public repositories, 135+ security tools, NullSec Linux, NullKia mobile framework. Security researcher & systems engineer.">
+    <meta name="keywords" content="bad-antics, security, nullsec, nullkia, hacking, penetration testing, linux, mobile security">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="scanlines"></div>
-    <div class="matrix-bg" id="matrix"></div>
-
+    
     <div class="container">
-        <header>
-            <h1>BAD<span class="pulse">_</span>ANTICS</h1>
-            <p class="subtitle">Security Engineering & Advanced Systems | 443 Repositories | Multi-Language Specialist</p>
-            <div class="version-badge">
-                <span class="badge">443 REPOS</span>
-                <span class="badge badge-new">135+ TOOLS</span>
-                <span class="badge badge-secure">GPG SIGNED</span>
-                <span class="badge badge-follow">📊 20 FOLLOWERS</span>
+        <!-- HEADER -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="logo">BAD<span class="accent">_</span>ANTICS</h1>
+                <p class="tagline">Security Engineering & Advanced Systems Research</p>
+                <div class="badges">
+                    <span class="badge primary">456 REPOS</span>
+                    <span class="badge success">135+ TOOLS</span>
+                    <span class="badge info">80 OPEN PRs</span>
+                    <span class="badge warning">6 MERGED</span>
+                </div>
             </div>
         </header>
 
-        <nav class="nav-pills">
-            <a href="#portfolio">Portfolio</a>
-            <a href="#nullsec">NullSec v5.0</a>
-            <a href="#nullkia">NullKia v3.0</a>
-            <a href="#stats">Statistics</a>
+        <!-- NAVIGATION -->
+        <nav class="nav">
+            <a href="#overview">Overview</a>
+            <a href="#projects">Projects</a>
             <a href="#tools">Tools</a>
-            <a href="https://github.com/bad-antics" target="_blank">GitHub (443 Repos)</a>
-            <a href="https://discord.gg/killers" target="_blank">Discord</a>
+            <a href="#stats">Stats</a>
+            <a href="#contributions">PRs</a>
+            <a href="https://github.com/bad-antics" target="_blank">GitHub ↗</a>
+            <a href="https://twitter.com/AnonAntics" target="_blank">Twitter ↗</a>
         </nav>
 
-        <div class="alert alert-info">
-            <span class="alert-icon">⚡</span>
-            <div>
-                <strong>PORTFOLIO OVERVIEW:</strong> 443 public repositories | 76 open PRs (6 merged!) | 6 active issues | Contributing to h4cker (24.8k⭐), Awesome-OSINT (2k⭐), reverse-engineering (9.9k⭐) and more.
-            </div>
-        </div>
-
-        <!-- PORTFOLIO HERO -->
-        <section id="portfolio" class="iso-category">
-            <div class="section-header">
-                <h2><span class="icon">👨‍💼</span> FULL PORTFOLIO OVERVIEW</h2>
-                <p class="section-desc">Complete GitHub profile with 443 public repositories</p>
-            </div>
-            
-            <div class="portfolio-hero">
-                <div class="stat-box">
-                    <div class="stat-number">443</div>
-                    <div class="stat-label">Public Repositories</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-number">135+</div>
-                    <div class="stat-label">Security Tools</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-number">15+</div>
-                    <div class="stat-label">Programming Languages</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-number">20</div>
-                    <div class="stat-label">Followers</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-number">118</div>
-                    <div class="stat-label">Following</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-number">Feb 2024</div>
-                    <div class="stat-label">Account Created</div>
-                </div>
-            </div>
-
-            <div class="section-divider"></div>
-
-            <div class="iso-grid">
-                <div class="iso-card premium">
-                    <div class="card-ribbon">Core</div>
-                    <div class="iso-icon">🔧</div>
-                    <h4>NullSec Framework</h4>
-                    <p class="iso-desc">Flagship security framework with 135+ specialized tools across cloud, AI/ML, hardware, automotive, and traditional pentesting.</p>
-                    <div class="iso-features">
-                        <span class="feature">✓ 135+ Tools</span>
-                        <span class="feature">✓ v5.0 Release</span>
-                        <span class="feature">✓ Linux Distribution</span>
-                        <span class="feature">✓ Multi-Architecture</span>
-                    </div>
-                    <a href="https://github.com/bad-antics/nullsec-linux" class="download-btn">
-                        <span class="btn-icon">📂</span> GITHUB
-                    </a>
-                </div>
-
-                <div class="iso-card premium">
-                    <div class="card-ribbon">Mobile</div>
-                    <div class="iso-icon">📱</div>
-                    <h4>NullKia Mobile Security</h4>
-                    <p class="iso-desc">Advanced mobile security framework supporting 18 manufacturers with baseband, cellular, TEE, BootROM, and GUI tools.</p>
-                    <div class="iso-features">
-                        <span class="feature">✓ 18 Manufacturers</span>
-                        <span class="feature">✓ v3.0 Release</span>
-                        <span class="feature">✓ Baseband Tools</span>
-                        <span class="feature">✓ Plugin System</span>
-                    </div>
-                    <a href="https://github.com/bad-antics/nullkia" class="download-btn">
-                        <span class="btn-icon">📂</span> GITHUB
-                    </a>
-                </div>
-
-                <div class="iso-card premium">
-                    <div class="card-ribbon">Cloud</div>
-                    <div class="iso-icon">☁️</div>
-                    <h4>Cloud Security Suite</h4>
-                    <p class="iso-desc">6 specialized cloud security tools: AWS reconnaissance, GCP hunting, Azure sweeping, Kubernetes scanning, Terraform auditing.</p>
-                    <div class="iso-features">
-                        <span class="feature">✓ AWS Recon</span>
-                        <span class="feature">✓ K8s Scanning</span>
-                        <span class="feature">✓ GCP Hunting</span>
-                        <span class="feature">✓ Terraform Audit</span>
-                    </div>
-                    <a href="https://github.com/bad-antics?tab=repositories&q=nullsec-cloud" class="download-btn">
-                        <span class="btn-icon">📂</span> VIEW TOOLS
-                    </a>
-                </div>
-
-                <div class="iso-card premium">
-                    <div class="card-ribbon">AI/ML</div>
-                    <div class="iso-icon">🤖</div>
-                    <h4>AI/ML Security Suite</h4>
-                    <p class="iso-desc">5 specialized AI security tools: LLM red teaming, prompt injection, model auditing, adversarial testing, data poisoning detection.</p>
-                    <div class="iso-features">
-                        <span class="feature">✓ LLM Red Team</span>
-                        <span class="feature">✓ Prompt Inject</span>
-                        <span class="feature">✓ Model Audit</span>
-                        <span class="feature">✓ Adversarial Test</span>
-                    </div>
-                    <a href="https://github.com/bad-antics?tab=repositories&q=nullsec-llm" class="download-btn">
-                        <span class="btn-icon">📂</span> VIEW TOOLS
-                    </a>
-                </div>
-
-                <div class="iso-card premium">
-                    <div class="card-ribbon">Hardware</div>
-                    <div class="iso-icon">🔌</div>
-                    <h4>Hardware Security Suite</h4>
-                    <p class="iso-desc">5 hardware hacking tools: SDR analysis, RFID exploitation, CAN bus testing, JTAG debugging, glitch attacks, UART exploitation.</p>
-                    <div class="iso-features">
-                        <span class="feature">✓ SDR Tools</span>
-                        <span class="feature">✓ RFID Hacking</span>
-                        <span class="feature">✓ JTAG Debug</span>
-                        <span class="feature">✓ Glitch Attacks</span>
-                    </div>
-                    <a href="https://github.com/bad-antics?tab=repositories&q=nullsec-sdr" class="download-btn">
-                        <span class="btn-icon">📂</span> VIEW TOOLS
-                    </a>
-                </div>
-
-                <div class="iso-card premium">
-                    <div class="card-ribbon">Auto</div>
-                    <div class="iso-icon">🚗</div>
-                    <h4>Automotive Security Suite</h4>
-                    <p class="iso-desc">4 automotive security tools: CAN bus analysis, OBD-II diagnostics, UDS protocol testing, key fob reverse engineering.</p>
-                    <div class="iso-features">
-                        <span class="feature">✓ CAN Analysis</span>
-                        <span class="feature">✓ OBD-II Tools</span>
-                        <span class="feature">✓ UDS Testing</span>
-                        <span class="feature">✓ Key Fob RE</span>
-                    </div>
-                    <a href="https://github.com/bad-antics?tab=repositories&q=nullsec-can" class="download-btn">
-                        <span class="btn-icon">📂</span> VIEW TOOLS
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- NULLSEC LINUX v5.0 -->
-        <section id="nullsec" class="iso-category">
-            <div class="section-header">
-                <h2><span class="icon">🐧</span> NULLSEC LINUX v5.0</h2>
-                <p class="section-desc">Security-focused Linux distribution with 135+ integrated tools</p>
-            </div>
-
-            <div class="version-box">
-                <h3>Version 5.0 Features</h3>
-                <div class="feature-grid">
-                    <div class="feature-item">
-                        <strong>135+ Tools</strong>
-                        <p>Cloud, AI/ML, Hardware, Automotive, Traditional Pentesting</p>
-                    </div>
-                    <div class="feature-item">
-                        <strong>5 Specialized Editions</strong>
-                        <p>Cloud, AI/ML, Hardware, Automotive, Mobile Security</p>
-                    </div>
-                    <div class="feature-item">
-                        <strong>4 Architectures</strong>
-                        <p>AMD64, ARM64, RISC-V, Apple Silicon (Asahi)</p>
-                    </div>
-                    <div class="feature-item">
-                        <strong>Debian 13 Base</strong>
-                        <p>Kernel 6.8 LTS, Wayland + Hyprland Compositors</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="iso-grid">
-                <div class="iso-card live">
-                    <div class="card-ribbon">STANDARD</div>
-                    <div class="iso-icon">💾</div>
-                    <h4>Standard Installation</h4>
-                    <p class="iso-desc">Full NullSec toolkit with all tools pre-installed and configured.</p>
-                    <div class="iso-meta">
-                        <span class="meta-item">Kernel 6.8 LTS</span>
-                        <span class="meta-item">Debian 13</span>
-                    </div>
-                    <a href="https://github.com/bad-antics/nullsec-linux/releases" class="download-btn">
-                        <span class="btn-icon">��</span> DOWNLOAD
-                    </a>
-                </div>
-
-                <div class="iso-card live">
-                    <div class="card-ribbon">CLOUD</div>
-                    <div class="iso-icon">☁️</div>
-                    <h4>Cloud Security Edition</h4>
-                    <p class="iso-desc">6 cloud-specific tools: AWS, GCP, Azure, K8s, Terraform, Cloud Audit.</p>
-                    <div class="iso-meta">
-                        <span class="meta-item">6 Cloud Tools</span>
-                        <span class="meta-item">Specialized</span>
-                    </div>
-                    <a href="https://github.com/bad-antics/nullsec-linux/releases" class="download-btn">
-                        <span class="btn-icon">📥</span> DOWNLOAD
-                    </a>
-                </div>
-
-                <div class="iso-card live">
-                    <div class="card-ribbon">AI/ML</div>
-                    <div class="iso-icon">🤖</div>
-                    <h4>AI/ML Security Edition</h4>
-                    <p class="iso-desc">5 AI security tools: LLM Red Team, Prompt Inject, Model Audit, Adversarial Test, Data Poison.</p>
-                    <div class="iso-meta">
-                        <span class="meta-item">5 AI/ML Tools</span>
-                        <span class="meta-item">Specialized</span>
-                    </div>
-                    <a href="https://github.com/bad-antics/nullsec-linux/releases" class="download-btn">
-                        <span class="btn-icon">📥</span> DOWNLOAD
-                    </a>
-                </div>
-
-                <div class="iso-card live">
-                    <div class="card-ribbon">HARDWARE</div>
-                    <div class="iso-icon">🔌</div>
-                    <h4>Hardware Hacking Edition</h4>
-                    <p class="iso-desc">5 hardware tools: SDR, RFID, CAN, JTAG, Glitch, UART exploitation.</p>
-                    <div class="iso-meta">
-                        <span class="meta-item">5 Hardware Tools</span>
-                        <span class="meta-item">Specialized</span>
-                    </div>
-                    <a href="https://github.com/bad-antics/nullsec-linux/releases" class="download-btn">
-                        <span class="btn-icon">📥</span> DOWNLOAD
-                    </a>
-                </div>
-
-                <div class="iso-card live">
-                    <div class="card-ribbon">AUTOMOTIVE</div>
-                    <div class="iso-icon">🚗</div>
-                    <h4>Automotive Security Edition</h4>
-                    <p class="iso-desc">4 automotive tools: CAN Analysis, OBD-II, UDS Protocol, Key Fob Reverse Engineering.</p>
-                    <div class="iso-meta">
-                        <span class="meta-item">4 Auto Tools</span>
-                        <span class="meta-item">Specialized</span>
-                    </div>
-                    <a href="https://github.com/bad-antics/nullsec-linux/releases" class="download-btn">
-                        <span class="btn-icon">📥</span> DOWNLOAD
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- NULLKIA v3.0 -->
-        <section id="nullkia" class="iso-category">
-            <div class="section-header">
-                <h2><span class="icon">📱</span> NULLKIA v3.0 MOBILE SECURITY</h2>
-                <p class="section-desc">Advanced mobile security framework for 18 manufacturers</p>
-            </div>
-
-            <div class="version-box">
-                <h3>Version 3.0 Features</h3>
-                <div class="feature-grid">
-                    <div class="feature-item">
-                        <strong>18 Manufacturers</strong>
-                        <p>Samsung, Apple, Google, OnePlus, Xiaomi, Huawei, Motorola, LG, Sony, Nokia, Nothing, OPPO, Vivo, Realme, ASUS, ZTE, Fairphone, TCL</p>
-                    </div>
-                    <div class="feature-item">
-                        <strong>Baseband Tools</strong>
-                        <p>Shannon, Qualcomm Modem, MediaTek, Exynos, Apple Modem exploitation</p>
-                    </div>
-                    <div class="feature-item">
-                        <strong>Cellular Security</strong>
-                        <p>5G/LTE security, eSIM tools, IMSI catching, Carrier unlock</p>
-                    </div>
-                    <div class="feature-item">
-                        <strong>TEE/TrustZone</strong>
-                        <p>Secure Element access, BootROM extraction, TrustZone research</p>
-                    </div>
-                    <div class="feature-item">
-                        <strong>GUI Mode</strong>
-                        <p>Interactive security analysis dashboard with real-time monitoring</p>
-                    </div>
-                    <div class="feature-item">
-                        <strong>Plugin System</strong>
-                        <p>Extensible architecture for custom manufacturer-specific tools</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="iso-grid">
-                <div class="iso-card premium">
-                    <div class="card-ribbon">Samsung</div>
-                    <div class="iso-icon">🔷</div>
-                    <h4>Samsung Security Suite</h4>
-                    <p class="iso-desc">Exynos baseband tools, Knox bypass, BootROM extraction.</p>
-                    <a href="https://github.com/bad-antics/nullkia" class="download-btn">
-                        <span class="btn-icon">📂</span> GITHUB
-                    </a>
-                </div>
-
-                <div class="iso-card premium">
-                    <div class="card-ribbon">Apple</div>
-                    <div class="iso-icon">🍎</div>
-                    <h4>Apple Security Analysis</h4>
-                    <p class="iso-desc">Baseband research, Secure Enclave access, firmware extraction.</p>
-                    <a href="https://github.com/bad-antics/nullkia" class="download-btn">
-                        <span class="btn-icon">📂</span> GITHUB
-                    </a>
-                </div>
-
-                <div class="iso-card premium">
-                    <div class="card-ribbon">Qualcomm</div>
-                    <div class="iso-icon">🔷</div>
-                    <h4>Snapdragon Security Tools</h4>
-                    <p class="iso-desc">Modem exploitation, QFIL tools, BootROM attacks, NAND dumping.</p>
-                    <a href="https://github.com/bad-antics/nullkia" class="download-btn">
-                        <span class="btn-icon">📂</span> GITHUB
-                    </a>
-                </div>
-
-                <div class="iso-card premium">
-                    <div class="card-ribbon">MediaTek</div>
-                    <div class="iso-icon">📱</div>
-                    <h4>MediaTek Exploitation</h4>
-                    <p class="iso-desc">Baseband access, PreLoader tools, secure boot bypass.</p>
-                    <a href="https://github.com/bad-antics/nullkia" class="download-btn">
-                        <span class="btn-icon">📂</span> GITHUB
-                    </a>
-                </div>
-
-                <div class="iso-card premium">
-                    <div class="card-ribbon">Cellular</div>
-                    <div class="iso-icon">📡</div>
-                    <h4>Cellular Security Tools</h4>
-                    <p class="iso-desc">5G/LTE testing, eSIM management, IMSI analysis, carrier protocol research.</p>
-                    <a href="https://github.com/bad-antics/nullkia" class="download-btn">
-                        <span class="btn-icon">📂</span> GITHUB
-                    </a>
-                </div>
-
-                <div class="iso-card premium">
-                    <div class="card-ribbon">TEE/SE</div>
-                    <div class="iso-icon">🔐</div>
-                    <h4>TrustZone & Secure Element</h4>
-                    <p class="iso-desc">Secure Enclave research, TEE exploitation, BootROM extraction, Secure Element access.</p>
-                    <a href="https://github.com/bad-antics/nullkia" class="download-btn">
-                        <span class="btn-icon">📂</span> GITHUB
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- PORTFOLIO STATISTICS -->
-        <section id="stats" class="iso-category">
-            <div class="section-header">
-                <h2><span class="icon">📊</span> PORTFOLIO STATISTICS</h2>
-                <p class="section-desc">GitHub account insights and metrics</p>
-            </div>
-
+        <!-- OVERVIEW SECTION -->
+        <section id="overview" class="section">
+            <h2 class="section-title">📊 Overview</h2>
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-icon">📦</div>
-                    <div class="stat-content">
-                        <div class="stat-number large">443</div>
-                        <div class="stat-label">Public Repositories</div>
-                        <p>Complete portfolio across all domains</p>
-                    </div>
+                    <div class="stat-value">456</div>
+                    <div class="stat-label">Repositories</div>
                 </div>
-
                 <div class="stat-card">
-                    <div class="stat-icon">🛠️</div>
-                    <div class="stat-content">
-                        <div class="stat-number large">135+</div>
-                        <div class="stat-label">Security Tools</div>
-                        <p>Across 13 categories and specializations</p>
-                    </div>
+                    <div class="stat-value">135+</div>
+                    <div class="stat-label">Security Tools</div>
                 </div>
-
                 <div class="stat-card">
-                    <div class="stat-icon">🌍</div>
-                    <div class="stat-content">
-                        <div class="stat-number large">15+</div>
-                        <div class="stat-label">Programming Languages</div>
-                        <p>Rust, Python, Go, C++, Zig, Nim, Swift, Kotlin, and more</p>
-                    </div>
+                    <div class="stat-value">20</div>
+                    <div class="stat-label">Followers</div>
                 </div>
-
                 <div class="stat-card">
-                    <div class="stat-icon">👥</div>
-                    <div class="stat-content">
-                        <div class="stat-number large">20</div>
-                        <div class="stat-label">Followers</div>
-                        <p>Growing community of security enthusiasts</p>
-                    </div>
+                    <div class="stat-value">124</div>
+                    <div class="stat-label">Following</div>
                 </div>
-
                 <div class="stat-card">
-                    <div class="stat-icon">🔗</div>
-                    <div class="stat-content">
-                        <div class="stat-number large">118</div>
-                        <div class="stat-label">Following</div>
-                        <p>Contributing to broader security ecosystem</p>
-                    </div>
+                    <div class="stat-value">91</div>
+                    <div class="stat-label">Total PRs</div>
                 </div>
-
                 <div class="stat-card">
-                    <div class="stat-icon">🎉</div>
-                    <div class="stat-content">
-                        <div class="stat-number">Feb 2024</div>
-                        <div class="stat-label">Account Created</div>
-                        <p>Active for 11 months with consistent development</p>
-                    </div>
+                    <div class="stat-value">15+</div>
+                    <div class="stat-label">Languages</div>
                 </div>
-            </div>
-        </section>
-
-        <!-- ALL TOOLS SECTION -->
-        <section id="tools" class="iso-category">
-            <div class="section-header">
-                <h2><span class="icon">🛠️</span> TOOL CATEGORIES</h2>
-                <p class="section-desc">135+ tools organized by security domain</p>
             </div>
             
-            <div class="tools-grid">
-                <div class="tool-category">
-                    <h4>🔐 Core Security (15+ tools)</h4>
-                    <ul>
-                        <li>Rootkit Detection</li>
-                        <li>Malware Classification</li>
-                        <li>System Hardening</li>
-                        <li>Vulnerability Scanning</li>
-                        <li>Security Monitoring</li>
-                    </ul>
-                </div>
-                <div class="tool-category">
-                    <h4>🌐 Network Security (20+ tools)</h4>
-                    <ul>
-                        <li>Port Scanning</li>
-                        <li>Packet Analysis</li>
-                        <li>Protocol Testing</li>
-                        <li>Traffic Monitoring</li>
-                        <li>Network Reconnaissance</li>
-                    </ul>
-                </div>
-                <div class="tool-category">
-                    <h4>⚙️ System Analysis (18+ tools)</h4>
-                    <ul>
-                        <li>Binary Analysis</li>
-                        <li>Memory Forensics</li>
-                        <li>Process Monitoring</li>
-                        <li>Kernel Analysis</li>
-                        <li>Log Analysis</li>
-                    </ul>
-                </div>
-                <div class="tool-category">
-                    <h4>🔑 Cryptography (12+ tools)</h4>
-                    <ul>
-                        <li>Hash Cracking</li>
-                        <li>Encryption Testing</li>
-                        <li>Key Management</li>
-                        <li>Signature Verification</li>
-                        <li>Steganography</li>
-                    </ul>
-                </div>
-                <div class="tool-category">
-                    <h4>☁️ Cloud Security (6 tools)</h4>
-                    <ul>
-                        <li>AWS Reconnaissance</li>
-                        <li>GCP Hunting</li>
-                        <li>Azure Sweeping</li>
-                        <li>Kubernetes Scanning</li>
-                        <li>Terraform Auditing</li>
-                        <li>Cloud Audit</li>
-                    </ul>
-                </div>
-                <div class="tool-category">
-                    <h4>🤖 AI/ML Security (5 tools)</h4>
-                    <ul>
-                        <li>LLM Red Teaming</li>
-                        <li>Prompt Injection</li>
-                        <li>Model Auditing</li>
-                        <li>Adversarial Testing</li>
-                        <li>Data Poisoning</li>
-                    </ul>
-                </div>
-                <div class="tool-category">
-                    <h4>🔌 Hardware Security (5+ tools)</h4>
-                    <ul>
-                        <li>SDR Analysis</li>
-                        <li>RFID Exploitation</li>
-                        <li>CAN Bus Testing</li>
-                        <li>JTAG Debugging</li>
-                        <li>Glitch Attacks</li>
-                        <li>UART Exploitation</li>
-                    </ul>
-                </div>
-                <div class="tool-category">
-                    <h4>🚗 Automotive Security (4 tools)</h4>
-                    <ul>
-                        <li>CAN Bus Analysis</li>
-                        <li>OBD-II Diagnostics</li>
-                        <li>UDS Protocol Testing</li>
-                        <li>Key Fob Reverse Engineering</li>
-                    </ul>
-                </div>
-                <div class="tool-category">
-                    <h4>📱 Mobile Security (18+ tools)</h4>
-                    <ul>
-                        <li>Baseband Exploitation</li>
-                        <li>Cellular Security</li>
-                        <li>TEE Research</li>
-                        <li>BootROM Access</li>
-                        <li>eSIM Tools</li>
-                    </ul>
-                </div>
-                <div class="tool-category">
-                    <h4>🐚 Web/API Security (15+ tools)</h4>
-                    <ul>
-                        <li>SQL Injection Testing</li>
-                        <li>XSS Detection</li>
-                        <li>CORS Bypass</li>
-                        <li>API Fuzzing</li>
-                        <li>WAF Evasion</li>
-                    </ul>
-                </div>
-                <div class="tool-category">
-                    <h4>🔓 Credential Security (8+ tools)</h4>
-                    <ul>
-                        <li>Credential Scanning</li>
-                        <li>Password Analysis</li>
-                        <li>Secret Detection</li>
-                        <li>Repository Auditing</li>
-                    </ul>
-                </div>
-                <div class="tool-category">
-                    <h4>📋 Incident Response (10+ tools)</h4>
-                    <ul>
-                        <li>Log Analysis</li>
-                        <li>Threat Detection</li>
-                        <li>Timeline Analysis</li>
-                        <li>Artifact Extraction</li>
-                    </ul>
-                </div>
-                <div class="tool-category">
-                    <h4>🔍 Reconnaissance (12+ tools)</h4>
-                    <ul>
-                        <li>OSINT Gathering</li>
-                        <li>Domain Analysis</li>
-                        <li>Service Enumeration</li>
-                        <li>Asset Discovery</li>
-                    </ul>
-                </div>
+            <div class="about-box">
+                <p>Independent security researcher building <strong>bad-antics ./Dev</strong> — a comprehensive ecosystem of 135+ specialized security tools and a complete Linux distribution. Focus areas include cloud security, AI/ML security, hardware hacking, automotive systems, and mobile security.</p>
             </div>
         </section>
 
-        <!-- LANGUAGE EXPERTISE -->
-        <section id="languages" class="iso-category">
-            <div class="section-header">
-                <h2><span class="icon">🌍</span> LANGUAGE EXPERTISE</h2>
-                <p class="section-desc">Multi-language programming across security domains</p>
-            </div>
+        <!-- MAIN PROJECTS -->
+        <section id="projects" class="section">
+            <h2 class="section-title">🚀 Main Projects</h2>
             
-            <div class="lang-grid">
-                <div class="lang-card"><span class="lang-icon">🦀</span><span class="lang-name">Rust</span></div>
-                <div class="lang-card"><span class="lang-icon">🐹</span><span class="lang-name">Go</span></div>
-                <div class="lang-card"><span class="lang-icon">🐍</span><span class="lang-name">Python</span></div>
-                <div class="lang-card"><span class="lang-icon">⚙️</span><span class="lang-name">C++20</span></div>
-                <div class="lang-card"><span class="lang-icon">λ</span><span class="lang-name">Haskell</span></div>
-                <div class="lang-card"><span class="lang-icon">🐫</span><span class="lang-name">OCaml</span></div>
-                <div class="lang-card"><span class="lang-icon">🍎</span><span class="lang-name">Swift</span></div>
-                <div class="lang-card"><span class="lang-icon">🤖</span><span class="lang-name">Kotlin</span></div>
-                <div class="lang-card"><span class="lang-icon">💎</span><span class="lang-name">Crystal</span></div>
-                <div class="lang-card"><span class="lang-icon">📊</span><span class="lang-name">Julia</span></div>
-                <div class="lang-card"><span class="lang-icon">🔮</span><span class="lang-name">Elixir</span></div>
-                <div class="lang-card"><span class="lang-icon">⚡</span><span class="lang-name">Zig</span></div>
-                <div class="lang-card"><span class="lang-icon">🎭</span><span class="lang-name">Nim</span></div>
-                <div class="lang-card"><span class="lang-icon">🌐</span><span class="lang-name">V</span></div>
-                <div class="lang-card"><span class="lang-icon">🛡️</span><span class="lang-name">Ada</span></div>
+            <div class="project-grid">
+                <!-- NullSec Linux -->
+                <div class="project-card featured">
+                    <div class="project-header">
+                        <span class="project-icon">🐧</span>
+                        <div>
+                            <h3>NullSec Linux v5.0</h3>
+                            <span class="project-tag">Security Distribution</span>
+                        </div>
+                    </div>
+                    <p>Complete security-focused Linux distribution with 135+ integrated tools across 5 specialized editions.</p>
+                    <div class="project-features">
+                        <span>✓ 135+ Tools</span>
+                        <span>✓ 5 Editions</span>
+                        <span>✓ 4 Architectures</span>
+                    </div>
+                    <div class="project-archs">
+                        <code>AMD64</code> <code>ARM64</code> <code>RISC-V</code> <code>Apple Silicon</code>
+                    </div>
+                    <a href="https://github.com/bad-antics/nullsec-linux" class="btn">View on GitHub →</a>
+                </div>
+
+                <!-- NullKia -->
+                <div class="project-card featured">
+                    <div class="project-header">
+                        <span class="project-icon">📱</span>
+                        <div>
+                            <h3>NullKia v3.0</h3>
+                            <span class="project-tag">Mobile Security</span>
+                        </div>
+                    </div>
+                    <p>Advanced mobile security framework supporting 18 manufacturers with baseband, cellular, and TEE tools.</p>
+                    <div class="project-features">
+                        <span>✓ 18 Manufacturers</span>
+                        <span>✓ Baseband Tools</span>
+                        <span>✓ 5G/LTE Security</span>
+                    </div>
+                    <div class="project-manufacturers">
+                        <code>Samsung</code> <code>Apple</code> <code>Google</code> <code>OnePlus</code> <code>+14 more</code>
+                    </div>
+                    <a href="https://github.com/bad-antics/nullkia" class="btn">View on GitHub →</a>
+                </div>
             </div>
         </section>
 
-        <!-- GITHUB PROFILE LINK -->
-        <section id="connect" class="iso-category">
-            <div class="section-header">
-                <h2><span class="icon">🔗</span> CONNECT</h2>
-                <p class="section-desc">Full portfolio and community</p>
-            </div>
+        <!-- TOOL SUITES -->
+        <section id="tools" class="section">
+            <h2 class="section-title">🛠️ Security Tool Suites</h2>
             
-            <div class="connect-box">
-                <div class="connect-item">
-                    <a href="https://github.com/bad-antics" class="connect-btn primary">
-                        <span class="btn-icon">🐙</span> GitHub (443 Repos)
-                    </a>
-                    <p>View full repository portfolio with all projects</p>
+            <div class="suites-grid">
+                <!-- Cloud Security -->
+                <div class="suite-card">
+                    <div class="suite-header">
+                        <span class="suite-icon">☁️</span>
+                        <h3>Cloud Security</h3>
+                    </div>
+                    <ul class="tool-list">
+                        <li><a href="https://github.com/bad-antics/nullsec-cloudaudit">nullsec-cloudaudit</a> — Multi-cloud auditing</li>
+                        <li><a href="https://github.com/bad-antics/nullsec-k8sscan">nullsec-k8sscan</a> — Kubernetes scanner</li>
+                        <li><a href="https://github.com/bad-antics/nullsec-awsrecon">nullsec-awsrecon</a> — AWS reconnaissance</li>
+                        <li><a href="https://github.com/bad-antics/nullsec-gcphunt">nullsec-gcphunt</a> — GCP hunting</li>
+                        <li><a href="https://github.com/bad-antics/nullsec-azuresweep">nullsec-azuresweep</a> — Azure sweeping</li>
+                        <li><a href="https://github.com/bad-antics/nullsec-terraform-scan">nullsec-terraform-scan</a> — IaC scanning</li>
+                    </ul>
                 </div>
-                <div class="connect-item">
-                    <a href="https://discord.gg/killers" class="connect-btn">
-                        <span class="btn-icon">💬</span> Discord Community
-                    </a>
-                    <p>Join the NullSec security community</p>
+
+                <!-- AI/ML Security -->
+                <div class="suite-card">
+                    <div class="suite-header">
+                        <span class="suite-icon">🤖</span>
+                        <h3>AI/ML Security</h3>
+                    </div>
+                    <ul class="tool-list">
+                        <li><a href="https://github.com/bad-antics/nullsec-llmred">nullsec-llmred</a> — LLM red teaming</li>
+                        <li><a href="https://github.com/bad-antics/nullsec-promptinject">nullsec-promptinject</a> — Prompt injection</li>
+                        <li><a href="https://github.com/bad-antics/nullsec-modelaudit">nullsec-modelaudit</a> — Model auditing</li>
+                        <li><a href="https://github.com/bad-antics/nullsec-adversarial">nullsec-adversarial</a> — Adversarial testing</li>
+                        <li><a href="https://github.com/bad-antics/nullsec-datapoisoning">nullsec-datapoisoning</a> — Data poisoning</li>
+                    </ul>
                 </div>
-                <div class="connect-item">
-                    <a href="https://github.com/bad-antics/nullsec-linux" class="connect-btn">
-                        <span class="btn-icon">🐧</span> NullSec Linux
-                    </a>
-                    <p>Download NullSec v5.0 with 135+ tools</p>
+
+                <!-- Hardware Security -->
+                <div class="suite-card">
+                    <div class="suite-header">
+                        <span class="suite-icon">🔌</span>
+                        <h3>Hardware Security</h3>
+                    </div>
+                    <ul class="tool-list">
+                        <li><a href="https://github.com/bad-antics/nullsec-sdr">nullsec-sdr</a> — SDR analysis</li>
+                        <li><a href="https://github.com/bad-antics/nullsec-rfid">nullsec-rfid</a> — RFID/NFC exploitation</li>
+                        <li><a href="https://github.com/bad-antics/nullsec-canbus">nullsec-canbus</a> — CAN bus testing</li>
+                        <li><a href="https://github.com/bad-antics/nullsec-jtag">nullsec-jtag</a> — JTAG/SWD debugging</li>
+                        <li><a href="https://github.com/bad-antics/nullsec-glitch">nullsec-glitch</a> — Voltage glitching</li>
+                    </ul>
                 </div>
-                <div class="connect-item">
-                    <a href="https://github.com/bad-antics/nullkia" class="connect-btn">
-                        <span class="btn-icon">📱</span> NullKia v3.0
-                    </a>
-                    <p>Mobile security framework for 18 manufacturers</p>
+
+                <!-- Automotive Security -->
+                <div class="suite-card">
+                    <div class="suite-header">
+                        <span class="suite-icon">🚗</span>
+                        <h3>Automotive Security</h3>
+                    </div>
+                    <ul class="tool-list">
+                        <li><a href="https://github.com/bad-antics/nullsec-carfuzz">nullsec-carfuzz</a> — ECU fuzzing</li>
+                        <li><a href="https://github.com/bad-antics/nullsec-obdii">nullsec-obdii</a> — OBD-II exploitation</li>
+                        <li><a href="https://github.com/bad-antics/nullsec-uds">nullsec-uds</a> — UDS protocol testing</li>
+                        <li><a href="https://github.com/bad-antics/nullsec-keyfob">nullsec-keyfob</a> — Key fob analysis</li>
+                    </ul>
+                </div>
+
+                <!-- Core Tools -->
+                <div class="suite-card">
+                    <div class="suite-header">
+                        <span class="suite-icon">⚙️</span>
+                        <h3>Core Tools</h3>
+                    </div>
+                    <ul class="tool-list">
+                        <li><a href="https://github.com/bad-antics/nullsec-kernspy">nullsec-kernspy</a> — Kernel analyzer (Go)</li>
+                        <li><a href="https://github.com/bad-antics/nullsec-memguard">nullsec-memguard</a> — Memory monitor (Zig)</li>
+                        <li><a href="https://github.com/bad-antics/nullsec-netseer">nullsec-netseer</a> — Network analyzer (Haskell)</li>
+                        <li><a href="https://github.com/bad-antics/nullsec-injector">nullsec-injector</a> — Process injection (Rust)</li>
+                        <li><a href="https://github.com/bad-antics/nullsec-bingaze">nullsec-bingaze</a> — Binary analyzer (C++)</li>
+                    </ul>
+                </div>
+
+                <!-- Mobile Tools -->
+                <div class="suite-card">
+                    <div class="suite-header">
+                        <span class="suite-icon">📶</span>
+                        <h3>Cellular/Mobile</h3>
+                    </div>
+                    <ul class="tool-list">
+                        <li>Baseband exploitation (Shannon, Qualcomm, MediaTek)</li>
+                        <li>5G/LTE security testing</li>
+                        <li>eSIM research tools</li>
+                        <li>IMSI analysis</li>
+                        <li>TEE/TrustZone research</li>
+                    </ul>
                 </div>
             </div>
         </section>
 
-        <footer>
-            <p>© 2026 bad-antics — 443 Public Repositories | bad-antics ./Dev</p>
-            <p class="footer-links">
-                <a href="https://github.com/bad-antics">GitHub</a> •
-                <a href="https://discord.gg/killers">Discord</a> •
-                <a href="https://github.com/bad-antics/nullsec-linux">NullSec Linux</a> •
-                <a href="https://github.com/bad-antics/nullkia">NullKia Mobile</a>
-            </p>
+        <!-- GITHUB STATS -->
+        <section id="stats" class="section">
+            <h2 class="section-title">📈 GitHub Stats</h2>
+            <div class="github-stats">
+                <img src="https://github-readme-stats.vercel.app/api?username=bad-antics&show_icons=true&theme=github_dark&hide_border=true&count_private=true&v=1737746400" alt="GitHub Stats" />
+                <img src="https://github-readme-streak-stats-eight.vercel.app/?user=bad-antics&theme=github-dark-blue&hide_border=true" alt="Streak Stats" />
+            </div>
+            <div class="github-stats full-width">
+                <img src="https://github-readme-activity-graph.vercel.app/graph?username=bad-antics&theme=github-dark&hide_border=true&area=true" alt="Activity Graph" class="activity-graph" />
+            </div>
+        </section>
+
+        <!-- COMMUNITY CONTRIBUTIONS -->
+        <section id="contributions" class="section">
+            <h2 class="section-title">🚀 Community Contributions</h2>
+            
+            <div class="pr-summary">
+                <div class="pr-stat">
+                    <div class="pr-number">80</div>
+                    <div class="pr-label">Open PRs</div>
+                </div>
+                <div class="pr-stat merged">
+                    <div class="pr-number">6</div>
+                    <div class="pr-label">Merged</div>
+                </div>
+                <div class="pr-stat">
+                    <div class="pr-number">91</div>
+                    <div class="pr-label">Total PRs</div>
+                </div>
+            </div>
+
+            <div class="contributions-grid">
+                <div class="contrib-card">
+                    <h4>✅ Merged PRs</h4>
+                    <ul>
+                        <li><a href="https://github.com/The-Art-of-Hacking/h4cker/pull/433">h4cker</a> <span class="stars">24.8k ⭐</span></li>
+                        <li><a href="https://github.com/Astrosp/Awesome-OSINT-For-Everything/pull/52">Awesome-OSINT</a> <span class="stars">2k ⭐</span></li>
+                    </ul>
+                </div>
+                <div class="contrib-card">
+                    <h4>🕐 High-Value Pending</h4>
+                    <ul>
+                        <li><a href="https://github.com/enaqx/awesome-pentest/pull/519">awesome-pentest</a> <span class="stars">24k ⭐</span></li>
+                        <li><a href="https://github.com/jivoi/awesome-osint/pull/779">awesome-osint</a> <span class="stars">20k ⭐</span></li>
+                        <li><a href="https://github.com/sbilly/awesome-security/pull/337">awesome-security</a> <span class="stars">13k ⭐</span></li>
+                        <li><a href="https://github.com/wtsxDev/reverse-engineering/pull/45">reverse-engineering</a> <span class="stars">9.9k ⭐</span></li>
+                    </ul>
+                </div>
+                <div class="contrib-card">
+                    <h4>📱 NullKia PRs</h4>
+                    <ul>
+                        <li><a href="https://github.com/vaib25vicky/awesome-mobile-security/pull/31">awesome-mobile-security</a> <span class="stars">3.4k ⭐</span></li>
+                        <li><a href="https://github.com/saeidshirazi/awesome-android-security/pull/39">awesome-android-security</a> <span class="stars">1.8k ⭐</span></li>
+                        <li><a href="https://github.com/Cy-clon3/awesome-ios-security/pull/10">awesome-ios-security</a> <span class="stars">624 ⭐</span></li>
+                        <li><a href="https://github.com/calee0219/awesome-5g/pull/39">awesome-5g</a> <span class="stars">860 ⭐</span></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- TECH STACK -->
+        <section id="tech" class="section">
+            <h2 class="section-title">💻 Tech Stack</h2>
+            <div class="tech-grid">
+                <div class="tech-category">
+                    <h4>Systems & Security</h4>
+                    <div class="tech-tags">
+                        <span class="tech-tag rust">Rust</span>
+                        <span class="tech-tag go">Go</span>
+                        <span class="tech-tag cpp">C++</span>
+                        <span class="tech-tag zig">Zig</span>
+                        <span class="tech-tag python">Python</span>
+                    </div>
+                </div>
+                <div class="tech-category">
+                    <h4>Functional</h4>
+                    <div class="tech-tags">
+                        <span class="tech-tag haskell">Haskell</span>
+                        <span class="tech-tag ocaml">OCaml</span>
+                        <span class="tech-tag elixir">Elixir</span>
+                        <span class="tech-tag scala">Scala</span>
+                    </div>
+                </div>
+                <div class="tech-category">
+                    <h4>Mobile & Platform</h4>
+                    <div class="tech-tags">
+                        <span class="tech-tag swift">Swift</span>
+                        <span class="tech-tag kotlin">Kotlin</span>
+                        <span class="tech-tag nim">Nim</span>
+                        <span class="tech-tag crystal">Crystal</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <div class="footer-links">
+                <a href="https://github.com/bad-antics">GitHub</a>
+                <a href="https://twitter.com/AnonAntics">Twitter</a>
+                <a href="https://discord.gg/killers">Discord</a>
+            </div>
+            <p class="disclaimer">All tools intended for authorized security testing and educational purposes only.</p>
+            <p class="copyright">© 2024-2026 <strong>bad-antics ./Dev</strong> • Security Engineering & Systems Research</p>
         </footer>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        // Smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
 </html>
-<- Support for SF, OSDN, VPS, Cloudflare R2, Internet Updated 2026-01-24 -->
