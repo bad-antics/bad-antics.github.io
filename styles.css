@@ -117,6 +117,7 @@ a:hover {
     border: 1px solid var(--border-color);
 }
 
+.badge.rating { border-color: #ff4444; color: #ff4444; background: rgba(255, 68, 68, 0.1); font-weight: 700; }
 .badge.primary { border-color: var(--accent-blue); color: var(--accent-blue); }
 .badge.success { border-color: var(--accent-green); color: var(--accent-green); }
 .badge.info { border-color: var(--accent-purple); color: var(--accent-purple); }
