@@ -570,3 +570,227 @@ a:hover {
         font-size: 2rem;
     }
 }
+
+/* === BIO SECTION === */
+.bio-section {
+    padding-top: 30px;
+    padding-bottom: 0;
+}
+
+.bio-box {
+    background: linear-gradient(135deg, rgba(88, 166, 255, 0.1), rgba(163, 113, 247, 0.1));
+    border: 1px solid var(--accent-blue);
+    border-radius: 8px;
+    padding: 20px 30px;
+    text-align: center;
+}
+
+.bio-text {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: var(--text-primary);
+    letter-spacing: 0.5px;
+}
+
+/* === JULIA SECURITY SUITE === */
+.section-subtitle {
+    text-align: center;
+    color: var(--text-secondary);
+    font-style: italic;
+    margin-bottom: 30px;
+}
+
+.julia-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.julia-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 24px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.julia-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #9558B2, #a371f7);
+}
+
+.julia-card:hover {
+    transform: translateY(-4px);
+    border-color: #9558B2;
+    box-shadow: 0 8px 30px rgba(149, 88, 178, 0.2);
+}
+
+.julia-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.julia-icon {
+    font-size: 2rem;
+}
+
+.julia-header h3 {
+    font-size: 1.3rem;
+    margin: 0;
+    color: var(--text-primary);
+}
+
+.julia-lines {
+    display: block;
+    font-size: 0.8rem;
+    color: #9558B2;
+    font-family: var(--font-mono);
+}
+
+.julia-card p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-bottom: 15px;
+}
+
+.julia-card .btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #9558B2, #a371f7);
+    color: white;
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.julia-card .btn:hover {
+    transform: scale(1.05);
+    color: white;
+}
+
+/* === STATS BADGES === */
+.stats-badges {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+.stat-badge {
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.stat-badge.repos {
+    background: rgba(63, 185, 80, 0.15);
+    color: var(--accent-green);
+    border: 1px solid var(--accent-green);
+}
+
+.stat-badge.julia {
+    background: rgba(149, 88, 178, 0.15);
+    color: #9558B2;
+    border: 1px solid #9558B2;
+}
+
+.stat-badge.reach {
+    background: rgba(255, 102, 0, 0.15);
+    color: #ff6600;
+    border: 1px solid #ff6600;
+}
+
+/* === PR SECTION IMPROVEMENTS === */
+.pr-summary {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.pr-stat {
+    text-align: center;
+}
+
+.pr-value {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    color: var(--accent-green);
+}
+
+.pr-label {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.subsection-title {
+    font-size: 1.2rem;
+    margin: 30px 0 20px;
+    color: var(--text-primary);
+}
+
+.pr-table {
+    overflow-x: auto;
+}
+
+.pr-table table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.pr-table th,
+.pr-table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.pr-table th {
+    background: var(--bg-tertiary);
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.pr-table td a {
+    color: var(--accent-blue);
+}
+
+.pending-prs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.pending-pr {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-secondary);
+    padding: 15px 20px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.pending-pr span {
+    color: var(--accent-yellow);
+    font-weight: 600;
+}
