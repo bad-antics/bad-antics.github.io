@@ -1006,3 +1006,125 @@ a:hover {
 @keyframes blinkCursor {
     50% { border-color: transparent; }
 }
+
+/* Reach badge */
+.badge.reach {
+    background: linear-gradient(135deg, #f85149, #da3633);
+    color: #fff;
+    font-weight: 700;
+    padding: 0.5rem 1.5rem;
+    font-size: 1.1rem;
+    border: 2px solid #f85149;
+    box-shadow: 0 0 15px rgba(248, 81, 73, 0.4);
+}
+
+/* Header badges positioning */
+.header-badges {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+/* Hak5 Section */
+.hak5-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.hak5-card {
+    background: linear-gradient(135deg, #161b22, #0d1117);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid #30363d;
+    transition: all 0.3s ease;
+}
+
+.hak5-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.hak5-card.pineapple { border-top: 3px solid #f0c000; }
+.hak5-card.flipper { border-top: 3px solid #58a6ff; }
+.hak5-card.ducky { border-top: 3px solid #f85149; }
+.hak5-card.bunny { border-top: 3px solid #a371f7; }
+
+.hak5-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.hak5-icon {
+    font-size: 2.5rem;
+}
+
+.hak5-header h3 {
+    margin: 0;
+    color: #fff;
+    font-size: 1.2rem;
+}
+
+.hak5-device {
+    display: block;
+    font-size: 0.8rem;
+    color: #8b949e;
+    margin-top: 0.25rem;
+}
+
+.hak5-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1rem 0;
+}
+
+.hak5-features span {
+    color: #3fb950;
+    font-size: 0.85rem;
+}
+
+.hak5-payloads {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1rem 0;
+}
+
+.payload-tag {
+    background: #21262d;
+    color: #8b949e;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    border: 1px solid #30363d;
+}
+
+.hak5-links {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid #30363d;
+    color: #8b949e;
+}
+
+.btn-outline:hover {
+    border-color: #58a6ff;
+    color: #58a6ff;
+}
+
+.btn-orange {
+    background: linear-gradient(135deg, #f85149, #da3633);
+}
+
+.btn-pink {
+    background: linear-gradient(135deg, #a371f7, #8957e5);
+}
