@@ -1128,3 +1128,11 @@ a:hover {
 .btn-pink {
     background: linear-gradient(135deg, #a371f7, #8957e5);
 }
+
+/* Hardware tech badges */
+.tech-badge.flipper { background: #58a6ff; color: #fff; }
+.tech-badge.pineapple { background: #f0c000; color: #000; }
+.tech-badge.ducky { background: #f85149; color: #fff; }
+.tech-badge.bunny { background: #a371f7; color: #fff; }
+.tech-badge.sdr { background: #3fb950; color: #fff; }
+.tech-badge.can { background: #f97316; color: #fff; }
