@@ -937,3 +937,21 @@ a:hover {
     font-size: 0.85rem;
     color: var(--text-secondary);
 }
+
+/* Animated title glow */
+.animated-title {
+    animation: titleGlow 3s ease-in-out infinite;
+}
+
+@keyframes titleGlow {
+    0%, 100% { text-shadow: 0 0 10px #58a6ff, 0 0 20px #58a6ff; }
+    50% { text-shadow: 0 0 20px #58a6ff, 0 0 40px #58a6ff, 0 0 60px #58a6ff; }
+}
+
+/* Contributor line */
+.contributor-line {
+    color: #8b949e;
+    font-size: 0.9rem;
+    font-style: italic;
+    margin-top: 0.5rem;
+}
