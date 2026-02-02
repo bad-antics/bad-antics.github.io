@@ -3,730 +3,308 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>bad-antics — 598 Repositories | Security & Systems Engineering</title>
-    <meta name="description" content="bad-antics: 598 public repositories, 140+ security tools, NullSec Linux, NullKia mobile framework. Security researcher & systems engineer.">
-    <meta name="keywords" content="bad-antics, security, nullsec, nullkia, hacking, penetration testing, linux, mobile security, julia">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap">
-    <link rel="stylesheet" href="styles.css">
+    <title>bad-antics | Security Research</title>
+    <meta name="description" content="Security researcher with 598 repositories, 140+ tools, NullSec Linux distribution">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0d1117;
+            --bg2: #161b22;
+            --bg3: #21262d;
+            --border: #30363d;
+            --text: #e6edf3;
+            --text2: #8b949e;
+            --blue: #58a6ff;
+            --green: #3fb950;
+            --purple: #a371f7;
+            --yellow: #d29922;
+            --red: #f85149;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+        a { color: var(--blue); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        /* Hero */
+        .hero { padding: 80px 0 60px; text-align: center; background: linear-gradient(180deg, var(--bg2) 0%, var(--bg) 100%); }
+        .hero h1 { font-family: 'JetBrains Mono', monospace; font-size: 3.5rem; font-weight: 700; margin-bottom: 16px; background: linear-gradient(135deg, var(--text) 0%, var(--blue) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .hero p { color: var(--text2); font-size: 1.1rem; max-width: 600px; margin: 0 auto 32px; }
+        
+        /* Badges */
+        .badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-bottom: 32px; }
+        .badge { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; background: var(--bg); border: 1px solid var(--border); border-radius: 50px; font-size: 0.9rem; font-weight: 500; }
+        .badge-icon { font-size: 1.1rem; }
+        .badge-value { color: var(--green); font-weight: 600; }
+        .badge.gold { border-color: var(--yellow); background: rgba(210,153,34,0.1); }
+        .badge.green { border-color: var(--green); background: rgba(63,185,80,0.1); }
+        
+        /* Nav */
+        nav { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; padding: 20px; border-bottom: 1px solid var(--border); margin-bottom: 60px; }
+        nav a { color: var(--text2); padding: 8px 16px; border-radius: 8px; font-size: 0.9rem; text-decoration: none; }
+        nav a:hover { color: var(--text); background: var(--bg2); }
+        
+        /* Section */
+        section { margin-bottom: 80px; }
+        .section-title { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; }
+        .section-title span { font-size: 1.5rem; }
+        .section-title h2 { font-size: 1.5rem; font-weight: 700; }
+        
+        /* Cards Grid */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; }
+        .card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 24px; transition: all 0.2s; }
+        .card:hover { border-color: var(--blue); transform: translateY(-2px); }
+        .card-header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 16px; }
+        .card-icon { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; background: var(--bg3); border-radius: 12px; font-size: 1.5rem; }
+        .card-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 4px; }
+        .card-meta { font-size: 0.85rem; color: var(--text2); }
+        .card-meta .stars { color: var(--yellow); }
+        .card-desc { color: var(--text2); font-size: 0.95rem; margin-bottom: 16px; }
+        .card-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+        .tag { padding: 4px 10px; background: rgba(88,166,255,0.1); border: 1px solid rgba(88,166,255,0.2); border-radius: 6px; font-size: 0.8rem; color: var(--blue); }
+        .card-link { color: var(--blue); font-size: 0.9rem; font-weight: 500; }
+        
+        /* Stats */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-bottom: 32px; }
+        .stat { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 24px; text-align: center; }
+        .stat-value { font-size: 2rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; color: var(--blue); }
+        .stat-label { color: var(--text2); font-size: 0.85rem; margin-top: 4px; }
+        .github-cards { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; }
+        .github-cards img { max-width: 100%; border-radius: 8px; }
+        
+        /* Contributions */
+        .contrib-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+        .contrib { display: flex; align-items: center; gap: 12px; padding: 16px; background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; }
+        .contrib:hover { border-color: var(--green); }
+        .contrib-icon { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: rgba(63,185,80,0.1); border-radius: 10px; font-size: 1.2rem; }
+        .contrib-info { flex: 1; }
+        .contrib-name { font-weight: 600; font-size: 0.95rem; }
+        .contrib-detail { font-size: 0.8rem; color: var(--text2); }
+        .contrib-stars { color: var(--yellow); font-weight: 600; font-size: 0.9rem; }
+        
+        /* Discussions */
+        .discussions { background: linear-gradient(135deg, rgba(163,113,247,0.05) 0%, rgba(88,166,255,0.05) 100%); border: 1px solid var(--border); border-radius: 16px; padding: 32px; margin-bottom: 60px; }
+        .discussions h3 { font-size: 1.3rem; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; }
+        .discussions h3 .count { background: var(--purple); padding: 4px 12px; border-radius: 50px; font-size: 0.8rem; }
+        .discussions p { color: var(--text2); margin-bottom: 20px; }
+        .disc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+        .disc-item { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; font-size: 0.85rem; }
+        .disc-item:hover { border-color: var(--purple); }
+        .disc-repo { background: var(--bg3); padding: 2px 8px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--blue); }
+        .disc-topic { color: var(--text2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        
+        /* Tools */
+        .tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .tools-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+        .tools-card h4 { display: flex; align-items: center; gap: 10px; font-size: 1rem; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+        .tools-card ul { list-style: none; }
+        .tools-card li { padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+        .tools-card li:last-child { border-bottom: none; }
+        .tools-card li span { color: var(--text2); font-size: 0.8rem; }
+        
+        /* Footer */
+        footer { text-align: center; padding: 60px 20px; border-top: 1px solid var(--border); }
+        .footer-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 24px; margin-bottom: 20px; }
+        .footer-links a { color: var(--text2); font-size: 0.9rem; }
+        footer p { color: var(--text2); font-size: 0.85rem; }
+        
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .grid { grid-template-columns: 1fr; }
+            .stat-value { font-size: 1.5rem; }
+        }
+    </style>
 </head>
 <body>
-    <div class="scanlines"></div>
+    <section class="hero">
+        <div class="container">
+            <h1>BAD_ANTICS</h1>
+            <p>Security researcher building open source security tools, custom Linux distributions, and contributing to the security community.</p>
+            
+            <div class="badges">
+                <div class="badge gold"><span class="badge-icon">⭐</span> Starstruck <span class="badge-value">16 stars</span></div>
+                <div class="badge green"><span class="badge-icon">🦈</span> Pull Shark <span class="badge-value">24 merged</span></div>
+                <div class="badge"><span class="badge-icon">📦</span> Repos <span class="badge-value">598</span></div>
+                <div class="badge"><span class="badge-icon">🛠️</span> Tools <span class="badge-value">140+</span></div>
+                <div class="badge"><span class="badge-icon">👥</span> Followers <span class="badge-value">75</span></div>
+                <div class="badge"><span class="badge-icon">💬</span> Answers <span class="badge-value">60+</span></div>
+            </div>
+            
+            <div class="badges">
+                <a href="https://github.com/The-Art-of-Hacking/h4cker"><img src="https://img.shields.io/badge/h4cker-Contributor-3fb950?style=flat-square" alt="h4cker"></a>
+                <a href="https://github.com/ashishb/android-security-awesome"><img src="https://img.shields.io/badge/android--security-Contributor-3fb950?style=flat-square" alt="android"></a>
+                <a href="https://github.com/hak5/bashbunny-payloads"><img src="https://img.shields.io/badge/bashbunny-Contributor-3fb950?style=flat-square" alt="bashbunny"></a>
+            </div>
+        </div>
+    </section>
+    
+    <nav>
+        <a href="#featured">Featured</a>
+        <a href="#stats">Stats</a>
+        <a href="#discussions">Discussions</a>
+        <a href="#contributions">Contributions</a>
+        <a href="#tools">Tools</a>
+        <a href="https://github.com/bad-antics">GitHub ↗</a>
+    </nav>
     
     <div class="container">
-        <!-- HEADER -->
-        <header class="header">
-            <div class="header-content">
-                <h1 class="logo animated-title">BAD<span class="accent">_</span>ANTICS</h1>
-                <div class="animated-stats">
-                    <span class="stat-item">Security Researcher</span>
-                    <span class="stat-separator">|</span>
-                    <span class="stat-item">598 Repos</span>
-                    <span class="stat-separator">|</span>
-                    <span class="stat-item">140+ Tools</span>
-                    <span class="stat-separator">|</span>
-                    <span class="stat-item">75 Followers</span>
-                </div>
-                <p class="contributor-line animated-contributor">Contributor to h4cker ⭐24.9k • awesome-security • android-security-awesome ⭐9.2k</p>
-            </div>
-        </header>
-        <nav class="nav">
-            <a href="#tech">Tech Stack</a>
-            <a href="#julia">Julia Suite</a>
-            <a href="#hak5">Hak5</a>
-            <a href="#projects">Projects</a>
-            <a href="#tools">Tools</a>
-            <a href="#stats">Stats</a>
-            <a href="#contributions">PRs</a>
-            <a href="https://github.com/bad-antics" target="_blank">GitHub ↗</a>
-        </nav>
-
-        <!-- TECH STACK SECTION -->
-            <div class="tech-grid">
-                <!-- Systems & Low-Level -->
-                <div class="tech-card">
-                    <h3>⚡ Systems & Low-Level</h3>
-                    <div class="tech-badges">
-                        <span class="tech-badge rust">Rust</span>
-                        <span class="tech-badge go">Go</span>
-                        <span class="tech-badge c">C</span>
-                        <span class="tech-badge cpp">C++</span>
-                        <span class="tech-badge zig">Zig</span>
-                        <span class="tech-badge asm">Assembly</span>
+        <section id="featured">
+            <div class="section-title"><span>🚀</span><h2>Featured Projects</h2></div>
+            <div class="grid">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">🐧</div>
+                        <div><div class="card-title">NullSec Linux v5.0</div><div class="card-meta">Distro • <span class="stars">⭐ 16</span></div></div>
                     </div>
+                    <p class="card-desc">Security-focused Linux distribution with 140+ pre-installed tools, AI assistant, and 5 specialized editions.</p>
+                    <div class="card-tags"><span class="tag">140+ Tools</span><span class="tag">AI Assistant</span><span class="tag">5 Editions</span></div>
+                    <a href="https://github.com/bad-antics/nullsec-linux" class="card-link">View Repository →</a>
                 </div>
-
-                <!-- Scientific & High-Performance -->
-                <div class="tech-card">
-                    <h3>🔬 Scientific & HPC</h3>
-                    <div class="tech-badges">
-                        <span class="tech-badge julia">Julia</span>
-                        <span class="tech-badge python">Python</span>
-                        <span class="tech-badge haskell">Haskell</span>
-                        <span class="tech-badge ocaml">OCaml</span>
-                        <span class="tech-badge elixir">Elixir</span>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">🌐</div>
+                        <div><div class="card-title">Marshall Browser v3.0</div><div class="card-meta">Rust • <span class="stars">⭐ 10</span></div></div>
                     </div>
+                    <p class="card-desc">Privacy-focused security browser with Dr. Marshall AI assistant and built-in exploit tools.</p>
+                    <div class="card-tags"><span class="tag">Dr. Marshall AI</span><span class="tag">Privacy First</span><span class="tag">Rust</span></div>
+                    <a href="https://github.com/bad-antics/marshall" class="card-link">View Repository →</a>
                 </div>
-
-                <!-- Scripting & Automation -->
-                <div class="tech-card">
-                    <h3>📜 Scripting & Automation</h3>
-                    <div class="tech-badges">
-                        <span class="tech-badge bash">Bash</span>
-                        <span class="tech-badge powershell">PowerShell</span>
-                        <span class="tech-badge lua">Lua</span>
-                        <span class="tech-badge nim">Nim</span>
-                        <span class="tech-badge crystal">Crystal</span>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">🍍</div>
+                        <div><div class="card-title">WiFi Pineapple Suite</div><div class="card-meta">Hak5</div></div>
                     </div>
+                    <p class="card-desc">58 professional WiFi security payloads for Hak5 WiFi Pineapple with auto-installer.</p>
+                    <div class="card-tags"><span class="tag">58 Payloads</span><span class="tag">Auto-Installer</span></div>
+                    <a href="https://github.com/bad-antics/nullsec-pineapple-suite" class="card-link">View Repository →</a>
                 </div>
-
-                <!-- Cloud & DevOps -->
-                <div class="tech-card">
-                    <h3>☁️ Cloud & DevOps</h3>
-                    <div class="tech-badges">
-                        <span class="tech-badge aws">AWS</span>
-                        <span class="tech-badge gcp">GCP</span>
-                        <span class="tech-badge azure">Azure</span>
-                        <span class="tech-badge docker">Docker</span>
-                        <span class="tech-badge k8s">Kubernetes</span>
-                        <span class="tech-badge terraform">Terraform</span>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">🐬</div>
+                        <div><div class="card-title">Flipper Zero Suite</div><div class="card-meta">Hardware</div></div>
                     </div>
+                    <p class="card-desc">Comprehensive Flipper Zero toolkit with BadUSB, SubGHz, NFC payloads, and animations.</p>
+                    <div class="card-tags"><span class="tag">BadUSB</span><span class="tag">SubGHz</span><span class="tag">NFC</span></div>
+                    <a href="https://github.com/bad-antics/nullsec-flipper-suite" class="card-link">View Repository →</a>
                 </div>
-
-                <!-- Linux & Embedded -->
-                <div class="tech-card">
-                    <h3>🐧 Linux & Embedded</h3>
-                    <div class="tech-badges">
-                        <span class="tech-badge linux">Linux</span>
-                        <span class="tech-badge buildroot">Buildroot</span>
-                        <span class="tech-badge yocto">Yocto</span>
-                        <span class="tech-badge rpi">Raspberry Pi</span>
-                        <span class="tech-badge esp">ESP32</span>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">📱</div>
+                        <div><div class="card-title">NullKia Mobile</div><div class="card-meta">Mobile Security</div></div>
                     </div>
+                    <p class="card-desc">Mobile security framework supporting 18 manufacturers with baseband and 5G/LTE testing.</p>
+                    <div class="card-tags"><span class="tag">18 Vendors</span><span class="tag">Baseband</span><span class="tag">5G/LTE</span></div>
+                    <a href="https://github.com/bad-antics/nullkia" class="card-link">View Repository →</a>
                 </div>
-
-                <!-- Security Tools -->
-                <div class="tech-card">
-                    <h3>🔒 Security Tools</h3>
-                    <div class="tech-badges">
-                        <span class="tech-badge wireshark">Wireshark</span>
-                        <span class="tech-badge burp">Burp Suite</span>
-                        <span class="tech-badge ghidra">Ghidra</span>
-                        <span class="tech-badge ida">IDA Pro</span>
-                        <span class="tech-badge frida">Frida</span>
-                        <span class="tech-badge metasploit">Metasploit</span>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">🚗</div>
+                        <div><div class="card-title">BlackFlag ECU</div><div class="card-meta">Automotive</div></div>
                     </div>
-                </div>
-
-                <!-- Hardware Hacking -->
-                <div class="tech-card">
-                    <h3>🔌 Hardware Hacking</h3>
-                    <div class="tech-badges">
-                        <span class="tech-badge flipper">Flipper Zero</span>
-                        <span class="tech-badge pineapple">WiFi Pineapple</span>
-                        <span class="tech-badge ducky">Rubber Ducky</span>
-                        <span class="tech-badge bunny">Bash Bunny</span>
-                        <span class="tech-badge sdr">SDR</span>
-                        <span class="tech-badge can">CAN Bus</span>
-                    </div>
+                    <p class="card-desc">Automotive security toolkit for ECU diagnostics, CAN bus analysis, and OBD-II research.</p>
+                    <div class="card-tags"><span class="tag">CAN Bus</span><span class="tag">OBD-II</span><span class="tag">UDS</span></div>
+                    <a href="https://github.com/bad-antics/blackflag-ecu" class="card-link">View Repository →</a>
                 </div>
             </div>
         </section>
-
-        <!-- JULIA SECURITY SUITE -->
-        <section id="julia" class="section">
-            <h2 class="section-title">🔮 Julia Security Suite</h2>
-            <p class="section-subtitle">High-performance security research tools in Julia</p>
-            
-            <div class="julia-grid">
-                <div class="julia-card">
-                    <div class="julia-header">
-                        <span class="julia-icon">🔐</span>
-                        <div>
-                            <h3>Spectra</h3>
-                            
-                        </div>
-                    </div>
-                    <p>High-performance security toolkit — cryptography, network analysis, forensics</p>
-                    <a href="https://github.com/bad-antics/spectra" class="btn">View →</a>
-                </div>
-                
-                <div class="julia-card">
-                    <div class="julia-header">
-                        <span class="julia-icon">🔮</span>
-                        <div>
-                            <h3>Oracle</h3>
-                            
-                        </div>
-                    </div>
-                    <p>AI-powered vulnerability discovery engine — ML prediction with 87% accuracy</p>
-                    <a href="https://github.com/bad-antics/oracle" class="btn">View →</a>
-                </div>
-                
-                <div class="julia-card">
-                    <div class="julia-header">
-                        <span class="julia-icon">👻</span>
-                        <div>
-                            <h3>Phantom</h3>
-                            
-                        </div>
-                    </div>
-                    <p>Zero-knowledge proof framework — anonymous disclosure, compliance attestation</p>
-                    <a href="https://github.com/bad-antics/phantom" class="btn">View →</a>
-                </div>
-                
-                <div class="julia-card">
-                    <div class="julia-header">
-                        <span class="julia-icon">🌀</span>
-                        <div>
-                            <h3>Vortex</h3>
-                            
-                        </div>
-                    </div>
-                    <p>Real-time threat intelligence fusion — 50+ feeds, ML correlation</p>
-                    <a href="https://github.com/bad-antics/vortex" class="btn">View →</a>
-                </div>
-                
-                <div class="julia-card">
-                    <div class="julia-header">
-                        <span class="julia-icon">🪞</span>
-                        <div>
-                            <h3>Mirage</h3>
-                        </div>
-                    </div>
-                    <p>Adversarial ML toolkit — model attacks, defenses, robustness evaluation</p>
-                    <a href="https://github.com/bad-antics/mirage" class="btn">View →</a>
-                </div>
-                
-                <div class="julia-card">
-                    <div class="julia-header">
-                        <span class="julia-icon">🔑</span>
-                        <div>
-                            <h3>HashForensics</h3>
-                        </div>
-                    </div>
-                    <p>Hash identification & cracking — 40+ algorithms, forensic analysis</p>
-                    <a href="https://github.com/bad-antics/hashforensics" class="btn">View →</a>
-                </div>
-                
-                <div class="julia-card">
-                    <div class="julia-header">
-                        <span class="julia-icon">🌐</span>
-                        <div>
-                            <h3>NetProbe</h3>
-                        </div>
-                    </div>
-                    <p>Network reconnaissance — port scanning, service detection, CIDR support</p>
-                    <a href="https://github.com/bad-antics/netprobe" class="btn">View →</a>
-                </div>
-                
-                <div class="julia-card">
-                    <div class="julia-header">
-                        <span class="julia-icon">🔒</span>
-                        <div>
-                            <h3>SecureVault</h3>
-                        </div>
-                    </div>
-                    <p>Encrypted credential vault — PBKDF2, secure memory, audit logging</p>
-                    <a href="https://github.com/bad-antics/securevault" class="btn">View →</a>
-                </div>
-                
-                <div class="julia-card">
-                    <div class="julia-header">
-                        <span class="julia-icon">📚</span>
-                        <div>
-                            <h3>Awesome Julia Security</h3>
-                        </div>
-                    </div>
-                    <p>Curated list of Julia security packages and resources</p>
-                    <a href="https://github.com/bad-antics/awesome-julia-security" class="btn">View →</a>
-                </div>
-        </section>
-
-
-        <!-- HAK5 HARDWARE SECTION -->
-        <section id="hak5" class="section">
-            <h2 class="section-title">🍍 Hak5 Hardware Suites</h2>
-            <p class="section-subtitle">Professional payloads and tools for Hak5 security hardware</p>
-            
-            <div class="hak5-grid">
-                <!-- WiFi Pineapple -->
-                <div class="hak5-card pineapple">
-                    <div class="hak5-header">
-                        <span class="hak5-icon">🍍</span>
-                        <div>
-                            <h3>WiFi Pineapple Suite v2.0</h3>
-                            <span class="hak5-device">Pineapple Pager</span>
-                        </div>
-                    </div>
-                    <p>58 professional WiFi security payloads with auto-installer for the WiFi Pineapple Pager.</p>
-                    <div class="hak5-features">
-                        <span>✓ 58 Payloads</span>
-                        <span>✓ Auto-Installer</span>
-                        <span>✓ Full Documentation</span>
-                    </div>
-                    <div class="hak5-payloads">
-                        <span class="payload-tag">Recon</span>
-                        <span class="payload-tag">Deauth</span>
-                        <span class="payload-tag">Evil Twin</span>
-                        <span class="payload-tag">Handshake</span>
-                        <span class="payload-tag">PMKID</span>
-                    </div>
-                    <div class="hak5-links">
-                        <a href="https://github.com/bad-antics/nullsec-pineapple-suite" class="btn btn-yellow">View Suite →</a>
-                        <a href="https://github.com/hak5/wifipineapplepager-payloads/pull/254" class="btn btn-outline">PR #254 →</a>
-                    </div>
-                </div>
-
-                <!-- Flipper Zero -->
-                <div class="hak5-card flipper">
-                    <div class="hak5-header">
-                        <span class="hak5-icon">🐬</span>
-                        <div>
-                            <h3>Flipper Zero Suite</h3>
-                            <span class="hak5-device">Flipper Zero</span>
-                        </div>
-                    </div>
-                    <p>Complete BadUSB payloads, SubGHz frequencies, NFC cards, IR remotes, and custom animations.</p>
-                    <div class="hak5-features">
-                        <span>✓ BadUSB Scripts</span>
-                        <span>✓ SubGHz Freqs</span>
-                        <span>✓ NFC/RFID Cards</span>
-                    </div>
-                    <div class="hak5-payloads">
-                        <span class="payload-tag">BadUSB</span>
-                        <span class="payload-tag">SubGHz</span>
-                        <span class="payload-tag">NFC</span>
-                        <span class="payload-tag">Infrared</span>
-                        <span class="payload-tag">Animations</span>
-                    </div>
-                    <div class="hak5-links">
-                        <a href="https://github.com/bad-antics/nullsec-flipper-suite" class="btn btn-blue">View Suite →</a>
-                    </div>
-                </div>
-
-                <!-- USB Rubber Ducky -->
-                <div class="hak5-card ducky">
-                    <div class="hak5-header">
-                        <span class="hak5-icon">🦆</span>
-                        <div>
-                            <h3>Rubber Ducky Payloads</h3>
-                            <span class="hak5-device">USB Rubber Ducky</span>
-                        </div>
-                    </div>
-                    <p>DuckyScript payloads for Windows, macOS, and Linux including credential theft and recon.</p>
-                    <div class="hak5-features">
-                        <span>✓ Windows</span>
-                        <span>✓ macOS</span>
-                        <span>✓ Linux</span>
-                    </div>
-                    <div class="hak5-payloads">
-                        <span class="payload-tag">Cred Dump</span>
-                        <span class="payload-tag">Reverse Shell</span>
-                        <span class="payload-tag">Exfil</span>
-                        <span class="payload-tag">Recon</span>
-                    </div>
-                    <div class="hak5-links">
-                        <a href="https://github.com/bad-antics/nullsec-ducky-payloads" class="btn btn-orange">View Payloads →</a>
-                    </div>
-                </div>
-
-                <!-- Bash Bunny -->
-                <div class="hak5-card bunny">
-                    <div class="hak5-header">
-                        <span class="hak5-icon">🐰</span>
-                        <div>
-                            <h3>Bash Bunny Payloads</h3>
-                            <span class="hak5-device">Bash Bunny</span>
-                        </div>
-                    </div>
-                    <p>Multi-vector attack payloads with network enumeration, credential harvesting, and persistence.</p>
-                    <div class="hak5-features">
-                        <span>✓ HID + Storage</span>
-                        <span>✓ Network</span>
-                        <span>✓ Serial</span>
-                    </div>
-                    <div class="hak5-payloads">
-                        <span class="payload-tag">QuickCreds</span>
-                        <span class="payload-tag">NetRecon</span>
-                        <span class="payload-tag">SMB Exfil</span>
-                        <span class="payload-tag">Persist</span>
-                    </div>
-                    <div class="hak5-links">
-                        <a href="https://github.com/bad-antics/nullsec-bunny-payloads" class="btn btn-pink">View Payloads →</a>
-                    </div>
-                </div>
+        
+        <section id="stats">
+            <div class="section-title"><span>📊</span><h2>GitHub Stats</h2></div>
+            <div class="stats-grid">
+                <div class="stat"><div class="stat-value">598</div><div class="stat-label">Repositories</div></div>
+                <div class="stat"><div class="stat-value">24</div><div class="stat-label">PRs Merged</div></div>
+                <div class="stat"><div class="stat-value">117</div><div class="stat-label">Open PRs</div></div>
+                <div class="stat"><div class="stat-value">75</div><div class="stat-label">Followers</div></div>
+                <div class="stat"><div class="stat-value">60+</div><div class="stat-label">Answers</div></div>
+            </div>
+            <div class="github-cards">
+                <img src="https://github-readme-stats-sigma-five.vercel.app/api?username=bad-antics&show_icons=true&theme=github_dark&hide_border=true&count_private=true&include_all_commits=true" alt="GitHub Stats">
+                <img src="https://github-readme-streak-stats-eight.vercel.app/?user=bad-antics&theme=github-dark-blue&hide_border=true" alt="Streak">
             </div>
         </section>
-
-        <!-- MAIN PROJECTS -->
-        <section id="projects" class="section">
-            <h2 class="section-title">🚀 Featured Projects</h2>
-            
-            <div class="project-grid">
-                <!-- NullSec Linux -->
-                <div class="project-card featured">
-                    <div class="project-header">
-                        <span class="project-icon">🐧</span>
-                        <div>
-                            <h3>NullSec Linux v5.0</h3>
-                            <span class="project-tag">Security Distribution</span>
-                        </div>
-                    </div>
-                    <p>Complete security-focused Linux distribution with 135+ integrated tools across 5 specialized editions.</p>
-                    <div class="project-features">
-                        <span>✓ 135+ Tools</span>
-                        <span>✓ 5 Editions</span>
-                        <span>✓ 4 Architectures</span>
-                    </div>
-                    <div class="project-archs">
-                        <code>AMD64</code> <code>ARM64</code> <code>RISC-V</code> <code>Apple Silicon</code>
-                    </div>
-                    <a href="https://github.com/bad-antics/nullsec-linux" class="btn btn-green">View on GitHub →</a>
-                </div>
-
-                <!-- NullKia -->
-                <div class="project-card featured">
-                    <div class="project-header">
-                        <span class="project-icon">📱</span>
-                        <div>
-                            <h3>NullKia v3.0</h3>
-                            <span class="project-tag">Mobile Security</span>
-                        </div>
-                    </div>
-                    <p>Advanced mobile security framework supporting 18 manufacturers with baseband, cellular, and TEE tools.</p>
-                    <div class="project-features">
-                        <span>✓ 18 Manufacturers</span>
-                        <span>✓ Baseband Tools</span>
-                        <span>✓ 5G/LTE Security</span>
-                    </div>
-                    <div class="project-manufacturers">
-                        <code>Samsung</code> <code>Apple</code> <code>Google</code> <code>OnePlus</code> <code>+14 more</code>
-                    </div>
-                    <a href="https://github.com/bad-antics/nullkia" class="btn btn-purple">View on GitHub →</a>
-                </div>
-
-                <!-- RKHunt -->
-                <div class="project-card">
-                    <div class="project-header">
-                        <span class="project-icon">🔍</span>
-                        <div>
-                            <h3>RKHunt v2.5</h3>
-                            <span class="project-tag">Rootkit Hunter</span>
-                        </div>
-                    </div>
-                    <p>Advanced Linux rootkit detection with 250+ signatures, eBPF analysis, and MITRE ATT&CK mapping.</p>
-                    <div class="project-features">
-                        <span>✓ 250+ Signatures</span>
-                        <span>✓ 15 Modules</span>
-                        <span>✓ ATT&CK Mapping</span>
-                    </div>
-                    <a href="https://github.com/bad-antics/nullsec-rkhunt" class="btn btn-red">View on GitHub →</a>
-                </div>
-
-                <!-- BlackFlag -->
-                <div class="project-card">
-                    <div class="project-header">
-                        <span class="project-icon">🚗</span>
-                        <div>
-                            <h3>BlackFlag</h3>
-                            <span class="project-tag">Automotive Security</span>
-                        </div>
-                    </div>
-                    <p>Comprehensive automotive and ECU security toolkit — CAN bus, OBD-II, UDS, key fob analysis.</p>
-                    <div class="project-features">
-                        <span>✓ CAN Bus</span>
-                        <span>✓ ECU Fuzzing</span>
-                        <span>✓ Key Fob Analysis</span>
-                    </div>
-                    <a href="https://github.com/bad-antics/blackflag" class="btn btn-yellow">View on GitHub →</a>
-                </div>
-
-                <!-- Marshall Browser -->
-                <div class="project-card">
-                    <div class="project-header">
-                        <span class="project-icon">🔒</span>
-                        <div>
-                            <h3>Marshall v2.1</h3>
-                            <span class="project-tag">Privacy Browser</span>
-                        </div>
-                    </div>
-                    <p>NullSec privacy browser with Dr Marshall AI assistant, Workforce Center, VoIP, and OSINT tools.</p>
-                    <div class="project-features">
-                        <span>✓ AI Assistant</span>
-                        <span>✓ VoIP Center</span>
-                        <span>✓ OSINT Tools</span>
-                    </div>
-                    <a href="https://github.com/bad-antics/marshall" class="btn">View on GitHub →</a>
-                </div>
-
-                <!-- Awesome Offensive Rust -->
-                <div class="project-card">
-                    <div class="project-header">
-                        <span class="project-icon">🦀</span>
-                        <div>
-                            <h3>Awesome Offensive Rust</h3>
-                            <span class="project-status status-active">Active</span>
-                        </div>
-                    </div>
-                    <p>Curated list of offensive security tools written in Rust. Network scanning, web exploitation, forensics.</p>
-                    <div class="tech-stack-mini">
-                        <span>📋 Awesome List</span>
-                        <span>⚔️ Offensive</span>
-                        <span>🦀 Rust</span>
-                    </div>
-                    <a href="https://github.com/bad-antics/awesome-offensive-rust" class="btn">View on GitHub →</a>
-                </div>
+        
+        <div id="discussions" class="discussions">
+            <h3>🧠 Community Discussion Answers <span class="count">24 today</span></h3>
+            <p>Helping the security community with technical questions in ProjectDiscovery tools</p>
+            <div class="disc-grid">
+                <a href="https://github.com/projectdiscovery/nuclei/discussions/6787" class="disc-item"><span class="disc-repo">nuclei</span><span class="disc-topic">Go 1.26 build issues</span></a>
+                <a href="https://github.com/projectdiscovery/nuclei/discussions/6786" class="disc-item"><span class="disc-repo">nuclei</span><span class="disc-topic">SDK WithOptions example</span></a>
+                <a href="https://github.com/projectdiscovery/httpx/discussions/2253" class="disc-item"><span class="disc-repo">httpx</span><span class="disc-topic">v1.7.0 slow/hanging</span></a>
+                <a href="https://github.com/projectdiscovery/subfinder/discussions/1563" class="disc-item"><span class="disc-repo">subfinder</span><span class="disc-topic">FOFA API config</span></a>
+                <a href="https://github.com/projectdiscovery/interactsh/discussions/1327" class="disc-item"><span class="disc-repo">interactsh</span><span class="disc-topic">Session lifetime</span></a>
+                <a href="https://github.com/projectdiscovery/dnsx/discussions/881" class="disc-item"><span class="disc-repo">dnsx</span><span class="disc-topic">DoH/DoT resolvers</span></a>
+                <a href="https://github.com/projectdiscovery/notify/discussions/441" class="disc-item"><span class="disc-repo">notify</span><span class="disc-topic">Pipe workflow fix</span></a>
+                <a href="https://github.com/projectdiscovery/chaos-client/discussions/302" class="disc-item"><span class="disc-repo">chaos</span><span class="disc-topic">Installation fix</span></a>
             </div>
-
-                <!-- WiFi Pineapple Suite -->
-                <div class="project-card">
-                    <div class="project-header">
-                        <span class="project-icon">🍍</span>
-                        <div>
-                            <h3>Pineapple Suite v2.0</h3>
-                            <span class="project-tag">WiFi Security</span>
-                        </div>
-                    </div>
-                    <p>58 professional WiFi security payloads for the Hak5 WiFi Pineapple Pager with auto-installer.</p>
-                    <div class="project-features">
-                        <span>✓ 58 Payloads</span>
-                        <span>✓ Auto-Installer</span>
-                        <span>✓ Full Docs</span>
-                    </div>
-                    <a href="https://github.com/bad-antics/nullsec-pineapple-suite" class="btn btn-yellow">View on GitHub →</a>
-                </div>
-
-                <!-- Flipper Zero Suite -->
-                <div class="project-card">
-                    <div class="project-header">
-                        <span class="project-icon">🐬</span>
-                        <div>
-                            <h3>Flipper Zero Suite</h3>
-                            <span class="project-tag">Hardware Hacking</span>
-                        </div>
-                    </div>
-                    <p>BadUSB payloads, SubGHz frequencies, NFC cards, infrared remotes, and custom animations.</p>
-                    <div class="project-features">
-                        <span>✓ BadUSB</span>
-                        <span>✓ SubGHz</span>
-                        <span>✓ NFC/RFID</span>
-                    </div>
-                    <a href="https://github.com/bad-antics/nullsec-flipper-suite" class="btn btn-blue">View on GitHub →</a>
-                </div>
-
-                <!-- GlowBarn -->
-                <div class="project-card">
-                    <div class="project-header">
-                        <span class="project-icon">💡</span>
-                        <div>
-                            <h3>GlowBarn</h3>
-                            <span class="project-tag">Smart Home</span>
-                        </div>
-                    </div>
-                    <p>Smart greenhouse automation with ESP32, environmental sensors, and Home Assistant integration.</p>
-                    <div class="project-features">
-                        <span>✓ ESP32</span>
-                        <span>✓ Home Assistant</span>
-                        <span>✓ Sensors</span>
-                    </div>
-                    <a href="https://github.com/bad-antics/glowbarn" class="btn btn-green">View on GitHub →</a>
-                </div>
-
-                <!-- SDR Tools -->
-                <div class="project-card">
-                    <div class="project-header">
-                        <span class="project-icon">📡</span>
-                        <div>
-                            <h3>NullSec SDR</h3>
-                            <span class="project-tag">Radio Security</span>
-                        </div>
-                    </div>
-                    <p>Software-defined radio toolkit for signal analysis, protocol decoding, and RF research.</p>
-                    <div class="project-features">
-                        <span>✓ Signal Analysis</span>
-                        <span>✓ Protocol Decode</span>
-                        <span>✓ RTL-SDR</span>
-                    </div>
-                    <a href="https://github.com/bad-antics/nullsec-sdr" class="btn">View on GitHub →</a>
-                </div>
+        </div>
+        
+        <section id="contributions">
+            <div class="section-title"><span>✅</span><h2>Merged Contributions (102.6k+ ⭐)</h2></div>
+            <div class="contrib-grid">
+                <a href="https://github.com/The-Art-of-Hacking/h4cker" class="contrib"><div class="contrib-icon">🔓</div><div class="contrib-info"><div class="contrib-name">h4cker (×5)</div><div class="contrib-detail">Ethical hacking</div></div><span class="contrib-stars">⭐ 25k</span></a>
+                <a href="https://github.com/ashishb/android-security-awesome" class="contrib"><div class="contrib-icon">🤖</div><div class="contrib-info"><div class="contrib-name">android-security-awesome</div><div class="contrib-detail">Android security</div></div><span class="contrib-stars">⭐ 9.2k</span></a>
+                <a href="https://github.com/infoslack/awesome-web-hacking" class="contrib"><div class="contrib-icon">🌐</div><div class="contrib-info"><div class="contrib-name">awesome-web-hacking</div><div class="contrib-detail">Web security</div></div><span class="contrib-stars">⭐ 6.7k</span></a>
+                <a href="https://github.com/HQarroum/awesome-iot" class="contrib"><div class="contrib-icon">📡</div><div class="contrib-info"><div class="contrib-name">awesome-iot</div><div class="contrib-detail">IoT resources</div></div><span class="contrib-stars">⭐ 4.6k</span></a>
+                <a href="https://github.com/hak5/bashbunny-payloads" class="contrib"><div class="contrib-icon">🐰</div><div class="contrib-info"><div class="contrib-name">bashbunny-payloads</div><div class="contrib-detail">Hak5</div></div><span class="contrib-stars">⭐ 2.9k</span></a>
+                <a href="https://github.com/milabs/awesome-linux-rootkits" class="contrib"><div class="contrib-icon">🐧</div><div class="contrib-info"><div class="contrib-name">awesome-linux-rootkits</div><div class="contrib-detail">Rootkit research</div></div><span class="contrib-stars">⭐ 2k</span></a>
+                <a href="https://github.com/Astrosp/Awesome-OSINT-For-Everything" class="contrib"><div class="contrib-icon">🔍</div><div class="contrib-info"><div class="contrib-name">Awesome-OSINT-For-Everything</div><div class="contrib-detail">OSINT</div></div><span class="contrib-stars">⭐ 2k</span></a>
+                <a href="https://github.com/fkromer/awesome-embedded-linux" class="contrib"><div class="contrib-icon">🖥️</div><div class="contrib-info"><div class="contrib-name">awesome-embedded-linux</div><div class="contrib-detail">Embedded</div></div><span class="contrib-stars">⭐ 1.2k</span></a>
+            </div>
         </section>
-
-        <!-- TOOL SUITES -->
-        <section id="tools" class="section">
-            <h2 class="section-title">🛠️ Security Tool Suites</h2>
-            
-            <div class="suites-grid">
-                <!-- Cloud Security -->
-                <div class="suite-card">
-                    <div class="suite-header">
-                        <span class="suite-icon">☁️</span>
-                        <h3>Cloud Security</h3>
-                    </div>
-                    <ul class="tool-list">
-                        <li><a href="https://github.com/bad-antics/nullsec-cloudaudit">cloudaudit</a> — Multi-cloud</li>
-                        <li><a href="https://github.com/bad-antics/nullsec-k8sscan">k8sscan</a> — Kubernetes</li>
-                        <li><a href="https://github.com/bad-antics/nullsec-awsrecon">awsrecon</a> — AWS</li>
-                        <li><a href="https://github.com/bad-antics/nullsec-gcphunt">gcphunt</a> — GCP</li>
-                        <li><a href="https://github.com/bad-antics/nullsec-azuresweep">azuresweep</a> — Azure</li>
-                        <li><a href="https://github.com/bad-antics/nullsec-terraform-scan">terraform-scan</a> — IaC</li>
+        
+        <section id="tools">
+            <div class="section-title"><span>��️</span><h2>Security Tool Suites</h2></div>
+            <div class="tools-grid">
+                <div class="tools-card">
+                    <h4>☁️ Cloud Security</h4>
+                    <ul>
+                        <li><a href="https://github.com/bad-antics/nullsec-cloudaudit">cloudaudit</a> <span>— Multi-cloud</span></li>
+                        <li><a href="https://github.com/bad-antics/nullsec-k8sscan">k8sscan</a> <span>— Kubernetes</span></li>
+                        <li><a href="https://github.com/bad-antics/nullsec-awsrecon">awsrecon</a> <span>— AWS</span></li>
+                        <li><a href="https://github.com/bad-antics/nullsec-terraform-scan">terraform-scan</a> <span>— IaC</span></li>
                     </ul>
                 </div>
-
-                <!-- AI/ML Security -->
-                <div class="suite-card">
-                    <div class="suite-header">
-                        <span class="suite-icon">🤖</span>
-                        <h3>AI/ML Security</h3>
-                    </div>
-                    <ul class="tool-list">
-                        <li><a href="https://github.com/bad-antics/nullsec-llmred">llmred</a> — LLM red team</li>
-                        <li><a href="https://github.com/bad-antics/nullsec-promptinject">promptinject</a> — Injection</li>
-                        <li><a href="https://github.com/bad-antics/nullsec-modelaudit">modelaudit</a> — Audit</li>
-                        <li><a href="https://github.com/bad-antics/nullsec-adversarial">adversarial</a> — Attacks</li>
-                        <li><a href="https://github.com/bad-antics/nullsec-datapoisoning">datapoisoning</a> — Poison</li>
+                <div class="tools-card">
+                    <h4>🤖 AI/ML Security</h4>
+                    <ul>
+                        <li><a href="https://github.com/bad-antics/nullsec-llmred">llmred</a> <span>— LLM red team</span></li>
+                        <li><a href="https://github.com/bad-antics/nullsec-promptinject">promptinject</a> <span>— Injection</span></li>
+                        <li><a href="https://github.com/bad-antics/nullsec-modelaudit">modelaudit</a> <span>— Audit</span></li>
+                        <li><a href="https://github.com/bad-antics/nullsec-adversarial">adversarial</a> <span>— Attacks</span></li>
                     </ul>
                 </div>
-
-                <!-- Hardware Security -->
-                <div class="suite-card">
-                    <div class="suite-header">
-                        <span class="suite-icon">🔌</span>
-                        <h3>Hardware Security</h3>
-                    </div>
-                    <ul class="tool-list">
-                        <li><a href="https://github.com/bad-antics/nullsec-sdr">sdr</a> — SDR analysis</li>
-                        <li><a href="https://github.com/bad-antics/nullsec-rfid">rfid</a> — RFID/NFC</li>
-                        <li><a href="https://github.com/bad-antics/nullsec-canbus">canbus</a> — CAN bus</li>
-                        <li><a href="https://github.com/bad-antics/nullsec-jtag">jtag</a> — JTAG/SWD</li>
-                        <li><a href="https://github.com/bad-antics/nullsec-glitch">glitch</a> — Voltage glitch</li>
+                <div class="tools-card">
+                    <h4>🔌 Hardware Hacking</h4>
+                    <ul>
+                        <li><a href="https://github.com/bad-antics/nullsec-sdr">sdr</a> <span>— SDR analysis</span></li>
+                        <li><a href="https://github.com/bad-antics/nullsec-rfid">rfid</a> <span>— RFID/NFC</span></li>
+                        <li><a href="https://github.com/bad-antics/nullsec-canbus">canbus</a> <span>— CAN bus</span></li>
+                        <li><a href="https://github.com/bad-antics/nullsec-glitch">glitch</a> <span>— Voltage glitch</span></li>
                     </ul>
                 </div>
-
-                <!-- Automotive -->
-                <div class="suite-card">
-                    <div class="suite-header">
-                        <span class="suite-icon">🚗</span>
-                        <h3>Automotive</h3>
-                    </div>
-                    <ul class="tool-list">
-                        <li><a href="https://github.com/bad-antics/nullsec-carfuzz">carfuzz</a> — ECU fuzzing</li>
-                        <li><a href="https://github.com/bad-antics/nullsec-obdii">obdii</a> — OBD-II</li>
-                        <li><a href="https://github.com/bad-antics/nullsec-uds">uds</a> — UDS protocol</li>
-                        <li><a href="https://github.com/bad-antics/nullsec-keyfob">keyfob</a> — Key fob</li>
-                    </ul>
-                </div>
-
-                <!-- Core Tools -->
-                <div class="suite-card">
-                    <div class="suite-header">
-                        <span class="suite-icon">⚙️</span>
-                        <h3>Core Tools</h3>
-                    </div>
-                    <ul class="tool-list">
-                        <li><a href="https://github.com/bad-antics/nullsec-rkhunt">rkhunt</a> — Rootkit (C)</li>
-                        <li><a href="https://github.com/bad-antics/nullsec-kernspy">kernspy</a> — Kernel (Go)</li>
-                        <li><a href="https://github.com/bad-antics/nullsec-memguard">memguard</a> — Memory (Zig)</li>
-                        <li><a href="https://github.com/bad-antics/nullsec-netseer">netseer</a> — Network (Haskell)</li>
-                        <li><a href="https://github.com/bad-antics/nullsec-injector">injector</a> — Injection (Rust)</li>
-                    </ul>
-                </div>
-
-                <!-- Mobile -->
-                <div class="suite-card">
-                    <div class="suite-header">
-                        <span class="suite-icon">📱</span>
-                        <h3>Mobile Security</h3>
-                    </div>
-                    <ul class="tool-list">
-                        <li><a href="https://github.com/bad-antics/nullkia">nullkia</a> — Framework</li>
-                        <li>Baseband exploitation</li>
-                        <li>5G/LTE testing</li>
-                        <li>eSIM research</li>
-                        <li>TEE/TrustZone</li>
+                <div class="tools-card">
+                    <h4>🔮 Julia Security Suite</h4>
+                    <ul>
+                        <li><a href="https://github.com/bad-antics/spectra">spectra</a> <span>— Toolkit</span></li>
+                        <li><a href="https://github.com/bad-antics/oracle">oracle</a> <span>— Vuln discovery</span></li>
+                        <li><a href="https://github.com/bad-antics/phantom">phantom</a> <span>— Zero-knowledge</span></li>
+                        <li><a href="https://github.com/bad-antics/vortex">vortex</a> <span>— Threat intel</span></li>
                     </ul>
                 </div>
             </div>
         </section>
-
-        <!-- STATS SECTION -->
-        <section id="stats" class="section">
-            <h2 class="section-title">📊 GitHub Stats</h2>
-            
-            <div class="stats-cards">
-                <div class="github-stats-card">
-                    <img src="https://github-readme-stats-sigma-five.vercel.app/api?username=bad-antics&show_icons=true&theme=github_dark&hide_border=true&count_private=true&include_all_commits=true&rank_icon=github&show=reviews,discussions_started,discussions_answered,prs_merged,prs_merged_percentage" alt="GitHub Stats" />
-                </div>
-                <div class="github-stats-card">
-                    <img src="https://github-readme-streak-stats-eight.vercel.app/?user=bad-antics&theme=github-dark-blue&hide_border=true" alt="Streak Stats" />
-                </div>
-            </div>
-
-            <div class="stats-badges">
-                <span class="stat-badge repos">598 Repositories</span>
-                
-                <span class="stat-badge reach">155 Pull Requests</span>
-            </div>
-        </section>
-
-        <!-- CONTRIBUTIONS -->
-        <section id="contributions" class="section">
-            <h2 class="section-title">🚀 Community Contributions</h2>
-            
-            <div class="pr-summary">
-                <div class="pr-stat">
-                    <span class="pr-value">119</span>
-                    <span class="pr-label">Open PRs</span>
-                </div>
-                <div class="pr-stat merged">
-                    <span class="pr-value">13</span>
-                    <span class="pr-label">Merged</span>
-                </div>
-                <div class="pr-stat">
-                    <span class="pr-value">142</span>
-                    <span class="pr-label">Total</span>
-                </div>
-            </div>
-
-            <div class="pr-merged">
-                <h3>✅ Merged to (102.6k reach)</h3>
-                <div class="merged-list">
-                    <a href="https://github.com/The-Art-of-Hacking/h4cker" class="merged-item">h4cker (×5) <span>⭐24.9k</span></a>
-                    <a href="https://github.com/ashishb/android-security-awesome" class="merged-item">android-security-awesome <span>⭐9.2k</span></a>
-                    <a href="https://github.com/infoslack/awesome-web-hacking" class="merged-item">awesome-web-hacking <span>⭐6.7k</span></a>
-                    <a href="https://github.com/phodal/awesome-iot" class="merged-item">awesome-iot <span>⭐4.6k</span></a>
-                    <a href="https://github.com/milabs/awesome-linux-rootkits" class="merged-item">awesome-linux-rootkits <span>⭐2k</span></a>
-                    <a href="https://github.com/Astrosp/Awesome-OSINT-For-Everything" class="merged-item">Awesome-OSINT-For-Everything <span>⭐2k</span></a>
-                    <a href="https://github.com/hak5/bashbunny-payloads" class="merged-item">bashbunny-payloads <span>⭐2.9k</span></a>
-                    <a href="https://github.com/fkromer/awesome-embedded-linux" class="merged-item">awesome-embedded-linux <span>⭐386</span></a>
-                </div>
-            </div>
-            <div class="pr-pending">
-                <h3>🕐 Pending</h3>
-                <div class="pending-list">
-                    <a href="https://github.com/enaqx/awesome-pentest" class="pending-item">awesome-pentest <span>⭐25k</span></a>
-                    <a href="https://github.com/jivoi/awesome-osint" class="pending-item">awesome-osint <span>⭐24.5k</span></a>
-                    <a href="https://github.com/sbilly/awesome-security" class="pending-item">awesome-security <span>⭐13.9k</span></a>
-                    <a href="https://github.com/pluja/awesome-privacy" class="pending-item">awesome-privacy <span>⭐12k</span></a>
-                </div>
-            </div>
-        </section>
-
-        <!-- FOOTER -->
-        <footer class="footer">
-            <div class="footer-links">
-                <a href="https://github.com/bad-antics">GitHub</a>
-                <span>•</span>
-                <a href="https://github.com/bad-antics/nullsec-linux">NullSec Linux</a>
-                <span>•</span>
-                <a href="https://github.com/bad-antics/nullkia">NullKia</a>
-                <span>•</span>
-                <a href="https://github.com/bad-antics/julia-security-docs">Julia Docs</a>
-            </div>
-            <p class="disclaimer">All tools are intended for authorized security testing and educational purposes only.</p>
-            <p class="copyright">© 2024-2026 bad-antics • Security Engineering & Systems Research</p>
-        </footer>
     </div>
-
-    <script src="script.js"></script>
+    
+    <footer>
+        <div class="footer-links">
+            <a href="https://github.com/bad-antics">GitHub</a>
+            <a href="https://github.com/bad-antics/nullsec-linux">NullSec Linux</a>
+            <a href="https://github.com/bad-antics/marshall">Marshall</a>
+            <a href="https://github.com/bad-antics/nullkia">NullKia</a>
+        </div>
+        <p>All tools for authorized security testing only.</p>
+        <p>© 2024-2026 bad-antics</p>
+    </footer>
 </body>
 </html>
