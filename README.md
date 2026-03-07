@@ -3,8 +3,8 @@
 # bad-antics Portal
 
 [![Website](https://img.shields.io/badge/bad--antics.github.io-live-00ff00?style=for-the-badge&logo=github&logoColor=white)](https://bad-antics.github.io/)
-[![Repos](https://img.shields.io/badge/Repos-523-blue?style=for-the-badge&logo=github)](https://github.com/bad-antics?tab=repositories)
-[![Tools](https://img.shields.io/badge/Tools-135+-purple?style=for-the-badge&logo=gnubash)](https://github.com/bad-antics)
+[![Repos](https://img.shields.io/badge/Repos-706-blue?style=for-the-badge&logo=github)](https://github.com/bad-antics?tab=repositories)
+[![Tools](https://img.shields.io/badge/Tools-140+-purple?style=for-the-badge&logo=gnubash)](https://github.com/bad-antics)
 
 *Official portal and homepage for bad-antics security research*
 
@@ -14,11 +14,11 @@
 
 ## 🎯 About
 
-This is the GitHub Pages portal for **bad-antics** — showcasing 523 repositories, 135+ security tools, the Julia Security Suite, NullSec Linux, and community contributions to major awesome lists.
+This is the GitHub Pages portal for **bad-antics** — showcasing 706 repositories, 140+ security tools, the Julia Security Suite, NullSec Linux, and community contributions to major awesome lists.
 
 ### Bio
 
-> Security researcher | 523 repos | 135+ tools | 56.4k reach | 54 followers | Contributor to h4cker, awesome-security
+> Security researcher | 706 repos | 140+ tools | 56.4k reach | 202 followers | Contributor to h4cker, awesome-security
 
 ---
 
@@ -32,7 +32,7 @@ This is the GitHub Pages portal for **bad-antics** — showcasing 523 repositori
 - **Mirage** — Adversarial ML toolkit
 
 ### Main Projects
-- **NullSec Linux** — Security-focused distro with 135+ tools
+- **NullSec Linux** — Security-focused distro with 140+ tools
 - **NullKia** — Mobile security framework (18 manufacturers)
 - **Marshall** — Privacy browser with AI assistant
 - **BlackFlag** — Automotive/ECU security toolkit
@@ -44,8 +44,8 @@ This is the GitHub Pages portal for **bad-antics** — showcasing 523 repositori
 
 | Metric | Value |
 |--------|-------|
-| Repositories | 523 |
-| Security Tools | 135+ |
+| Repositories | 706 |
+| Security Tools | 140+ |
 | Julia Lines | 40,000+ |
 | Total Reach | 56.4k |
 | Open PRs | 93 |
