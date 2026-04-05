@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Pipeline Operator Deep Dive | Lateralus Blog</title>
+    <meta name="description" content="Why |> changes how you think about data — from nested function calls to linear, readable data flows.">
+    <meta property="og:title" content="The Pipeline Operator Deep Dive — Lateralus Blog">
+    <meta property="og:description" content="Deep dive into the pipeline operator |> — why it exists, how it works, and what it means for code readability.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root{--bg:#0a0a0f;--bg2:#12121a;--bg3:#1a1a2e;--bg-code:#0d1117;--border:#2a2a3e;--text:#e8e8f0;--text2:#8888a8;--accent:#7c5cfc;--accent2:#a78bfa;--cyan:#22d3ee;--green:#34d399;--orange:#fb923c;--yellow:#fbbf24}
+        *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+        body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.8;-webkit-font-smoothing:antialiased}
+        a{color:var(--accent2);text-decoration:none}a:hover{color:var(--cyan)}
+        code,pre{font-family:'JetBrains Mono',monospace}
+        .topbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,10,15,0.88);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+        .topbar-inner{max-width:760px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px}
+        .topbar-logo{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1.1rem;color:var(--text)}
+        .topbar-logo span{color:var(--accent)}
+        .topbar-links{display:flex;gap:16px}.topbar-links a{color:var(--text2);font-size:.88rem;font-weight:500}
+        article{max-width:760px;margin:0 auto;padding:100px 24px 80px}
+        .meta{color:var(--text2);font-size:.88rem;margin-bottom:32px}
+        .meta a{color:var(--accent2)}
+        h1{font-size:2.4rem;font-weight:800;line-height:1.2;margin-bottom:12px;letter-spacing:-1px}
+        h2{font-size:1.5rem;font-weight:700;margin:48px 0 16px;padding-top:24px;border-top:1px solid var(--border)}
+        h3{font-size:1.15rem;font-weight:700;margin:32px 0 12px}
+        p{margin-bottom:20px;color:var(--text2)}
+        strong{color:var(--text)}
+        pre{background:var(--bg-code);border:1px solid var(--border);border-radius:10px;padding:20px;margin:20px 0;overflow-x:auto;font-size:.88rem;line-height:1.7}
+        code{background:rgba(124,92,252,0.1);padding:2px 6px;border-radius:4px;font-size:.88rem;color:var(--accent2)}
+        pre code{background:none;padding:0;color:var(--text)}
+        blockquote{border-left:3px solid var(--accent);padding:12px 20px;margin:20px 0;background:rgba(124,92,252,0.04);border-radius:0 8px 8px 0}
+        blockquote p{margin-bottom:0;color:var(--text2)}
+        ul,ol{margin:0 0 20px 24px;color:var(--text2)}li{margin-bottom:8px}
+        .kw{color:var(--accent2)}.fn{color:var(--cyan)}.str{color:var(--green)}.cm{color:var(--text2)}.op{color:var(--orange)}.num{color:var(--orange)}.ty{color:var(--yellow)}
+        .cta{display:flex;gap:12px;flex-wrap:wrap;margin:32px 0;padding:24px;background:var(--bg2);border:1px solid var(--border);border-radius:12px}
+        .cta a{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;font-weight:600;font-size:.9rem}
+        .btn-p{background:var(--accent);color:#fff}.btn-p:hover{background:var(--accent2);color:#fff}
+        .btn-s{background:var(--bg3);color:var(--text);border:1px solid var(--border)}.btn-s:hover{border-color:var(--accent)}
+        footer{max-width:760px;margin:0 auto;padding:40px 24px;border-top:1px solid var(--border);text-align:center;color:var(--text2);font-size:.82rem}
+    </style>
+</head>
+<body>
+<div class="topbar"><div class="topbar-inner">
+    <a href="/lateralus/" class="topbar-logo"><span>|&gt;</span> Lateralus</a>
+    <div class="topbar-links">
+        <a href="/lateralus/blog/">Blog</a>
+        <a href="/lateralus/playground/">Playground</a>
+        <a href="https://github.com/bad-antics/lateralus-lang">GitHub</a>
+    </div>
+</div></div>
+
+<article>
+<h1>The Pipeline Operator Deep Dive</h1>
+<div class="meta">June 2025 · 8 min read · <a href="/lateralus/blog/">← All Posts</a></div>
+
+<p>Every programming language has a way of composing function calls. Most use nesting: <code>f(g(h(x)))</code>. Some use method chaining: <code>x.h().g().f()</code>. Lateralus uses <strong>pipelines</strong>: <code>x |> h |> g |> f</code>. This post explains why, and what it changes about the way you think.</p>
+
+<h2>The Problem with Nesting</h2>
+
+<p>Consider a common data processing task: take a list of transactions, filter out small ones, group by category, sum each group, and sort by total. In a traditional language, you'd write something like:</p>
+
+<pre><code><span class="cm">// Traditional — read inside-out</span>
+<span class="fn">sort</span>(<span class="fn">sum_groups</span>(<span class="fn">group_by</span>(<span class="fn">filter</span>(transactions, |t| t.amount > <span class="num">20</span>), |t| t.category)))</code></pre>
+
+<p>To understand this code, you start from the innermost call and read outward. The data flow is <strong>right-to-left, inside-out</strong>. The first operation applied (filter) is buried in the middle. This isn't how humans think about steps.</p>
+
+<h2>The Pipeline Solution</h2>
+
+<p>In Lateralus, the same operation reads like a recipe:</p>
+
+<pre><code><span class="cm">// Lateralus — read left-to-right</span>
+<span class="kw">let</span> report = transactions
+    <span class="op">|></span> <span class="fn">filter</span>(|t| t.amount > <span class="num">20</span>)
+    <span class="op">|></span> <span class="fn">group_by</span>(|t| t.category)
+    <span class="op">|></span> <span class="fn">sum_groups</span>()
+    <span class="op">|></span> <span class="fn">sort</span>(descending)</code></pre>
+
+<p>Each line is one step. The data flows <strong>top-to-bottom, left-to-right</strong>. Adding, removing, or reordering steps is trivial — just add or move a line.</p>
+
+<h2>How It Works</h2>
+
+<p>The pipeline operator <code>|></code> takes the expression on its left and passes it as the <strong>first argument</strong> to the function on its right. So:</p>
+
+<pre><code><span class="cm">// These are equivalent:</span>
+x <span class="op">|></span> <span class="fn">f</span>(a, b)      <span class="cm">// pipeline form</span>
+<span class="fn">f</span>(x, a, b)          <span class="cm">// traditional form</span>
+
+<span class="cm">// Chaining multiple:</span>
+x <span class="op">|></span> <span class="fn">f</span>() <span class="op">|></span> <span class="fn">g</span>() <span class="op">|></span> <span class="fn">h</span>()   <span class="cm">// pipeline</span>
+<span class="fn">h</span>(<span class="fn">g</span>(<span class="fn">f</span>(x)))              <span class="cm">// nested equivalent</span></code></pre>
+
+<h2>Pipeline + Pattern Matching</h2>
+
+<p>Pipelines combine naturally with Lateralus's other features. Pattern matching in a pipeline lets you branch on the shape of data at any stage:</p>
+
+<pre><code><span class="kw">let</span> result = input
+    <span class="op">|></span> <span class="fn">parse</span>()
+    <span class="op">|></span> <span class="kw">match</span> {
+        <span class="ty">Ok</span>(data) => data <span class="op">|></span> <span class="fn">validate</span>() <span class="op">|></span> <span class="fn">transform</span>(),
+        <span class="ty">Err</span>(e)   => <span class="fn">fallback</span>(e),
+    }
+    <span class="op">|></span> <span class="fn">serialize</span>()</code></pre>
+
+<h2>Pipeline + Async</h2>
+
+<p>Async operations flow just as naturally. No callback pyramids, no promise chains — just pipes:</p>
+
+<pre><code><span class="kw">let</span> page = url
+    <span class="op">|></span> <span class="kw">await</span> <span class="fn">fetch</span>()
+    <span class="op">|></span> <span class="kw">await</span> <span class="fn">read_body</span>()
+    <span class="op">|></span> <span class="fn">parse_html</span>()
+    <span class="op">|></span> <span class="fn">extract_links</span>()
+    <span class="op">|></span> <span class="fn">filter</span>(|link| link.domain == <span class="str">"target.com"</span>)</code></pre>
+
+<h2>Real-World Example: Log Analysis</h2>
+
+<p>Here's a complete example — parsing and analyzing server logs:</p>
+
+<pre><code><span class="kw">fn</span> <span class="fn">analyze_logs</span>(path: <span class="ty">String</span>) -> <span class="ty">Report</span> {
+    path
+        <span class="op">|></span> <span class="fn">read_file</span>()
+        <span class="op">|></span> <span class="fn">lines</span>()
+        <span class="op">|></span> <span class="fn">map</span>(<span class="fn">parse_log_entry</span>)
+        <span class="op">|></span> <span class="fn">filter</span>(|e| e.status >= <span class="num">400</span>)
+        <span class="op">|></span> <span class="fn">group_by</span>(|e| e.endpoint)
+        <span class="op">|></span> <span class="fn">map_entries</span>(|endpoint, errors| {
+            <span class="kw">let</span> count = errors <span class="op">|></span> <span class="fn">len</span>()
+            <span class="kw">let</span> rate = count <span class="op">|></span> <span class="fn">as_float</span>() / total <span class="op">|></span> <span class="fn">as_float</span>()
+            <span class="ty">EndpointReport</span> { endpoint, count, rate }
+        })
+        <span class="op">|></span> <span class="fn">sort_by</span>(|r| r.count, descending)
+        <span class="op">|></span> <span class="ty">Report</span>::<span class="fn">new</span>()
+}</code></pre>
+
+<p>Every step is one clear operation. No temporary variables. No nesting. The pipeline <em>is</em> the algorithm.</p>
+
+<h2>Design Principles</h2>
+
+<p>Three rules guided the pipeline design:</p>
+
+<ol>
+    <li><strong>Left-to-right always.</strong> Data flows the way you read.</li>
+    <li><strong>Each step is independent.</strong> You can add, remove, or reorder lines without restructuring.</li>
+    <li><strong>Composable.</strong> Pipelines work with every feature — pattern matching, async, error handling, lambdas.</li>
+</ol>
+
+<blockquote><p>Code is read far more often than it's written. The pipeline operator optimizes for the reader.</p></blockquote>
+
+<div class="cta">
+    <a href="/lateralus/playground/" class="btn-p">▶ Try Pipelines in the Playground</a>
+    <a href="/lateralus/blog/" class="btn-s">← Back to Blog</a>
+</div>
+</article>
+
+<footer>© 2025 Lateralus · <a href="/lateralus/">Home</a> · <a href="https://github.com/bad-antics/lateralus-lang">GitHub</a></footer>
+</body>
+</html>

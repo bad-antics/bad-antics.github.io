@@ -321,6 +321,12 @@
         <option value="functional">Functional Pipelines</option>
         <option value="error">Error Handling</option>
         <option value="webserver">Web Server</option>
+        <option value="generics">Generics</option>
+        <option value="closures">Closures & Lambdas</option>
+        <option value="modules">Modules & Imports</option>
+        <option value="iterators">Iterators</option>
+        <option value="cli">CLI Tool</option>
+        <option value="gameloop">Game Loop</option>
     </select>
     <button class="btn" onclick="shareCode()">⛓ Share</button>
     <button class="btn" onclick="formatCode()">⎇ Format</button>
@@ -802,6 +808,490 @@ fn main() {
     println("Server listening on http://0.0.0.0:8080")
     http::serve("0.0.0.0:8080", app) |> await
 }`,
+
+generics: \`// Generics — type-safe polymorphism with constraints
+
+import std::io
+import std::collections
+
+// Generic function with trait bound
+fn max_of<T: Ord>(items: Vec<T>) -> Option<T> {
+    items
+        |> reduce(|a, b| if a > b { a } else { b })
+}
+
+// Generic stack data structure
+struct Stack<T> {
+    items: Vec<T>,
+}
+
+impl<T> Stack<T> {
+    fn new() -> Stack<T> {
+        Stack { items: [] }
+    }
+
+    fn push(self, item: T) -> Stack<T> {
+        self.items |> append(item)
+        self
+    }
+
+    fn pop(self) -> (Option<T>, Stack<T>) {
+        match self.items |> last() {
+            Some(item) => {
+                self.items |> drop_last()
+                (Some(item), self)
+            },
+            None => (None, self),
+        }
+    }
+
+    fn peek(self) -> Option<T> {
+        self.items |> last()
+    }
+
+    fn size(self) -> Int {
+        self.items |> len()
+    }
+}
+
+// Generic pair with map
+struct Pair<A, B> {
+    first: A,
+    second: B,
+}
+
+impl<A, B> Pair<A, B> {
+    fn map_first<C>(self, f: fn(A) -> C) -> Pair<C, B> {
+        Pair { first: f(self.first), second: self.second }
+    }
+}
+
+fn main() {
+    // Generic max
+    let nums = [42, 17, 99, 3, 55]
+    println("Max of {nums}: {max_of(nums)}")
+
+    let words = ["apple", "mango", "banana"]
+    println("Max of words: {max_of(words)}")
+
+    // Generic stack
+    let stack = Stack::new()
+        |> push(10)
+        |> push(20)
+        |> push(30)
+
+    println("Stack size: {stack.size()}")
+    println("Top: {stack.peek()}")
+
+    let (val, stack) = stack.pop()
+    println("Popped: {val}")
+    println("New top: {stack.peek()}")
+
+    // Generic pair
+    let pair = Pair { first: 42, second: "hello" }
+    let doubled = pair.map_first(|n| n * 2)
+    println("Pair: ({doubled.first}, {doubled.second})")
+}\`,
+
+closures: \`// Closures & Lambdas — first-class functions
+
+import std::io
+
+// Higher-order function: takes a function, returns a function
+fn compose<A, B, C>(f: fn(A) -> B, g: fn(B) -> C) -> fn(A) -> C {
+    |x| g(f(x))
+}
+
+fn apply_n<T>(f: fn(T) -> T, n: Int, value: T) -> T {
+    (0..n) |> fold(value, |acc, _| f(acc))
+}
+
+fn main() {
+    // Simple lambdas
+    let double = |x| x * 2
+    let add_one = |x| x + 1
+
+    println("double(5) = {double(5)}")
+    println("add_one(5) = {add_one(5)}")
+
+    // Compose functions
+    let double_then_add = compose(double, add_one)
+    println("double_then_add(5) = {double_then_add(5)}")
+
+    // Closures capture environment
+    let multiplier = 3
+    let times_n = |x| x * multiplier
+    println("times_n(7) = {times_n(7)}")
+
+    // Closure in a pipeline
+    let threshold = 15
+    let result = [3, 8, 12, 25, 7, 19, 4, 30]
+        |> filter(|x| x > threshold)
+        |> map(|x| x * 2)
+        |> sort()
+
+    println("Filtered & doubled (>{threshold}): {result}")
+
+    // apply_n: apply a function N times
+    let triple = |x| x * 3
+    println("triple applied 4 times to 1: {apply_n(triple, 4, 1)}")
+
+    // Returning closures from functions
+    let adders = [1, 5, 10]
+        |> map(|n| |x| x + n)
+
+    let base = 100
+    for adder in adders {
+        println("  {base} + ? = {adder(base)}")
+    }
+}\`,
+
+modules: \`// Modules & Imports — organizing code
+
+import std::io
+import std::collections::HashMap
+import math::{sqrt, pow, pi}
+import utils::validation
+
+// Define a module inline
+module geometry {
+    pub struct Point {
+        x: Float,
+        y: Float,
+    }
+
+    pub fn distance(a: Point, b: Point) -> Float {
+        let dx = b.x - a.x
+        let dy = b.y - a.y
+        sqrt(dx * dx + dy * dy)
+    }
+
+    pub fn midpoint(a: Point, b: Point) -> Point {
+        Point {
+            x: (a.x + b.x) / 2.0,
+            y: (a.y + b.y) / 2.0,
+        }
+    }
+
+    // Private helper — not exported
+    fn normalize(p: Point) -> Point {
+        let mag = sqrt(p.x * p.x + p.y * p.y)
+        Point { x: p.x / mag, y: p.y / mag }
+    }
+
+    pub fn unit_vector(from: Point, to: Point) -> Point {
+        let dx = to.x - from.x
+        let dy = to.y - from.y
+        normalize(Point { x: dx, y: dy })
+    }
+}
+
+module colors {
+    pub enum Color {
+        Red, Green, Blue,
+        RGB(Int, Int, Int),
+        Hex(String),
+    }
+
+    pub fn to_hex(c: Color) -> String {
+        match c {
+            Red          => "#FF0000",
+            Green        => "#00FF00",
+            Blue         => "#0000FF",
+            RGB(r, g, b) => format("#{r:02x}{g:02x}{b:02x}"),
+            Hex(s)       => s,
+        }
+    }
+}
+
+fn main() {
+    // Use geometry module
+    let a = geometry::Point { x: 0.0, y: 0.0 }
+    let b = geometry::Point { x: 3.0, y: 4.0 }
+
+    let dist = geometry::distance(a, b)
+    let mid = geometry::midpoint(a, b)
+    let dir = geometry::unit_vector(a, b)
+
+    println("Distance: {dist:.2}")
+    println("Midpoint: ({mid.x:.1}, {mid.y:.1})")
+    println("Direction: ({dir.x:.2}, {dir.y:.2})")
+
+    // Use colors module
+    let palette = [
+        colors::Red,
+        colors::RGB(124, 92, 252),
+        colors::Hex("#22d3ee"),
+    ]
+
+    println("\\nPalette:")
+    for color in palette {
+        println("  {colors::to_hex(color)}")
+    }
+}\`,
+
+iterators: \`// Iterators — lazy, composable sequences
+
+import std::io
+
+// Custom iterator: infinite Fibonacci sequence
+fn fibonacci() -> Iterator<Int> {
+    let a = 0
+    let b = 1
+    iter::generate(|| {
+        let current = a
+        let next = a + b
+        a = b
+        b = next
+        current
+    })
+}
+
+// Iterator: range with custom step
+fn countdown(from: Int) -> Iterator<Int> {
+    iter::range(from, 0, -1)
+}
+
+// Iterator adapter: sliding window
+fn windows<T>(items: Iterator<T>, size: Int) -> Iterator<Vec<T>> {
+    items |> iter::buffer(size, 1)
+}
+
+fn main() {
+    // Fibonacci — take first 10
+    let fibs = fibonacci()
+        |> take(10)
+        |> collect()
+    println("Fibonacci: {fibs}")
+
+    // Fibonacci primes
+    let fib_primes = fibonacci()
+        |> filter(is_prime)
+        |> take(7)
+        |> collect()
+    println("Fibonacci primes: {fib_primes}")
+
+    // Countdown
+    let launch = countdown(5)
+        |> map(|n| if n == 0 { "Liftoff!" } else { "{n}..." })
+        |> collect()
+    println("\\nCountdown: {launch |> join(' ')}")
+
+    // Infinite iterator + pipeline
+    let squares_sum = iter::from(1)
+        |> map(|n| n * n)
+        |> take_while(|s| s < 1000)
+        |> sum()
+    println("Sum of squares < 1000: {squares_sum}")
+
+    // Sliding windows
+    let data = [10, 20, 15, 30, 25, 35, 40]
+    let moving_avg = data
+        |> iter::from_vec()
+        |> windows(3)
+        |> map(|w| w |> sum() |> div(w |> len()))
+        |> collect()
+    println("\\nMoving average (window=3): {moving_avg}")
+
+    // Zip two iterators
+    let names = ["Alice", "Bob", "Carol"]
+    let scores = [95, 87, 92]
+    let ranked = names
+        |> zip(scores)
+        |> enumerate()
+        |> map(|(i, (name, score))| "#{i+1} {name}: {score}")
+        |> collect()
+    println("\\nRankings:")
+    for entry in ranked {
+        println("  {entry}")
+    }
+}\`,
+
+cli: \`// CLI Tool — building command-line apps
+
+import std::io
+import std::env
+import std::fs
+import cli::{App, Arg, Command}
+
+struct Config {
+    verbose: Bool,
+    output: String,
+    format: String,
+}
+
+fn parse_args(args: Vec<String>) -> Config {
+    let app = App::new("ltl-analyze")
+        |> App::version("1.0.0")
+        |> App::description("Lateralus source code analyzer")
+        |> App::arg(Arg::flag("verbose", "v", "Show detailed output"))
+        |> App::arg(Arg::option("output", "o", "Output file", "report.txt"))
+        |> App::arg(Arg::option("format", "f", "Output format", "text"))
+
+    app |> App::parse(args)
+        |> match {
+            Ok(matches) => Config {
+                verbose: matches |> has_flag("verbose"),
+                output: matches |> get_option("output"),
+                format: matches |> get_option("format"),
+            },
+            Err(e) => {
+                println("Error: {e}")
+                app |> App::print_help()
+                exit(1)
+            },
+        }
+}
+
+fn analyze_file(path: String, verbose: Bool) -> Analysis {
+    let source = fs::read_to_string(path)
+    let lines = source |> lines()
+
+    let stats = lines
+        |> fold(Stats::new(), |stats, line| {
+            stats
+                |> count_line(line)
+                |> detect_function(line)
+                |> detect_pipeline(line)
+                |> detect_pattern_match(line)
+        })
+
+    if verbose {
+        println("  {path}:")
+        println("    Lines: {stats.lines}")
+        println("    Functions: {stats.functions}")
+        println("    Pipelines: {stats.pipelines}")
+        println("    Pattern matches: {stats.matches}")
+    }
+
+    stats
+}
+
+fn main() {
+    let config = parse_args(env::args())
+
+    println("ltl-analyze v1.0.0")
+    println("==================")
+
+    let files = ["src/main.ltl", "src/parser.ltl", "src/codegen.ltl"]
+
+    let results = files
+        |> map(|f| analyze_file(f, config.verbose))
+        |> collect()
+
+    let total = results
+        |> fold(Stats::new(), |acc, s| acc |> merge(s))
+
+    println("\\nSummary:")
+    println("  Total lines: {total.lines}")
+    println("  Functions: {total.functions}")
+    println("  Pipelines used: {total.pipelines}")
+    println("  Pattern matches: {total.matches}")
+    println("  Pipeline density: {total.pipelines * 100 / total.lines}%")
+    println("\\nReport saved to: {config.output}")
+}\`,
+
+gameloop: \`// Game Loop — entity-component system with pipelines
+
+import std::io
+import std::math
+
+struct Vec2 {
+    x: Float,
+    y: Float,
+}
+
+impl Vec2 {
+    fn add(self, other: Vec2) -> Vec2 {
+        Vec2 { x: self.x + other.x, y: self.y + other.y }
+    }
+    fn scale(self, s: Float) -> Vec2 {
+        Vec2 { x: self.x * s, y: self.y * s }
+    }
+    fn magnitude(self) -> Float {
+        math::sqrt(self.x * self.x + self.y * self.y)
+    }
+}
+
+enum EntityKind {
+    Player,
+    Enemy(String),
+    Projectile,
+}
+
+struct Entity {
+    kind: EntityKind,
+    pos: Vec2,
+    vel: Vec2,
+    hp: Int,
+    active: Bool,
+}
+
+fn update_physics(entities: Vec<Entity>, dt: Float) -> Vec<Entity> {
+    entities
+        |> filter(|e| e.active)
+        |> map(|e| Entity {
+            pos: e.pos.add(e.vel.scale(dt)),
+            ..e
+        })
+}
+
+fn check_collisions(entities: Vec<Entity>) -> Vec<Entity> {
+    entities |> map(|e| {
+        match e.kind {
+            Projectile => {
+                let hit = entities
+                    |> filter(|other| match other.kind {
+                        Enemy(_) => true, _ => false
+                    })
+                    |> find(|enemy| distance(e.pos, enemy.pos) < 1.5)
+
+                match hit {
+                    Some(enemy) => Entity { active: false, ..e },
+                    None => e,
+                }
+            },
+            _ => e,
+        }
+    })
+}
+
+fn render(entities: Vec<Entity>) {
+    entities
+        |> filter(|e| e.active)
+        |> sort_by(|e| e.pos.y)
+        |> each(|e| {
+            let label = match e.kind {
+                Player       => "🎮 Player",
+                Enemy(name)  => "👾 {name}",
+                Projectile   => "💫 Bullet",
+            }
+            println("  {label} at ({e.pos.x:.1}, {e.pos.y:.1}) HP:{e.hp}")
+        })
+}
+
+fn main() {
+    let entities = [
+        Entity { kind: Player, pos: Vec2{x:0.0,y:0.0}, vel: Vec2{x:1.0,y:0.5}, hp: 100, active: true },
+        Entity { kind: Enemy("Drone"), pos: Vec2{x:10.0,y:5.0}, vel: Vec2{x:-0.5,y:0.0}, hp: 30, active: true },
+        Entity { kind: Enemy("Boss"), pos: Vec2{x:20.0,y:8.0}, vel: Vec2{x:0.0,y:-0.2}, hp: 200, active: true },
+        Entity { kind: Projectile, pos: Vec2{x:1.0,y:0.5}, vel: Vec2{x:5.0,y:2.0}, hp: 1, active: true },
+    ]
+
+    println("=== Game State ===")
+    // Simulate 3 frames
+    let state = entities
+    for frame in 0..3 {
+        println("\\n--- Frame {frame} ---")
+        state = state
+            |> update_physics(0.16)
+            |> check_collisions()
+        render(state)
+    }
+
+    let alive = state |> filter(|e| e.active) |> len()
+    println("\\nActive entities: {alive}/{entities |> len()}")
+}\`,
 };
 
 // ── Interpreter / Simulator ──────────────────────────────────
@@ -904,6 +1394,101 @@ function simulateRun(code) {
         lines.push({ text: '    *    *             => not_found', type: 'info' });
         lines.push({ text: '', type: '' });
         lines.push({ text: 'Awaiting connections...', type: 'info' });
+    }
+    else if (codeStr.includes('max_of') && codeStr.includes('Stack')) {
+        lines.push({ text: 'Max of [42, 17, 99, 3, 55]: Some(99)', type: '' });
+        lines.push({ text: 'Max of words: Some("mango")', type: '' });
+        lines.push({ text: 'Stack size: 3', type: '' });
+        lines.push({ text: 'Top: Some(30)', type: '' });
+        lines.push({ text: 'Popped: Some(30)', type: '' });
+        lines.push({ text: 'New top: Some(20)', type: '' });
+        lines.push({ text: 'Pair: (84, hello)', type: '' });
+    }
+    else if (codeStr.includes('compose') && codeStr.includes('apply_n')) {
+        lines.push({ text: 'double(5) = 10', type: '' });
+        lines.push({ text: 'add_one(5) = 6', type: '' });
+        lines.push({ text: 'double_then_add(5) = 11', type: '' });
+        lines.push({ text: 'times_n(7) = 21', type: '' });
+        lines.push({ text: 'Filtered & doubled (>15): [38, 50, 60]', type: '' });
+        lines.push({ text: 'triple applied 4 times to 1: 81', type: '' });
+        lines.push({ text: '  100 + ? = 101', type: '' });
+        lines.push({ text: '  100 + ? = 105', type: '' });
+        lines.push({ text: '  100 + ? = 110', type: '' });
+    }
+    else if (codeStr.includes('module geometry') && codeStr.includes('module colors')) {
+        lines.push({ text: 'Distance: 5.00', type: '' });
+        lines.push({ text: 'Midpoint: (1.5, 2.0)', type: '' });
+        lines.push({ text: 'Direction: (0.60, 0.80)', type: '' });
+        lines.push({ text: '', type: '' });
+        lines.push({ text: 'Palette:', type: 'accent' });
+        lines.push({ text: '  #FF0000', type: '' });
+        lines.push({ text: '  #7c5cfc', type: '' });
+        lines.push({ text: '  #22d3ee', type: '' });
+    }
+    else if (codeStr.includes('fibonacci') && codeStr.includes('moving_avg')) {
+        lines.push({ text: 'Fibonacci: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]', type: '' });
+        lines.push({ text: 'Fibonacci primes: [2, 3, 5, 13, 89, 233, 1597]', type: '' });
+        lines.push({ text: '', type: '' });
+        lines.push({ text: 'Countdown: 5... 4... 3... 2... 1... Liftoff!', type: 'cyan' });
+        lines.push({ text: 'Sum of squares < 1000: 1015', type: '' });
+        lines.push({ text: '', type: '' });
+        lines.push({ text: 'Moving average (window=3): [15, 21, 23, 30, 33]', type: '' });
+        lines.push({ text: '', type: '' });
+        lines.push({ text: 'Rankings:', type: 'accent' });
+        lines.push({ text: '  #1 Alice: 95', type: '' });
+        lines.push({ text: '  #2 Bob: 87', type: '' });
+        lines.push({ text: '  #3 Carol: 92', type: '' });
+    }
+    else if (codeStr.includes('ltl-analyze')) {
+        lines.push({ text: 'ltl-analyze v1.0.0', type: 'accent' });
+        lines.push({ text: '==================', type: '' });
+        lines.push({ text: '  src/main.ltl:', type: 'info' });
+        lines.push({ text: '    Lines: 142', type: '' });
+        lines.push({ text: '    Functions: 8', type: '' });
+        lines.push({ text: '    Pipelines: 23', type: '' });
+        lines.push({ text: '    Pattern matches: 5', type: '' });
+        lines.push({ text: '  src/parser.ltl:', type: 'info' });
+        lines.push({ text: '    Lines: 387', type: '' });
+        lines.push({ text: '    Functions: 24', type: '' });
+        lines.push({ text: '    Pipelines: 56', type: '' });
+        lines.push({ text: '    Pattern matches: 18', type: '' });
+        lines.push({ text: '  src/codegen.ltl:', type: 'info' });
+        lines.push({ text: '    Lines: 291', type: '' });
+        lines.push({ text: '    Functions: 15', type: '' });
+        lines.push({ text: '    Pipelines: 41', type: '' });
+        lines.push({ text: '    Pattern matches: 12', type: '' });
+        lines.push({ text: '', type: '' });
+        lines.push({ text: 'Summary:', type: 'accent' });
+        lines.push({ text: '  Total lines: 820', type: '' });
+        lines.push({ text: '  Functions: 47', type: '' });
+        lines.push({ text: '  Pipelines used: 120', type: '' });
+        lines.push({ text: '  Pattern matches: 35', type: '' });
+        lines.push({ text: '  Pipeline density: 14%', type: '' });
+        lines.push({ text: '', type: '' });
+        lines.push({ text: 'Report saved to: report.txt', type: 'info' });
+    }
+    else if (codeStr.includes('EntityKind') && codeStr.includes('update_physics')) {
+        lines.push({ text: '=== Game State ===', type: 'accent' });
+        lines.push({ text: '', type: '' });
+        lines.push({ text: '--- Frame 0 ---', type: 'cyan' });
+        lines.push({ text: '  🎮 Player at (0.2, 0.1) HP:100', type: '' });
+        lines.push({ text: '  💫 Bullet at (1.8, 0.8) HP:1', type: '' });
+        lines.push({ text: '  👾 Drone at (9.9, 5.0) HP:30', type: '' });
+        lines.push({ text: '  👾 Boss at (20.0, 7.9) HP:200', type: '' });
+        lines.push({ text: '', type: '' });
+        lines.push({ text: '--- Frame 1 ---', type: 'cyan' });
+        lines.push({ text: '  🎮 Player at (0.4, 0.2) HP:100', type: '' });
+        lines.push({ text: '  💫 Bullet at (2.6, 1.1) HP:1', type: '' });
+        lines.push({ text: '  👾 Drone at (9.8, 5.0) HP:30', type: '' });
+        lines.push({ text: '  👾 Boss at (20.0, 7.8) HP:200', type: '' });
+        lines.push({ text: '', type: '' });
+        lines.push({ text: '--- Frame 2 ---', type: 'cyan' });
+        lines.push({ text: '  🎮 Player at (0.5, 0.3) HP:100', type: '' });
+        lines.push({ text: '  💫 Bullet at (3.4, 1.4) HP:1', type: '' });
+        lines.push({ text: '  👾 Drone at (9.7, 5.0) HP:30', type: '' });
+        lines.push({ text: '  👾 Boss at (20.0, 7.7) HP:200', type: '' });
+        lines.push({ text: '', type: '' });
+        lines.push({ text: 'Active entities: 4/4', type: 'info' });
     }
     else {
         // Generic: try to extract println strings

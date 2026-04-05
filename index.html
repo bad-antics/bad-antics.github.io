@@ -3,357 +3,543 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>bad-antics | Security Research</title>
-    <meta name="description" content="Security researcher with 732 repositories, 140+ tools, NullSec Linux distribution">
+    <title>bad-antics | Security Research · Language Design · Systems Engineering</title>
+    <meta name="description" content="Security researcher and language designer. Creator of Lateralus, NullSec Linux, 140+ security tools. 732 repositories, 1M+ reach.">
+    <meta property="og:title" content="bad-antics — Security Research & Language Design">
+    <meta property="og:description" content="Creator of Lateralus programming language, NullSec Linux, and 140+ open-source security tools.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://bad-antics.github.io/">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0d1117;
-            --bg2: #161b22;
-            --bg3: #21262d;
-            --border: #30363d;
-            --text: #e6edf3;
-            --text2: #8b949e;
-            --blue: #58a6ff;
-            --green: #3fb950;
-            --purple: #a371f7;
-            --yellow: #d29922;
-            --red: #f85149;
+            --bg: #0a0a0f;
+            --bg2: #12121a;
+            --bg3: #1a1a2e;
+            --bg-code: #0d1117;
+            --border: #2a2a3e;
+            --text: #e8e8f0;
+            --text2: #8888a8;
+            --accent: #7c5cfc;
+            --accent2: #a78bfa;
+            --cyan: #22d3ee;
+            --green: #34d399;
+            --orange: #fb923c;
+            --pink: #f472b6;
+            --yellow: #fbbf24;
+            --red: #f87171;
+            --blue: #60a5fa;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
-        a { color: var(--blue); text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        
-        /* Hero */
-        .hero { padding: 80px 0 60px; text-align: center; background: linear-gradient(180deg, var(--bg2) 0%, var(--bg) 100%); }
-        .hero h1 { font-family: 'JetBrains Mono', monospace; font-size: 3.5rem; font-weight: 700; margin-bottom: 16px; background: linear-gradient(135deg, var(--text) 0%, var(--blue) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .hero p { color: var(--text2); font-size: 1.1rem; max-width: 600px; margin: 0 auto 32px; }
-        
-        /* Badges */
-        .badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-bottom: 32px; }
-        .badge { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; background: var(--bg); border: 1px solid var(--border); border-radius: 50px; font-size: 0.9rem; font-weight: 500; }
-        .badge-icon { font-size: 1.1rem; }
-        .badge-value { color: var(--green); font-weight: 600; }
-        .badge.gold { border-color: var(--yellow); background: rgba(210,153,34,0.1); }
-        .badge.green { border-color: var(--green); background: rgba(63,185,80,0.1); }
-        
-        /* Nav */
-        nav { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; padding: 20px; border-bottom: 1px solid var(--border); margin-bottom: 60px; }
-        nav a { color: var(--text2); padding: 8px 16px; border-radius: 8px; font-size: 0.9rem; text-decoration: none; }
-        nav a:hover { color: var(--text); background: var(--bg2); }
-        
-        /* Section */
-        section { margin-bottom: 80px; }
-        .section-title { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; }
-        .section-title span { font-size: 1.5rem; }
-        .section-title h2 { font-size: 1.5rem; font-weight: 700; }
-        
-        /* Cards Grid */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; }
-        .card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 24px; transition: all 0.2s; }
-        .card:hover { border-color: var(--blue); transform: translateY(-2px); }
-        .card-header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 16px; }
-        .card-icon { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; background: var(--bg3); border-radius: 12px; font-size: 1.5rem; }
-        .card-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 4px; }
-        .card-meta { font-size: 0.85rem; color: var(--text2); }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+        a { color: var(--accent2); text-decoration: none; }
+        a:hover { color: var(--cyan); }
+        code, pre { font-family: 'JetBrains Mono', monospace; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+        /* ── Top Bar ── */
+        .topbar { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,10,15,0.88); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+        .topbar-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 56px; }
+        .topbar-logo { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1.1rem; color: var(--text); letter-spacing: -0.5px; }
+        .topbar-logo span { color: var(--accent); }
+        .topbar-links { display: flex; gap: 20px; align-items: center; }
+        .topbar-links a { color: var(--text2); font-size: 0.88rem; font-weight: 500; transition: color 0.15s; }
+        .topbar-links a:hover { color: var(--text); }
+        .topbar-links .highlight { color: var(--cyan); }
+
+        /* ── Hero ── */
+        .hero { padding: 120px 0 60px; text-align: center; position: relative; overflow: hidden; }
+        .hero::before { content: ''; position: absolute; top: -200px; left: 50%; transform: translateX(-50%); width: 900px; height: 900px; background: radial-gradient(circle, rgba(124,92,252,0.06) 0%, transparent 70%); pointer-events: none; }
+        .hero-tag { display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; background: rgba(124,92,252,0.08); border: 1px solid rgba(124,92,252,0.2); border-radius: 50px; font-size: 0.82rem; color: var(--accent2); margin-bottom: 24px; font-weight: 500; }
+        .hero h1 { font-family: 'JetBrains Mono', monospace; font-size: 3.8rem; font-weight: 900; line-height: 1.1; margin-bottom: 20px; letter-spacing: -2px; }
+        .hero h1 .gr { background: linear-gradient(135deg, var(--accent2) 0%, var(--cyan) 50%, var(--green) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .hero p { font-size: 1.15rem; color: var(--text2); max-width: 620px; margin: 0 auto 32px; }
+        .hero-stats { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; margin-bottom: 36px; }
+        .hero-stat { display: flex; align-items: center; gap: 8px; }
+        .hero-stat .num { font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 1.3rem; }
+        .hero-stat .lbl { color: var(--text2); font-size: 0.85rem; }
+        .hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+        .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 10px; font-weight: 600; font-size: 0.95rem; transition: all 0.2s; }
+        .btn-primary { background: var(--accent); color: #fff; }
+        .btn-primary:hover { background: var(--accent2); color: #fff; transform: translateY(-1px); }
+        .btn-secondary { background: var(--bg3); color: var(--text); border: 1px solid var(--border); }
+        .btn-secondary:hover { border-color: var(--accent); color: var(--accent2); }
+        .btn-cyan { background: rgba(34,211,238,0.1); color: var(--cyan); border: 1px solid rgba(34,211,238,0.3); }
+        .btn-cyan:hover { background: rgba(34,211,238,0.2); }
+
+        /* ── Section ── */
+        section { padding: 80px 0; }
+        .section-label { display: inline-flex; align-items: center; gap: 8px; padding: 4px 14px; background: rgba(124,92,252,0.08); border: 1px solid rgba(124,92,252,0.2); border-radius: 6px; font-size: 0.78rem; color: var(--accent2); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; }
+        .section-title { font-size: 2rem; font-weight: 800; margin-bottom: 8px; letter-spacing: -1px; }
+        .section-sub { color: var(--text2); font-size: 1.05rem; margin-bottom: 40px; }
+        .divider { height: 1px; background: linear-gradient(90deg, transparent, var(--border) 20%, var(--accent) 50%, var(--border) 80%, transparent); margin: 0; }
+
+        /* ── Lateralus Showcase ── */
+        .lateralus-showcase { background: linear-gradient(135deg, rgba(124,92,252,0.04) 0%, rgba(34,211,238,0.02) 100%); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+        .showcase-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+        .showcase-code { background: var(--bg-code); border: 1px solid var(--border); border-radius: 12px; padding: 24px; font-size: 0.88rem; line-height: 1.7; overflow-x: auto; }
+        .showcase-info h3 { font-size: 1.5rem; font-weight: 800; margin-bottom: 12px; }
+        .showcase-info p { color: var(--text2); margin-bottom: 20px; }
+        .showcase-features { list-style: none; margin-bottom: 24px; }
+        .showcase-features li { padding: 6px 0; color: var(--text2); font-size: 0.95rem; }
+        .showcase-features li::before { content: '|> '; color: var(--accent); font-family: 'JetBrains Mono', monospace; font-weight: 700; }
+        .kw { color: var(--accent2); }
+        .fn { color: var(--cyan); }
+        .str { color: var(--green); }
+        .cm { color: var(--text2); }
+        .op { color: var(--orange); }
+        .ty { color: var(--yellow); }
+        .num { color: var(--orange); }
+
+        /* ── Project Cards ── */
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+        .card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 24px; transition: all 0.2s; }
+        .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+        .card-head { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+        .card-icon { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: var(--bg3); border-radius: 10px; font-size: 1.3rem; flex-shrink: 0; }
+        .card-title { font-size: 1.05rem; font-weight: 700; }
+        .card-meta { font-size: 0.82rem; color: var(--text2); }
         .card-meta .stars { color: var(--yellow); }
-        .card-desc { color: var(--text2); font-size: 0.95rem; margin-bottom: 16px; }
-        .card-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
-        .tag { padding: 4px 10px; background: rgba(88,166,255,0.1); border: 1px solid rgba(88,166,255,0.2); border-radius: 6px; font-size: 0.8rem; color: var(--blue); }
-        .card-link { color: var(--blue); font-size: 0.9rem; font-weight: 500; }
-        
-        /* Stats */
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-bottom: 32px; }
-        .stat { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 24px; text-align: center; }
-        .stat-value { font-size: 2rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; color: var(--blue); }
-        .stat-label { color: var(--text2); font-size: 0.85rem; margin-top: 4px; }
+        .card-desc { color: var(--text2); font-size: 0.92rem; margin-bottom: 16px; }
+        .card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+        .tag { padding: 3px 10px; background: rgba(124,92,252,0.08); border: 1px solid rgba(124,92,252,0.2); border-radius: 6px; font-size: 0.75rem; color: var(--accent2); }
+        .tag-cyan { background: rgba(34,211,238,0.08); border-color: rgba(34,211,238,0.2); color: var(--cyan); }
+        .tag-green { background: rgba(52,211,153,0.08); border-color: rgba(52,211,153,0.2); color: var(--green); }
+        .tag-orange { background: rgba(251,146,60,0.08); border-color: rgba(251,146,60,0.2); color: var(--orange); }
+        .card-link { color: var(--accent2); font-size: 0.88rem; font-weight: 600; }
+        .card-link:hover { color: var(--cyan); }
+        .card.featured { border-color: rgba(124,92,252,0.4); background: linear-gradient(135deg, rgba(124,92,252,0.06) 0%, var(--bg2) 100%); }
+
+        /* ── Stats Grid ── */
+        .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; margin-bottom: 32px; }
+        .stat-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 20px; text-align: center; }
+        .stat-num { font-family: 'JetBrains Mono', monospace; font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, var(--accent) 0%, var(--cyan) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .stat-lbl { color: var(--text2); font-size: 0.82rem; margin-top: 4px; }
         .github-cards { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; }
         .github-cards img { max-width: 100%; border-radius: 8px; }
-        
-        /* Contributions */
-        .contrib-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
-        .contrib { display: flex; align-items: center; gap: 12px; padding: 16px; background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; }
+
+        /* ── Contributions ── */
+        .contrib-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 10px; }
+        .contrib { display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; transition: border-color 0.15s; }
         .contrib:hover { border-color: var(--green); }
-        .contrib-icon { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: rgba(63,185,80,0.1); border-radius: 10px; font-size: 1.2rem; }
-        .contrib-info { flex: 1; }
-        .contrib-name { font-weight: 600; font-size: 0.95rem; }
-        .contrib-detail { font-size: 0.8rem; color: var(--text2); }
-        .contrib-stars { color: var(--yellow); font-weight: 600; font-size: 0.9rem; }
-        
-        /* Discussions */
-        .discussions { background: linear-gradient(135deg, rgba(163,113,247,0.05) 0%, rgba(88,166,255,0.05) 100%); border: 1px solid var(--border); border-radius: 16px; padding: 32px; margin-bottom: 60px; }
-        .discussions h3 { font-size: 1.3rem; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; }
-        .discussions h3 .count { background: var(--purple); padding: 4px 12px; border-radius: 50px; font-size: 0.8rem; }
-        .discussions p { color: var(--text2); margin-bottom: 20px; }
-        .disc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
-        .disc-item { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; font-size: 0.85rem; }
-        .disc-item:hover { border-color: var(--purple); }
-        .disc-repo { background: var(--bg3); padding: 2px 8px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--blue); }
-        .disc-topic { color: var(--text2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        
-        /* Tools */
-        .tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .tools-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
-        .tools-card h4 { display: flex; align-items: center; gap: 10px; font-size: 1rem; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
-        .tools-card ul { list-style: none; }
-        .tools-card li { padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
-        .tools-card li:last-child { border-bottom: none; }
-        .tools-card li span { color: var(--text2); font-size: 0.8rem; }
-        
-        /* Footer */
-        footer { text-align: center; padding: 60px 20px; border-top: 1px solid var(--border); }
-        .footer-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 24px; margin-bottom: 20px; }
-        .footer-links a { color: var(--text2); font-size: 0.9rem; }
-        footer p { color: var(--text2); font-size: 0.85rem; }
-        
+        .contrib-icon { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: rgba(52,211,153,0.08); border-radius: 8px; font-size: 1.1rem; flex-shrink: 0; }
+        .contrib-name { font-weight: 600; font-size: 0.92rem; }
+        .contrib-detail { font-size: 0.78rem; color: var(--text2); }
+        .contrib-stars { color: var(--yellow); font-weight: 600; font-size: 0.85rem; margin-left: auto; white-space: nowrap; }
+
+        /* ── Tools Grid ── */
+        .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+        .tool-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+        .tool-card h4 { display: flex; align-items: center; gap: 8px; font-size: 0.95rem; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+        .tool-card ul { list-style: none; }
+        .tool-card li { padding: 6px 0; border-bottom: 1px solid rgba(42,42,62,0.5); font-size: 0.88rem; display: flex; justify-content: space-between; }
+        .tool-card li:last-child { border-bottom: none; }
+        .tool-card li span { color: var(--text2); font-size: 0.78rem; }
+
+        /* ── Blog ── */
+        .blog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+        .blog-card { display: block; background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 24px; transition: all 0.2s; }
+        .blog-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+        .blog-date { font-size: 0.78rem; color: var(--text2); margin-bottom: 8px; }
+        .blog-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; color: var(--text); }
+        .blog-card:hover .blog-title { color: var(--accent2); }
+        .blog-excerpt { color: var(--text2); font-size: 0.88rem; margin-bottom: 12px; }
+        .blog-tags { display: flex; gap: 6px; }
+
+        /* ── Footer ── */
+        footer { border-top: 1px solid var(--border); padding: 40px 0; text-align: center; }
+        .footer-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 24px; margin-bottom: 16px; }
+        .footer-links a { color: var(--text2); font-size: 0.88rem; }
+        .footer-links a:hover { color: var(--accent2); }
+        footer p { color: var(--text2); font-size: 0.82rem; }
+
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.5rem; }
-            .grid { grid-template-columns: 1fr; }
-            .stat-value { font-size: 1.5rem; }
+            .showcase-grid { grid-template-columns: 1fr; }
+            .card-grid { grid-template-columns: 1fr; }
+            .topbar-links a:not(.highlight):not(:last-child) { display: none; }
         }
     </style>
 </head>
 <body>
-    <section class="hero">
-        <div class="container">
-            <h1>BAD-ANTICS</h1>
-            <p>Security researcher building open source security tools, custom Linux distributions, and contributing to the security community.</p>
-            
-            <div class="badges contributor-badges">
-                <div class="badge"><span class="badge-icon">📦</span> Repos <span class="badge-value">732</span></div>
-                <div class="badge"><span class="badge-icon">🛠️</span> Tools <span class="badge-value">140+</span></div>
-                <div class="badge"><span class="badge-icon">👥</span> Followers <span class="badge-value">223</span></div>
-                <div class="badge"><span class="badge-icon">💬</span> Answers <span class="badge-value">60+</span></div>
-            </div>
-            
-            <div class="badges contributor-badges">
-                <a href="https://github.com/The-Art-of-Hacking/h4cker"><img src="https://img.shields.io/badge/h4cker-Contributor-3fb950?style=flat-square" alt="h4cker"></a>
-                <a href="https://github.com/ashishb/android-security-awesome"><img src="https://img.shields.io/badge/android--security-Contributor-3fb950?style=flat-square" alt="android"></a>
-                <a href="https://github.com/hak5/bashbunny-payloads"><img src="https://img.shields.io/badge/bashbunny-Contributor-3fb950?style=flat-square" alt="bashbunny"></a>
-                <a href="https://github.com/infoslack/awesome-web-hacking"><img src="https://img.shields.io/badge/awesome--web--hacking-Contributor-3fb950?style=flat-square" alt="web-hacking"></a>
-                <a href="https://github.com/HQarroum/awesome-iot"><img src="https://img.shields.io/badge/awesome--iot-Contributor-3fb950?style=flat-square" alt="iot"></a>
-                <a href="https://github.com/milabs/awesome-linux-rootkits"><img src="https://img.shields.io/badge/linux--rootkits-Contributor-3fb950?style=flat-square" alt="rootkits"></a>
-                <a href="https://github.com/Astrosp/Awesome-OSINT-For-Everything"><img src="https://img.shields.io/badge/OSINT--Everything-Contributor-3fb950?style=flat-square" alt="osint"></a>
-                <a href="https://github.com/fkromer/awesome-embedded-linux"><img src="https://img.shields.io/badge/embedded--linux-Contributor-3fb950?style=flat-square" alt="embedded"></a>
-                <a href="https://github.com/netbiosX/Checklists"><img src="https://img.shields.io/badge/Checklists-Contributor-3fb950?style=flat-square" alt="checklists"></a>
-                <a href="https://github.com/Hack-with-Github/Awesome-Hacking"><img src="https://img.shields.io/badge/Awesome--Hacking-Contributor-3fb950?style=flat-square" alt="hacking"></a>
-                <a href="https://github.com/djsime1/awesome-flipperzero"><img src="https://img.shields.io/badge/awesome--flipperzero-Contributor-3fb950?style=flat-square" alt="flipper"></a>
-            </div>
-        </div>
-    </section>
-    
-    <nav>
-        <a href="/lateralus/" style="color: #a78bfa; font-weight: 600; background: rgba(124,92,252,0.1); border: 1px solid rgba(124,92,252,0.25);">|&gt; Lateralus Lang</a>
-        <a href="#featured">Featured</a>
-        <a href="#stats">Stats</a>
-        <a href="#discussions">Discussions</a>
-        <a href="#contributions">Contributions</a>
-        <a href="#tools">Tools</a>
-        <a href="#blog">Blog</a>
-        <a href="https://github.com/bad-antics">GitHub ↗</a>
-    </nav>
-    
-    <div class="container">
-        <section id="featured">
-            <div class="section-title"><span>🚀</span><h2>Featured Projects</h2></div>
-            <div class="grid">
-                <div class="card" style="border-color: rgba(124,92,252,0.4); background: linear-gradient(135deg, rgba(124,92,252,0.06) 0%, #161b22 100%);">
-                    <div class="card-header">
-                        <div class="card-icon" style="background: rgba(124,92,252,0.15);">|&gt;</div>
-                        <div><div class="card-title">Lateralus Language</div><div class="card-meta">Programming Language • <span class="stars">⭐ 22 repos</span></div></div>
-                    </div>
-                    <p class="card-desc">Pipeline-driven programming language with pattern matching, async/await, and a full OS written in it. Compiler, 25 tutorials, 220 Rosetta solutions.</p>
-                    <div class="card-tags"><span class="tag" style="color: #a78bfa; border-color: rgba(124,92,252,0.3); background: rgba(124,92,252,0.1);">Pipeline |&gt;</span><span class="tag" style="color: #a78bfa; border-color: rgba(124,92,252,0.3); background: rgba(124,92,252,0.1);">Pattern Matching</span><span class="tag" style="color: #a78bfa; border-color: rgba(124,92,252,0.3); background: rgba(124,92,252,0.1);">2,400+ .ltl files</span></div>
-                    <a href="/lateralus/" class="card-link" style="color: #a78bfa;">Explore Lateralus →</a>
-                </div>
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-icon">🐧</div>
-                        <div><div class="card-title">NullSec Linux v5.0</div><div class="card-meta">Distro • <span class="stars">⭐ 36</span></div></div>
-                    </div>
-                    <p class="card-desc">Security-focused Linux distribution with 140+ pre-installed tools, AI assistant, and 5 specialized editions.</p>
-                    <div class="card-tags"><span class="tag">140+ Tools</span><span class="tag">AI Assistant</span><span class="tag">5 Editions</span></div>
-                    <a href="https://github.com/bad-antics/nullsec-linux" class="card-link">View Repository →</a>
-                </div>
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-icon">🌐</div>
-                        <div><div class="card-title">Marshall Browser v3.0</div><div class="card-meta">Rust • <span class="stars">⭐ 13</span></div></div>
-                    </div>
-                    <p class="card-desc">Privacy-focused security browser with Dr. Marshall AI assistant and built-in exploit tools.</p>
-                    <div class="card-tags"><span class="tag">Dr. Marshall AI</span><span class="tag">Privacy First</span><span class="tag">Rust</span></div>
-                    <a href="https://github.com/bad-antics/marshall" class="card-link">View Repository →</a>
-                </div>
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-icon">🍍</div>
-                        <div><div class="card-title">WiFi Pineapple Suite</div><div class="card-meta">Hak5</div></div>
-                    </div>
-                    <p class="card-desc">106 professional WiFi security payloads for Hak5 WiFi Pineapple with auto-installer.</p>
-                    <div class="card-tags"><span class="tag">106 Payloads</span><span class="tag">Auto-Installer</span></div>
-                    <a href="https://github.com/bad-antics/nullsec-pineapple-suite" class="card-link">View Repository →</a>
-                </div>
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-icon">🐬</div>
-                        <div><div class="card-title">Flipper Zero Suite</div><div class="card-meta">Hardware</div></div>
-                    </div>
-                    <p class="card-desc">Comprehensive Flipper Zero toolkit — 430+ files including BadUSB, SubGHz, NFC, RFID, IR payloads &amp; animations.</p>
-                    <div class="card-tags"><span class="tag">BadUSB</span><span class="tag">SubGHz</span><span class="tag">NFC</span></div>
-                    <a href="https://github.com/bad-antics/nullsec-flipper-suite" class="card-link">View Repository →</a>
-                </div>
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-icon">📱</div>
-                        <div><div class="card-title">NullKia Mobile</div><div class="card-meta">Mobile Security</div></div>
-                    </div>
-                    <p class="card-desc">Mobile security framework supporting 18 manufacturers with baseband and 5G/LTE testing.</p>
-                    <div class="card-tags"><span class="tag">18 Vendors</span><span class="tag">Baseband</span><span class="tag">5G/LTE</span></div>
-                    <a href="https://github.com/bad-antics/nullkia" class="card-link">View Repository →</a>
-                </div>
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-icon">🪓</div>
-                        <div><div class="card-title">LogReaper</div><div class="card-meta">C &bull; <span class="stars">⭐ 72</span></div></div>
-                    </div>
-                    <p class="card-desc">High-speed log analysis &amp; forensics engine with blazing fast pattern matching and timeline reconstruction.</p>
-                    <div class="card-tags"><span class="tag">Log Analysis</span><span class="tag">Forensics</span><span class="tag">Pattern Matching</span></div>
-                    <a href="https://github.com/bad-antics/nullsec-logreaper" class="card-link">View Repository →</a>
-                </div>
-            </div>
-        </section>
-        
-        <section id="stats">
-            <div class="section-title"><span>📊</span><h2>GitHub Stats</h2></div>
-            <div class="stats-grid">
-                <div class="stat"><div class="stat-value">732</div><div class="stat-label">Repositories</div></div>
-                <div class="stat"><div class="stat-value">60</div><div class="stat-label">PRs Merged</div></div>
-                                <div class="stat"><div class="stat-value">223</div><div class="stat-label">Followers</div></div>
-                <div class="stat"><div class="stat-value">60+</div><div class="stat-label">Answers</div></div>
-            </div>
-            <div class="github-cards">
-                <img src="https://github-readme-stats-sigma-five.vercel.app/api?username=bad-antics&show_icons=true&theme=github_dark&hide_border=true&count_private=true&include_all_commits=true" alt="GitHub Stats">
-                <img src="https://github-readme-streak-stats-eight.vercel.app/?user=bad-antics&theme=github-dark-blue&hide_border=true" alt="Streak">
-            </div>
-        </section>
-        
-        <div id="discussions" class="discussions">
-            <h3>🧠 Community Discussion Answers <span class="count">24 today</span></h3>
-            <p>Helping the security community with technical questions in ProjectDiscovery tools</p>
-            <div class="disc-grid">
-                <a href="https://github.com/projectdiscovery/nuclei/discussions/6787" class="disc-item"><span class="disc-repo">nuclei</span><span class="disc-topic">Go 1.26 build issues</span></a>
-                <a href="https://github.com/projectdiscovery/nuclei/discussions/6786" class="disc-item"><span class="disc-repo">nuclei</span><span class="disc-topic">SDK WithOptions example</span></a>
-                <a href="https://github.com/projectdiscovery/httpx/discussions/2253" class="disc-item"><span class="disc-repo">httpx</span><span class="disc-topic">v1.7.0 slow/hanging</span></a>
-                <a href="https://github.com/projectdiscovery/subfinder/discussions/1563" class="disc-item"><span class="disc-repo">subfinder</span><span class="disc-topic">FOFA API config</span></a>
-                <a href="https://github.com/projectdiscovery/interactsh/discussions/1327" class="disc-item"><span class="disc-repo">interactsh</span><span class="disc-topic">Session lifetime</span></a>
-                <a href="https://github.com/projectdiscovery/dnsx/discussions/881" class="disc-item"><span class="disc-repo">dnsx</span><span class="disc-topic">DoH/DoT resolvers</span></a>
-                <a href="https://github.com/projectdiscovery/notify/discussions/441" class="disc-item"><span class="disc-repo">notify</span><span class="disc-topic">Pipe workflow fix</span></a>
-                <a href="https://github.com/projectdiscovery/chaos-client/discussions/302" class="disc-item"><span class="disc-repo">chaos</span><span class="disc-topic">Installation fix</span></a>
-            </div>
-        </div>
-        
-        <section id="contributions">
-            <div class="section-title"><span>✅</span><h2>Merged Contributions (1M+ ⭐)</h2></div>
-            <div class="contrib-grid">
-                <a href="https://github.com/The-Art-of-Hacking/h4cker" class="contrib"><div class="contrib-icon">🔓</div><div class="contrib-info"><div class="contrib-name">h4cker (×5)</div><div class="contrib-detail">Ethical hacking</div></div><span class="contrib-stars">⭐ 25.6k</span></a>
-                <a href="https://github.com/ashishb/android-security-awesome" class="contrib"><div class="contrib-icon">🤖</div><div class="contrib-info"><div class="contrib-name">android-security-awesome</div><div class="contrib-detail">Android security</div></div><span class="contrib-stars">⭐ 9.3k</span></a>
-                <a href="https://github.com/infoslack/awesome-web-hacking" class="contrib"><div class="contrib-icon">🌐</div><div class="contrib-info"><div class="contrib-name">awesome-web-hacking</div><div class="contrib-detail">Web security</div></div><span class="contrib-stars">⭐ 6.8k</span></a>
-                <a href="https://github.com/HQarroum/awesome-iot" class="contrib"><div class="contrib-icon">📡</div><div class="contrib-info"><div class="contrib-name">awesome-iot</div><div class="contrib-detail">IoT resources</div></div><span class="contrib-stars">⭐ 3.9k</span></a>
-                <a href="https://github.com/hak5/bashbunny-payloads" class="contrib"><div class="contrib-icon">🐰</div><div class="contrib-info"><div class="contrib-name">bashbunny-payloads</div><div class="contrib-detail">Hak5</div></div><span class="contrib-stars">⭐ 2.9k</span></a>
-                <a href="https://github.com/milabs/awesome-linux-rootkits" class="contrib"><div class="contrib-icon">🐧</div><div class="contrib-info"><div class="contrib-name">awesome-linux-rootkits</div><div class="contrib-detail">Rootkit research</div></div><span class="contrib-stars">⭐ 2k</span></a>
-                <a href="https://github.com/Astrosp/Awesome-OSINT-For-Everything" class="contrib"><div class="contrib-icon">🔍</div><div class="contrib-info"><div class="contrib-name">Awesome-OSINT-For-Everything</div><div class="contrib-detail">OSINT</div></div><span class="contrib-stars">⭐ 2.2k</span></a>
-                <a href="https://github.com/fkromer/awesome-embedded-linux" class="contrib"><div class="contrib-icon">🖥️</div><div class="contrib-info"><div class="contrib-name">awesome-embedded-linux</div><div class="contrib-detail">Embedded</div></div><span class="contrib-stars">⭐ 397</span></a>
-                <a href="https://github.com/Hack-with-Github/Awesome-Hacking" class="contrib"><div class="contrib-icon">💀</div><div class="contrib-info"><div class="contrib-name">Awesome-Hacking</div><div class="contrib-detail">Hacking resources</div></div><span class="contrib-stars">⭐ 108.8k</span></a>
-                <a href="https://github.com/djsime1/awesome-flipperzero" class="contrib"><div class="contrib-icon">🐬</div><div class="contrib-info"><div class="contrib-name">awesome-flipperzero</div><div class="contrib-detail">Flipper Zero</div></div><span class="contrib-stars">⭐ 23k</span></a>
-                <a href="https://github.com/netbiosX/Checklists" class="contrib"><div class="contrib-icon">📋</div><div class="contrib-info"><div class="contrib-name">Checklists</div><div class="contrib-detail">Pentesting</div></div><span class="contrib-stars">⭐ 2.6k</span></a>
-            </div>
-        </section>
-        
-        <section id="tools">
-            <div class="section-title"><span>🛠️</span><h2>Security Tool Suites</h2></div>
-            <div class="tools-grid">
-                <div class="tools-card">
-                    <h4>☁️ Cloud Security</h4>
-                    <ul>
-                        <li><a href="https://github.com/bad-antics/nullsec-cloudaudit">cloudaudit</a> <span>— Multi-cloud</span></li>
-                        <li><a href="https://github.com/bad-antics/nullsec-k8sscan">k8sscan</a> <span>— Kubernetes</span></li>
-                        <li><a href="https://github.com/bad-antics/nullsec-awsrecon">awsrecon</a> <span>— AWS</span></li>
-                        <li><a href="https://github.com/bad-antics/nullsec-terraform-scan">terraform-scan</a> <span>— IaC</span></li>
-                    </ul>
-                </div>
-                <div class="tools-card">
-                    <h4>🤖 AI/ML Security</h4>
-                    <ul>
-                        <li><a href="https://github.com/bad-antics/nullsec-llmred">llmred</a> <span>— LLM red team</span></li>
-                        <li><a href="https://github.com/bad-antics/nullsec-promptinject">promptinject</a> <span>— Injection</span></li>
-                        <li><a href="https://github.com/bad-antics/nullsec-modelaudit">modelaudit</a> <span>— Audit</span></li>
-                        <li><a href="https://github.com/bad-antics/nullsec-adversarial">adversarial</a> <span>— Attacks</span></li>
-                    </ul>
-                </div>
-                <div class="tools-card">
-                    <h4>🔌 Hardware Hacking</h4>
-                    <ul>
-                        <li><a href="https://github.com/bad-antics/nullsec-sdr">sdr</a> <span>— SDR analysis</span></li>
-                        <li><a href="https://github.com/bad-antics/nullsec-rfid">rfid</a> <span>— RFID/NFC</span></li>
-                        <li><a href="https://github.com/bad-antics/nullsec-canbus">canbus</a> <span>— CAN bus</span></li>
-                        <li><a href="https://github.com/bad-antics/nullsec-glitch">glitch</a> <span>— Voltage glitch</span></li>
-                    </ul>
-                </div>
-                <div class="tools-card">
-                    <h4>🔮 Julia Security Suite</h4>
-                    <ul>
-                        <li><a href="https://github.com/bad-antics/spectra">spectra</a> <span>— Toolkit</span></li>
-                        <li><a href="https://github.com/bad-antics/oracle">oracle</a> <span>— Vuln discovery</span></li>
-                        <li><a href="https://github.com/bad-antics/phantom">phantom</a> <span>— Zero-knowledge</span></li>
-                        <li><a href="https://github.com/bad-antics/vortex">vortex</a> <span>— Threat intel</span></li>
-                    </ul>
-                </div>
-                <div class="tools-card">
-                    <h4>🌐 Web Security</h4>
-                    <ul>
-                        <li><a href="https://github.com/bad-antics/nullsec-xss">xss-hunter</a> <span>— XSS detection</span></li>
-                        <li><a href="https://github.com/bad-antics/nullsec-sqli">sqli-scanner</a> <span>— SQL injection</span></li>
-                        <li><a href="https://github.com/bad-antics/nullsec-ssrf">ssrf-detect</a> <span>— SSRF finder</span></li>
-                        <li><a href="https://github.com/bad-antics/nullsec-api">api-fuzzer</a> <span>— API testing</span></li>
-                    </ul>
-                </div>
-                <div class="tools-card">
-                    <h4>🔐 Crypto & Auth</h4>
-                    <ul>
-                        <li><a href="https://github.com/bad-antics/nullsec-jwt">jwt-crack</a> <span>— JWT attacks</span></li>
-                        <li><a href="https://github.com/bad-antics/nullsec-oauth">oauth-test</a> <span>— OAuth flaws</span></li>
-                        <li><a href="https://github.com/bad-antics/nullsec-saml">saml-raider</a> <span>— SAML testing</span></li>
-                        <li><a href="https://github.com/bad-antics/nullsec-hash">hash-crack</a> <span>— Hash attacks</span></li>
-                    </ul>
-                </div>
-            </div>
-        </section>
 
-        <section id="blog">
-            <div class="section-title"><span>📝</span><h2>Daily Security Blog</h2></div>
-            <div class="contrib-grid">
-                <a href="https://github.com/bad-antics/nullsec-wiki/wiki/Blog-2026-03-07-Log-Analysis-IR" class="contrib"><div class="contrib-icon">🪓</div><div class="contrib-info"><div class="contrib-name">Log Analysis in IR</div><div class="contrib-detail">What defenders miss — attack chains, response sizes, process masquerading</div></div><span class="contrib-stars">Mar 7</span></a>
-                <a href="https://github.com/bad-antics/nullsec-wiki/wiki/Flipper-Zero-Deep-Dive" class="contrib"><div class="contrib-icon">🐬</div><div class="contrib-info"><div class="contrib-name">Flipper Zero Deep Dive</div><div class="contrib-detail">SubGHz, BadUSB, NFC, RFID, IR — building 430+ payloads</div></div><span class="contrib-stars">Mar 6</span></a>
-                <a href="https://github.com/bad-antics/nullsec-wiki/wiki/Hak5-Payloads-and-Tools" class="contrib"><div class="contrib-icon">🍍</div><div class="contrib-info"><div class="contrib-name">Hak5 Payloads & Tools</div><div class="contrib-detail">Building the largest third-party Pineapple suite — 106 payloads</div></div><span class="contrib-stars">Mar 5</span></a>
-            </div>
-            <div style="text-align: center; margin-top: 20px;">
-                <a href="https://github.com/bad-antics/nullsec-wiki/wiki/Blog-Index" style="color: var(--blue); font-size: 0.9rem;">📰 View All Posts →</a>
-            </div>
-        </section>
+<!-- ── Top Bar ── -->
+<div class="topbar">
+    <div class="topbar-inner">
+        <a href="/" class="topbar-logo"><span>|&gt;</span> bad-antics</a>
+        <div class="topbar-links">
+            <a href="#lateralus" class="highlight">Lateralus</a>
+            <a href="#projects">Projects</a>
+            <a href="#stats">Stats</a>
+            <a href="#contributions">Contributions</a>
+            <a href="#tools">Tools</a>
+            <a href="#blog">Blog</a>
+            <a href="https://github.com/bad-antics">GitHub ↗</a>
+        </div>
     </div>
-    
-    <footer>
+</div>
+
+<!-- ── Hero ── -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-tag">Security Research · Language Design · Systems Engineering</div>
+        <h1><span class="gr">bad-antics</span></h1>
+        <p>Independent security researcher building open-source tools, a programming language, and a Linux distribution. Contributing to the security community across 17 major projects.</p>
+
+        <div class="hero-stats">
+            <div class="hero-stat"><span class="num" style="color:var(--accent)">732</span><span class="lbl">Repos</span></div>
+            <div class="hero-stat"><span class="num" style="color:var(--cyan)">140+</span><span class="lbl">Tools</span></div>
+            <div class="hero-stat"><span class="num" style="color:var(--green)">60</span><span class="lbl">Merged PRs</span></div>
+            <div class="hero-stat"><span class="num" style="color:var(--orange)">1M+</span><span class="lbl">Reach</span></div>
+        </div>
+
+        <div class="hero-actions">
+            <a href="/lateralus/playground/" class="btn btn-primary">▶ Try Lateralus</a>
+            <a href="/lateralus/" class="btn btn-cyan">|&gt; Language</a>
+            <a href="https://github.com/bad-antics" class="btn btn-secondary">GitHub</a>
+        </div>
+    </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── Lateralus Showcase ── -->
+<section id="lateralus" class="lateralus-showcase">
+    <div class="container">
+        <span class="section-label">|&gt; Featured Language</span>
+        <div class="showcase-grid">
+            <div>
+                <div class="showcase-code">
+<pre><code><span class="cm">// Data flows left-to-right</span>
+<span class="kw">let</span> report = transactions
+    <span class="op">|></span> <span class="fn">filter</span>(|t| t.amount > <span class="num">20.0</span>)
+    <span class="op">|></span> <span class="fn">group_by</span>(|t| t.category)
+    <span class="op">|></span> <span class="fn">map_entries</span>(|cat, txns| {
+        <span class="kw">let</span> total = txns <span class="op">|></span> <span class="fn">sum</span>()
+        (cat, total)
+    })
+    <span class="op">|></span> <span class="fn">sort_by</span>(|e| e.<span class="num">1</span>, descending)
+
+<span class="cm">// Pattern matching with guards</span>
+<span class="kw">match</span> shape {
+    <span class="ty">Circle</span>(r) <span class="kw">if</span> r > <span class="num">100</span> => <span class="str">"Large"</span>,
+    <span class="ty">Circle</span>(r)              => <span class="str">"Circle"</span>,
+    <span class="ty">Rect</span>(w, h)              => <span class="str">"Rect"</span>,
+}</code></pre>
+                </div>
+            </div>
+            <div class="showcase-info">
+                <h3>Lateralus Programming Language</h3>
+                <p>A compiled language where data flows left-to-right. Pipeline operators, pattern matching, async/await, and zero dependencies.</p>
+                <ul class="showcase-features">
+                    <li>Pipeline operator <code>|></code> — first-class data flow</li>
+                    <li>Exhaustive pattern matching with guards</li>
+                    <li>Async/await with <code>spawn</code> concurrency</li>
+                    <li><code>try/recover/ensure</code> error handling</li>
+                    <li>22 repos · 2,400+ .ltl files · full ecosystem</li>
+                    <li>VS Code extension on the marketplace</li>
+                </ul>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <a href="/lateralus/playground/" class="btn btn-primary" style="padding: 10px 20px; font-size: 0.88rem;">▶ Try in Browser</a>
+                    <a href="/lateralus/" class="btn btn-secondary" style="padding: 10px 20px; font-size: 0.88rem;">Website</a>
+                    <a href="https://github.com/bad-antics/lateralus-lang" class="btn btn-secondary" style="padding: 10px 20px; font-size: 0.88rem;">GitHub</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── Featured Projects ── -->
+<section id="projects">
+    <div class="container">
+        <span class="section-label">🚀 Projects</span>
+        <h2 class="section-title">Featured Projects</h2>
+        <p class="section-sub">From a programming language to a Linux distribution to mobile security frameworks.</p>
+
+        <div class="card-grid">
+            <div class="card featured">
+                <div class="card-head">
+                    <div class="card-icon" style="background:rgba(124,92,252,0.15);">|&gt;</div>
+                    <div><div class="card-title">Lateralus Language</div><div class="card-meta">Programming Language · <span class="stars">22 repos</span></div></div>
+                </div>
+                <p class="card-desc">Pipeline-driven programming language with pattern matching, async/await, and a full OS written in it. Compiler, VM, web framework, 25 tutorials.</p>
+                <div class="card-tags"><span class="tag">Pipeline |&gt;</span><span class="tag">Pattern Matching</span><span class="tag">2,400+ .ltl files</span></div>
+                <a href="/lateralus/" class="card-link" style="color:var(--accent)">Explore Lateralus →</a>
+            </div>
+
+            <div class="card">
+                <div class="card-head">
+                    <div class="card-icon">🐧</div>
+                    <div><div class="card-title">NullSec Linux v5.0</div><div class="card-meta">Distribution · <span class="stars">⭐ 36</span></div></div>
+                </div>
+                <p class="card-desc">Security-focused Linux distribution with 140+ pre-installed tools, AI assistant, and 5 specialized editions.</p>
+                <div class="card-tags"><span class="tag-green">140+ Tools</span><span class="tag-green">AI Assistant</span><span class="tag-green">5 Editions</span></div>
+                <a href="https://github.com/bad-antics/nullsec-linux" class="card-link">View Repository →</a>
+            </div>
+
+            <div class="card">
+                <div class="card-head">
+                    <div class="card-icon">🌐</div>
+                    <div><div class="card-title">Marshall Browser v3.0</div><div class="card-meta">Rust · <span class="stars">⭐ 13</span></div></div>
+                </div>
+                <p class="card-desc">Privacy-focused security browser with Dr. Marshall AI assistant and built-in exploit tools.</p>
+                <div class="card-tags"><span class="tag-cyan">Dr. Marshall AI</span><span class="tag-cyan">Privacy</span><span class="tag-cyan">Rust</span></div>
+                <a href="https://github.com/bad-antics/marshall" class="card-link">View Repository →</a>
+            </div>
+
+            <div class="card">
+                <div class="card-head">
+                    <div class="card-icon">📱</div>
+                    <div><div class="card-title">NullKia v3.0</div><div class="card-meta">Mobile Security</div></div>
+                </div>
+                <p class="card-desc">Mobile security framework supporting 18 manufacturers with baseband and 5G/LTE testing.</p>
+                <div class="card-tags"><span class="tag">18 Vendors</span><span class="tag">Baseband</span><span class="tag">5G/LTE</span></div>
+                <a href="https://github.com/bad-antics/nullkia" class="card-link">View Repository →</a>
+            </div>
+
+            <div class="card">
+                <div class="card-head">
+                    <div class="card-icon">🪓</div>
+                    <div><div class="card-title">LogReaper</div><div class="card-meta">C · <span class="stars">⭐ 72</span></div></div>
+                </div>
+                <p class="card-desc">High-speed log analysis & forensics engine with blazing fast pattern matching and timeline reconstruction.</p>
+                <div class="card-tags"><span class="tag-orange">Log Analysis</span><span class="tag-orange">Forensics</span></div>
+                <a href="https://github.com/bad-antics/nullsec-logreaper" class="card-link">View Repository →</a>
+            </div>
+
+            <div class="card">
+                <div class="card-head">
+                    <div class="card-icon">🚗</div>
+                    <div><div class="card-title">BlackFlag</div><div class="card-meta">Automotive Security</div></div>
+                </div>
+                <p class="card-desc">Automotive & ECU security — CAN bus, OBD-II, UDS protocols, key fob analysis, ECU fuzzing & tuning.</p>
+                <div class="card-tags"><span class="tag-orange">CAN Bus</span><span class="tag-orange">OBD-II</span><span class="tag-orange">ECU</span></div>
+                <a href="https://github.com/bad-antics/blackflag" class="card-link">View Repository →</a>
+            </div>
+
+            <div class="card">
+                <div class="card-head">
+                    <div class="card-icon">🍍</div>
+                    <div><div class="card-title">Pineapple Suite</div><div class="card-meta">Hak5 · <span class="stars">⭐ 31</span></div></div>
+                </div>
+                <p class="card-desc">96+ WiFi Pineapple Pager payloads across 13 categories with auto-installer.</p>
+                <div class="card-tags"><span class="tag-green">96 Payloads</span><span class="tag-green">13 Categories</span></div>
+                <a href="https://github.com/bad-antics/nullsec-pineapple-suite" class="card-link">View Repository →</a>
+            </div>
+
+            <div class="card">
+                <div class="card-head">
+                    <div class="card-icon">🐬</div>
+                    <div><div class="card-title">Flipper Suite</div><div class="card-meta">Hardware · <span class="stars">⭐ 24</span></div></div>
+                </div>
+                <p class="card-desc">430+ Flipper Zero files — 80 BadUSB payloads, 40 SubGHz signals, 16 IR remotes, NFC, RFID, animations.</p>
+                <div class="card-tags"><span class="tag-green">BadUSB</span><span class="tag-green">SubGHz</span><span class="tag-green">NFC</span></div>
+                <a href="https://github.com/bad-antics/nullsec-flipper-suite" class="card-link">View Repository →</a>
+            </div>
+
+            <div class="card">
+                <div class="card-head">
+                    <div class="card-icon">🛡️</div>
+                    <div><div class="card-title">RCE Shield</div><div class="card-meta">PC Security</div></div>
+                </div>
+                <p class="card-desc">RCE hardening for gamers — game launcher scanning, anti-cheat auditing, mod & overlay vulnerability checks.</p>
+                <div class="card-tags"><span class="tag-cyan">Gaming</span><span class="tag-cyan">RCE Prevention</span></div>
+                <a href="https://github.com/bad-antics/rce-shield" class="card-link">View Repository →</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── Stats ── -->
+<section id="stats">
+    <div class="container">
+        <span class="section-label">📊 Statistics</span>
+        <h2 class="section-title">GitHub Stats</h2>
+        <p class="section-sub">Open-source contributions and project metrics.</p>
+
+        <div class="stats-row">
+            <div class="stat-card"><div class="stat-num">732</div><div class="stat-lbl">Repositories</div></div>
+            <div class="stat-card"><div class="stat-num">140+</div><div class="stat-lbl">Security Tools</div></div>
+            <div class="stat-card"><div class="stat-num">60</div><div class="stat-lbl">PRs Merged</div></div>
+            <div class="stat-card"><div class="stat-num">223</div><div class="stat-lbl">Followers</div></div>
+            <div class="stat-card"><div class="stat-num">1M+</div><div class="stat-lbl">Reach</div></div>
+            <div class="stat-card"><div class="stat-num">22</div><div class="stat-lbl">Lateralus Repos</div></div>
+        </div>
+
+        <div class="github-cards">
+            <img src="https://github-readme-stats-sigma-five.vercel.app/api?username=bad-antics&show_icons=true&theme=github_dark&hide_border=true&count_private=true&include_all_commits=true&bg_color=0a0a0f&title_color=7c5cfc&icon_color=22d3ee&text_color=e8e8f0&ring_color=7c5cfc" alt="GitHub Stats">
+            <img src="https://github-readme-streak-stats-eight.vercel.app/?user=bad-antics&theme=github-dark-blue&hide_border=true&background=0a0a0f&ring=7c5cfc&fire=22d3ee&currStreakLabel=22d3ee" alt="Streak">
+        </div>
+    </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── Contributions ── -->
+<section id="contributions">
+    <div class="container">
+        <span class="section-label">✅ Open Source</span>
+        <h2 class="section-title">Community Contributions</h2>
+        <p class="section-sub">60 merged PRs across 17 major security projects — 1M+ combined stars.</p>
+
+        <div class="contrib-grid">
+            <a href="https://github.com/Hack-with-Github/Awesome-Hacking" class="contrib"><div class="contrib-icon">💀</div><div style="flex:1"><div class="contrib-name">Awesome-Hacking</div><div class="contrib-detail">Hacking resources</div></div><span class="contrib-stars">⭐ 108.8k</span></a>
+            <a href="https://github.com/The-Art-of-Hacking/h4cker" class="contrib"><div class="contrib-icon">🔓</div><div style="flex:1"><div class="contrib-name">h4cker (×5 PRs)</div><div class="contrib-detail">Ethical hacking</div></div><span class="contrib-stars">⭐ 25.6k</span></a>
+            <a href="https://github.com/enaqx/awesome-pentest" class="contrib"><div class="contrib-icon">🎯</div><div style="flex:1"><div class="contrib-name">awesome-pentest</div><div class="contrib-detail">Penetration testing</div></div><span class="contrib-stars">⭐ 25.6k</span></a>
+            <a href="https://github.com/jivoi/awesome-osint" class="contrib"><div class="contrib-icon">��</div><div style="flex:1"><div class="contrib-name">awesome-osint</div><div class="contrib-detail">OSINT resources</div></div><span class="contrib-stars">⭐ 25.4k</span></a>
+            <a href="https://github.com/djsime1/awesome-flipperzero" class="contrib"><div class="contrib-icon">🐬</div><div style="flex:1"><div class="contrib-name">awesome-flipperzero</div><div class="contrib-detail">Flipper Zero</div></div><span class="contrib-stars">⭐ 23k</span></a>
+            <a href="https://github.com/pluja/awesome-privacy" class="contrib"><div class="contrib-icon">🔒</div><div style="flex:1"><div class="contrib-name">awesome-privacy</div><div class="contrib-detail">Privacy tools</div></div><span class="contrib-stars">⭐ 18.3k</span></a>
+            <a href="https://github.com/sbilly/awesome-security" class="contrib"><div class="contrib-icon">🛡️</div><div style="flex:1"><div class="contrib-name">awesome-security</div><div class="contrib-detail">Security resources</div></div><span class="contrib-stars">⭐ 14.1k</span></a>
+            <a href="https://github.com/ashishb/android-security-awesome" class="contrib"><div class="contrib-icon">🤖</div><div style="flex:1"><div class="contrib-name">android-security-awesome</div><div class="contrib-detail">Android security</div></div><span class="contrib-stars">⭐ 9.3k</span></a>
+            <a href="https://github.com/infoslack/awesome-web-hacking" class="contrib"><div class="contrib-icon">🌐</div><div style="flex:1"><div class="contrib-name">awesome-web-hacking</div><div class="contrib-detail">Web security</div></div><span class="contrib-stars">⭐ 6.8k</span></a>
+            <a href="https://github.com/HQarroum/awesome-iot" class="contrib"><div class="contrib-icon">📡</div><div style="flex:1"><div class="contrib-name">awesome-iot</div><div class="contrib-detail">IoT resources</div></div><span class="contrib-stars">⭐ 3.9k</span></a>
+            <a href="https://github.com/hak5/bashbunny-payloads" class="contrib"><div class="contrib-icon">🐰</div><div style="flex:1"><div class="contrib-name">bashbunny-payloads</div><div class="contrib-detail">Hak5 payloads</div></div><span class="contrib-stars">⭐ 2.9k</span></a>
+            <a href="https://github.com/milabs/awesome-linux-rootkits" class="contrib"><div class="contrib-icon">🐧</div><div style="flex:1"><div class="contrib-name">awesome-linux-rootkits</div><div class="contrib-detail">Rootkit research</div></div><span class="contrib-stars">⭐ 2k</span></a>
+        </div>
+    </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── Tools ── -->
+<section id="tools">
+    <div class="container">
+        <span class="section-label">🛠️ Arsenal</span>
+        <h2 class="section-title">Security Tool Suites</h2>
+        <p class="section-sub">Specialized tools organized by domain.</p>
+
+        <div class="tools-grid">
+            <div class="tool-card">
+                <h4>☁️ Cloud Security</h4>
+                <ul>
+                    <li><a href="https://github.com/bad-antics/nullsec-cloudaudit">cloudaudit</a> <span>Multi-cloud</span></li>
+                    <li><a href="https://github.com/bad-antics/nullsec-k8sscan">k8sscan</a> <span>Kubernetes</span></li>
+                    <li><a href="https://github.com/bad-antics/nullsec-awsrecon">awsrecon</a> <span>AWS</span></li>
+                    <li><a href="https://github.com/bad-antics/nullsec-terraform-scan">terraform-scan</a> <span>IaC</span></li>
+                </ul>
+            </div>
+            <div class="tool-card">
+                <h4>🤖 AI/ML Security</h4>
+                <ul>
+                    <li><a href="https://github.com/bad-antics/nullsec-llmred">llmred</a> <span>LLM red team</span></li>
+                    <li><a href="https://github.com/bad-antics/nullsec-promptinject">promptinject</a> <span>Injection</span></li>
+                    <li><a href="https://github.com/bad-antics/nullsec-modelaudit">modelaudit</a> <span>Model audit</span></li>
+                    <li><a href="https://github.com/bad-antics/nullsec-adversarial">adversarial</a> <span>Attacks</span></li>
+                </ul>
+            </div>
+            <div class="tool-card">
+                <h4>🔌 Hardware Hacking</h4>
+                <ul>
+                    <li><a href="https://github.com/bad-antics/nullsec-sdr">sdr</a> <span>SDR analysis</span></li>
+                    <li><a href="https://github.com/bad-antics/nullsec-rfid">rfid</a> <span>RFID/NFC</span></li>
+                    <li><a href="https://github.com/bad-antics/nullsec-canbus">canbus</a> <span>CAN bus</span></li>
+                    <li><a href="https://github.com/bad-antics/nullsec-glitch">glitch</a> <span>Voltage glitch</span></li>
+                </ul>
+            </div>
+            <div class="tool-card">
+                <h4>🔮 Julia Security Suite</h4>
+                <ul>
+                    <li><a href="https://github.com/bad-antics/spectra">spectra</a> <span>Crypto toolkit</span></li>
+                    <li><a href="https://github.com/bad-antics/oracle">oracle</a> <span>AI vuln discovery</span></li>
+                    <li><a href="https://github.com/bad-antics/phantom">phantom</a> <span>Zero-knowledge</span></li>
+                    <li><a href="https://github.com/bad-antics/vortex">vortex</a> <span>Threat intel</span></li>
+                </ul>
+            </div>
+            <div class="tool-card">
+                <h4>🌐 Web Security</h4>
+                <ul>
+                    <li><a href="https://github.com/bad-antics/nullsec-xss">xss-hunter</a> <span>XSS detection</span></li>
+                    <li><a href="https://github.com/bad-antics/nullsec-sqli">sqli-scanner</a> <span>SQL injection</span></li>
+                    <li><a href="https://github.com/bad-antics/nullsec-ssrf">ssrf-detect</a> <span>SSRF finder</span></li>
+                    <li><a href="https://github.com/bad-antics/nullsec-api">api-fuzzer</a> <span>API testing</span></li>
+                </ul>
+            </div>
+            <div class="tool-card">
+                <h4>🖥️ N01D Desktop Suite</h4>
+                <ul>
+                    <li><a href="https://github.com/bad-antics/n01d-forge">n01d-forge</a> <span>Image burner ⭐9</span></li>
+                    <li><a href="https://github.com/bad-antics/n01d-machine">n01d-machine</a> <span>VM manager ⭐8</span></li>
+                    <li><a href="https://github.com/bad-antics/n01d-overwatch">n01d-overwatch</a> <span>OSINT dashboard</span></li>
+                    <li><a href="https://github.com/bad-antics/n01d-timemachine">n01d-timemachine</a> <span>Retro emulator</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── Blog ── -->
+<section id="blog">
+    <div class="container">
+        <span class="section-label">📝 Writing</span>
+        <h2 class="section-title">Blog</h2>
+        <p class="section-sub">Technical deep-dives, project announcements, and security research.</p>
+
+        <div class="blog-grid">
+            <a href="/lateralus/blog/" class="blog-card">
+                <div class="blog-date">June 2025</div>
+                <div class="blog-title">Introducing Lateralus — A Pipeline-Native Programming Language</div>
+                <p class="blog-excerpt">We built a programming language where data flows left-to-right. Here's why, and how you can try it right now.</p>
+                <div class="blog-tags"><span class="tag">Lateralus</span><span class="tag">Language Design</span></div>
+            </a>
+            <a href="/lateralus/blog/pipelines.html" class="blog-card">
+                <div class="blog-date">June 2025</div>
+                <div class="blog-title">The Pipeline Operator Deep Dive</div>
+                <p class="blog-excerpt">Why |> changes how you think about data processing — from nested calls to linear flows.</p>
+                <div class="blog-tags"><span class="tag">Lateralus</span><span class="tag">Pipelines</span></div>
+            </a>
+            <a href="/lateralus/blog/building-an-os.html" class="blog-card">
+                <div class="blog-date">May 2025</div>
+                <div class="blog-title">Building an OS in a New Language</div>
+                <p class="blog-excerpt">What it takes to write an operating system kernel in Lateralus — from bootloader to memory management.</p>
+                <div class="blog-tags"><span class="tag">LateralusOS</span><span class="tag">Systems</span></div>
+            </a>
+            <a href="/lateralus/blog/security-tools.html" class="blog-card">
+                <div class="blog-date">May 2025</div>
+                <div class="blog-title">Security Tools in Lateralus</div>
+                <p class="blog-excerpt">How pipeline operators and pattern matching make security tool development cleaner and more composable.</p>
+                <div class="blog-tags"><span class="tag">Security</span><span class="tag">Lateralus</span></div>
+            </a>
+            <a href="/lateralus/blog/ecosystem.html" class="blog-card">
+                <div class="blog-date">April 2025</div>
+                <div class="blog-title">The Lateralus Ecosystem Tour</div>
+                <p class="blog-excerpt">22 repos, 2,400+ .ltl files, a compiler, VS Code extension, and more — the full ecosystem guide.</p>
+                <div class="blog-tags"><span class="tag">Ecosystem</span><span class="tag">Open Source</span></div>
+            </a>
+            <a href="https://github.com/bad-antics/nullsec-wiki/wiki/Blog-2026-03-07-Log-Analysis-IR" class="blog-card">
+                <div class="blog-date">March 2026</div>
+                <div class="blog-title">Log Analysis in Incident Response</div>
+                <p class="blog-excerpt">What defenders miss — attack chains, response sizes, process masquerading, and how LogReaper catches them.</p>
+                <div class="blog-tags"><span class="tag-orange">Security</span><span class="tag-orange">IR</span></div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ── Footer ── -->
+<footer>
+    <div class="container">
         <div class="footer-links">
+            <a href="/lateralus/">Lateralus</a>
+            <a href="/lateralus/playground/">Playground</a>
+            <a href="/lateralus/blog/">Blog</a>
             <a href="https://github.com/bad-antics">GitHub</a>
             <a href="https://github.com/bad-antics/nullsec-linux">NullSec Linux</a>
             <a href="https://github.com/bad-antics/marshall">Marshall</a>
             <a href="https://github.com/bad-antics/nullkia">NullKia</a>
+            <a href="https://marketplace.visualstudio.com/items?itemName=lateralus.lateralus-lang">VS Code Extension</a>
+            <a href="https://pypi.org/project/lateralus-lang/">PyPI</a>
         </div>
-        <p>All tools for authorized security testing only.</p>
-        <p>© 2024-2026 bad-antics</p>
-    </footer>
+        <p>All tools for authorized security testing and educational purposes only.</p>
+        <p>© 2024-2026 bad-antics · Security Engineering · Systems Research · Language Design</p>
+    </div>
+</footer>
+
 </body>
 </html>

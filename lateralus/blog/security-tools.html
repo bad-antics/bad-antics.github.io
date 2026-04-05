@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Tools in Lateralus | Lateralus Blog</title>
+    <meta name="description" content="How pipeline operators and pattern matching make security tool development cleaner and more composable.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root{--bg:#0a0a0f;--bg2:#12121a;--bg3:#1a1a2e;--bg-code:#0d1117;--border:#2a2a3e;--text:#e8e8f0;--text2:#8888a8;--accent:#7c5cfc;--accent2:#a78bfa;--cyan:#22d3ee;--green:#34d399;--orange:#fb923c;--yellow:#fbbf24}
+        *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+        body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.8;-webkit-font-smoothing:antialiased}
+        a{color:var(--accent2);text-decoration:none}a:hover{color:var(--cyan)}
+        code,pre{font-family:'JetBrains Mono',monospace}
+        .topbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,10,15,0.88);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+        .topbar-inner{max-width:760px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px}
+        .topbar-logo{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1.1rem;color:var(--text)}
+        .topbar-logo span{color:var(--accent)}
+        .topbar-links{display:flex;gap:16px}.topbar-links a{color:var(--text2);font-size:.88rem;font-weight:500}
+        article{max-width:760px;margin:0 auto;padding:100px 24px 80px}
+        .meta{color:var(--text2);font-size:.88rem;margin-bottom:32px}.meta a{color:var(--accent2)}
+        h1{font-size:2.4rem;font-weight:800;line-height:1.2;margin-bottom:12px;letter-spacing:-1px}
+        h2{font-size:1.5rem;font-weight:700;margin:48px 0 16px;padding-top:24px;border-top:1px solid var(--border)}
+        h3{font-size:1.15rem;font-weight:700;margin:32px 0 12px}
+        p{margin-bottom:20px;color:var(--text2)}strong{color:var(--text)}
+        pre{background:var(--bg-code);border:1px solid var(--border);border-radius:10px;padding:20px;margin:20px 0;overflow-x:auto;font-size:.88rem;line-height:1.7}
+        code{background:rgba(124,92,252,0.1);padding:2px 6px;border-radius:4px;font-size:.88rem;color:var(--accent2)}
+        pre code{background:none;padding:0;color:var(--text)}
+        blockquote{border-left:3px solid var(--accent);padding:12px 20px;margin:20px 0;background:rgba(124,92,252,0.04);border-radius:0 8px 8px 0}
+        blockquote p{margin-bottom:0}
+        ul,ol{margin:0 0 20px 24px;color:var(--text2)}li{margin-bottom:8px}
+        .kw{color:var(--accent2)}.fn{color:var(--cyan)}.str{color:var(--green)}.cm{color:var(--text2)}.op{color:var(--orange)}.num{color:var(--orange)}.ty{color:var(--yellow)}
+        .cta{display:flex;gap:12px;flex-wrap:wrap;margin:32px 0;padding:24px;background:var(--bg2);border:1px solid var(--border);border-radius:12px}
+        .cta a{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;font-weight:600;font-size:.9rem}
+        .btn-p{background:var(--accent);color:#fff}.btn-p:hover{background:var(--accent2);color:#fff}
+        .btn-s{background:var(--bg3);color:var(--text);border:1px solid var(--border)}.btn-s:hover{border-color:var(--accent)}
+        footer{max-width:760px;margin:0 auto;padding:40px 24px;border-top:1px solid var(--border);text-align:center;color:var(--text2);font-size:.82rem}
+    </style>
+</head>
+<body>
+<div class="topbar"><div class="topbar-inner">
+    <a href="/lateralus/" class="topbar-logo"><span>|&gt;</span> Lateralus</a>
+    <div class="topbar-links">
+        <a href="/lateralus/blog/">Blog</a>
+        <a href="/lateralus/playground/">Playground</a>
+        <a href="https://github.com/bad-antics/lateralus-lang">GitHub</a>
+    </div>
+</div></div>
+
+<article>
+<h1>Security Tools in Lateralus</h1>
+<div class="meta">May 2025 · 7 min read · <a href="/lateralus/blog/">← All Posts</a></div>
+
+<p>Security tools are fundamentally about <strong>data processing pipelines</strong>. You capture packets, parse protocols, filter anomalies, correlate events, and generate reports. Every step transforms data and passes it forward. That's exactly what the pipeline operator was built for.</p>
+
+<h2>Port Scanner</h2>
+
+<p>A basic port scanner in Lateralus reads like a description of what it does:</p>
+
+<pre><code><span class="kw">fn</span> <span class="fn">scan_ports</span>(target: <span class="ty">String</span>, range: <span class="ty">Range</span>&lt;<span class="ty">u16</span>&gt;) -> <span class="ty">Vec</span>&lt;<span class="ty">PortResult</span>&gt; {
+    range
+        <span class="op">|></span> <span class="fn">map</span>(|port| <span class="kw">spawn</span> <span class="fn">probe</span>(target, port))
+        <span class="op">|></span> <span class="kw">await</span> <span class="fn">collect</span>()
+        <span class="op">|></span> <span class="fn">filter</span>(|r| r.status == <span class="ty">Open</span>)
+        <span class="op">|></span> <span class="fn">map</span>(|r| {
+            <span class="kw">let</span> service = r.port <span class="op">|></span> <span class="fn">identify_service</span>()
+            <span class="kw">let</span> banner = r <span class="op">|></span> <span class="fn">grab_banner</span>()
+            <span class="ty">PortResult</span> { port: r.port, service, banner }
+        })
+        <span class="op">|></span> <span class="fn">sort_by</span>(|r| r.port)
+}</code></pre>
+
+<p>Each scan runs concurrently via <code>spawn</code>. Results flow through filter, enrichment, and sorting — all in one pipeline.</p>
+
+<h2>Packet Analysis</h2>
+
+<p>Packet parsing benefits enormously from pattern matching. Protocol headers are union types — an Ethernet frame contains either an IPv4 packet, IPv6 packet, ARP reply, or something else:</p>
+
+<pre><code><span class="kw">fn</span> <span class="fn">analyze_packet</span>(raw: <span class="ty">Bytes</span>) -> <span class="ty">Analysis</span> {
+    raw
+        <span class="op">|></span> <span class="fn">parse_ethernet</span>()
+        <span class="op">|></span> <span class="kw">match</span> {
+            <span class="ty">Ethernet</span> { payload: <span class="ty">IPv4</span>(pkt), .. } =>
+                pkt <span class="op">|></span> <span class="fn">analyze_ipv4</span>(),
+            <span class="ty">Ethernet</span> { payload: <span class="ty">IPv6</span>(pkt), .. } =>
+                pkt <span class="op">|></span> <span class="fn">analyze_ipv6</span>(),
+            <span class="ty">Ethernet</span> { payload: <span class="ty">ARP</span>(arp), .. } =>
+                arp <span class="op">|></span> <span class="fn">check_arp_spoof</span>(),
+            _ => <span class="ty">Analysis</span>::<span class="fn">unknown</span>(),
+        }
+}
+
+<span class="kw">fn</span> <span class="fn">analyze_ipv4</span>(pkt: <span class="ty">IPv4Packet</span>) -> <span class="ty">Analysis</span> {
+    <span class="kw">match</span> pkt.protocol {
+        <span class="ty">TCP</span>(seg) => seg <span class="op">|></span> <span class="fn">detect_syn_flood</span>() <span class="op">|></span> <span class="fn">check_payload</span>(),
+        <span class="ty">UDP</span>(dgm) => dgm <span class="op">|></span> <span class="fn">detect_dns_tunnel</span>(),
+        <span class="ty">ICMP</span>(msg) => msg <span class="op">|></span> <span class="fn">detect_ping_sweep</span>(),
+        _        => <span class="ty">Analysis</span>::<span class="fn">benign</span>(),
+    }
+}</code></pre>
+
+<h2>Log Correlation</h2>
+
+<p>Security monitoring means correlating events across multiple log sources. Pipelines make the correlation chain explicit:</p>
+
+<pre><code><span class="kw">fn</span> <span class="fn">detect_lateral_movement</span>(logs: <span class="ty">Vec</span>&lt;<span class="ty">LogSource</span>&gt;) -> <span class="ty">Vec</span>&lt;<span class="ty">Alert</span>&gt; {
+    logs
+        <span class="op">|></span> <span class="fn">flat_map</span>(|src| src <span class="op">|></span> <span class="fn">parse_entries</span>())
+        <span class="op">|></span> <span class="fn">filter</span>(|e| e.event_type == <span class="ty">Authentication</span>)
+        <span class="op">|></span> <span class="fn">group_by</span>(|e| e.source_ip)
+        <span class="op">|></span> <span class="fn">filter_entries</span>(|ip, events| {
+            <span class="kw">let</span> hosts = events <span class="op">|></span> <span class="fn">map</span>(|e| e.target) <span class="op">|></span> <span class="fn">unique</span>() <span class="op">|></span> <span class="fn">len</span>()
+            <span class="kw">let</span> window = events <span class="op">|></span> <span class="fn">time_window</span>()
+            hosts > <span class="num">5</span> && window < <span class="fn">minutes</span>(<span class="num">10</span>)
+        })
+        <span class="op">|></span> <span class="fn">map</span>(|ip, events| <span class="ty">Alert</span> {
+            severity: <span class="ty">Critical</span>,
+            kind: <span class="ty">LateralMovement</span>,
+            source: ip,
+            evidence: events,
+        })
+}</code></pre>
+
+<p>The algorithm is the code: parse → filter authentication events → group by source → detect rapid multi-host access → generate alerts.</p>
+
+<h2>Vulnerability Scanner</h2>
+
+<p>Combining async pipelines with pattern matching creates scanners that are both fast and readable:</p>
+
+<pre><code><span class="kw">fn</span> <span class="fn">scan_web_app</span>(base_url: <span class="ty">String</span>) -> <span class="ty">Report</span> {
+    base_url
+        <span class="op">|></span> <span class="fn">crawl_urls</span>()
+        <span class="op">|></span> <span class="fn">map</span>(|url| <span class="kw">spawn</span> {
+            <span class="kw">let</span> xss = url <span class="op">|></span> <span class="fn">test_xss</span>()
+            <span class="kw">let</span> sqli = url <span class="op">|></span> <span class="fn">test_sqli</span>()
+            <span class="kw">let</span> ssrf = url <span class="op">|></span> <span class="fn">test_ssrf</span>()
+            (url, xss, sqli, ssrf)
+        })
+        <span class="op">|></span> <span class="kw">await</span> <span class="fn">collect</span>()
+        <span class="op">|></span> <span class="fn">filter</span>(|r| r <span class="op">|></span> <span class="fn">has_findings</span>())
+        <span class="op">|></span> <span class="fn">sort_by</span>(|r| r <span class="op">|></span> <span class="fn">severity</span>(), descending)
+        <span class="op">|></span> <span class="ty">Report</span>::<span class="fn">generate</span>()
+}</code></pre>
+
+<h2>Why Pipelines for Security</h2>
+
+<p>Three properties make pipelines ideal for security tools:</p>
+
+<ol>
+    <li><strong>Auditability.</strong> Each step in a pipeline is visible and independent. Peer reviewers can trace exactly what the tool does.</li>
+    <li><strong>Composability.</strong> Security analysis chains together — parse, enrich, correlate, alert. Each step is a function that can be tested alone.</li>
+    <li><strong>Concurrency.</strong> Scanning is inherently parallel. <code>spawn</code> in a pipeline runs probes concurrently without callback complexity.</li>
+</ol>
+
+<blockquote><p>Security tools should be as auditable as the systems they protect. Pipelines make the logic transparent.</p></blockquote>
+
+<div class="cta">
+    <a href="/lateralus/playground/" class="btn-p">▶ Try It in the Playground</a>
+    <a href="/lateralus/blog/" class="btn-s">← Back to Blog</a>
+</div>
+</article>
+
+<footer>© 2025 Lateralus · <a href="/lateralus/">Home</a> · <a href="https://github.com/bad-antics/lateralus-lang">GitHub</a></footer>
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building an OS in a New Language | Lateralus Blog</title>
+    <meta name="description" content="What it takes to write an OS kernel in Lateralus — from bootloader to memory management.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root{--bg:#0a0a0f;--bg2:#12121a;--bg3:#1a1a2e;--bg-code:#0d1117;--border:#2a2a3e;--text:#e8e8f0;--text2:#8888a8;--accent:#7c5cfc;--accent2:#a78bfa;--cyan:#22d3ee;--green:#34d399;--orange:#fb923c;--yellow:#fbbf24}
+        *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+        body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.8;-webkit-font-smoothing:antialiased}
+        a{color:var(--accent2);text-decoration:none}a:hover{color:var(--cyan)}
+        code,pre{font-family:'JetBrains Mono',monospace}
+        .topbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,10,15,0.88);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+        .topbar-inner{max-width:760px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px}
+        .topbar-logo{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1.1rem;color:var(--text)}
+        .topbar-logo span{color:var(--accent)}
+        .topbar-links{display:flex;gap:16px}.topbar-links a{color:var(--text2);font-size:.88rem;font-weight:500}
+        article{max-width:760px;margin:0 auto;padding:100px 24px 80px}
+        .meta{color:var(--text2);font-size:.88rem;margin-bottom:32px}.meta a{color:var(--accent2)}
+        h1{font-size:2.4rem;font-weight:800;line-height:1.2;margin-bottom:12px;letter-spacing:-1px}
+        h2{font-size:1.5rem;font-weight:700;margin:48px 0 16px;padding-top:24px;border-top:1px solid var(--border)}
+        h3{font-size:1.15rem;font-weight:700;margin:32px 0 12px}
+        p{margin-bottom:20px;color:var(--text2)}strong{color:var(--text)}
+        pre{background:var(--bg-code);border:1px solid var(--border);border-radius:10px;padding:20px;margin:20px 0;overflow-x:auto;font-size:.88rem;line-height:1.7}
+        code{background:rgba(124,92,252,0.1);padding:2px 6px;border-radius:4px;font-size:.88rem;color:var(--accent2)}
+        pre code{background:none;padding:0;color:var(--text)}
+        blockquote{border-left:3px solid var(--accent);padding:12px 20px;margin:20px 0;background:rgba(124,92,252,0.04);border-radius:0 8px 8px 0}
+        blockquote p{margin-bottom:0}
+        ul,ol{margin:0 0 20px 24px;color:var(--text2)}li{margin-bottom:8px}
+        .kw{color:var(--accent2)}.fn{color:var(--cyan)}.str{color:var(--green)}.cm{color:var(--text2)}.op{color:var(--orange)}.num{color:var(--orange)}.ty{color:var(--yellow)}
+        .info-box{padding:20px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;margin:20px 0}
+        .info-box h4{margin-bottom:8px;font-size:.95rem}
+        .info-box ul{margin-bottom:0}
+        .cta{display:flex;gap:12px;flex-wrap:wrap;margin:32px 0;padding:24px;background:var(--bg2);border:1px solid var(--border);border-radius:12px}
+        .cta a{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;font-weight:600;font-size:.9rem}
+        .btn-p{background:var(--accent);color:#fff}.btn-p:hover{background:var(--accent2);color:#fff}
+        .btn-s{background:var(--bg3);color:var(--text);border:1px solid var(--border)}.btn-s:hover{border-color:var(--accent)}
+        footer{max-width:760px;margin:0 auto;padding:40px 24px;border-top:1px solid var(--border);text-align:center;color:var(--text2);font-size:.82rem}
+    </style>
+</head>
+<body>
+<div class="topbar"><div class="topbar-inner">
+    <a href="/lateralus/" class="topbar-logo"><span>|&gt;</span> Lateralus</a>
+    <div class="topbar-links">
+        <a href="/lateralus/blog/">Blog</a>
+        <a href="/lateralus/playground/">Playground</a>
+        <a href="https://github.com/bad-antics/lateralus-lang">GitHub</a>
+    </div>
+</div></div>
+
+<article>
+<h1>Building an OS in a New Language</h1>
+<div class="meta">May 2025 · 10 min read · <a href="/lateralus/blog/">← All Posts</a></div>
+
+<p>When we built Lateralus, the question wasn't <em>if</em> we'd write an OS — it was <em>when</em>. A programming language proves itself at the edges: can it handle hardware interrupts? Can it manage memory without a runtime? Can it boot a machine? <strong>LateralusOS v1.0</strong> answers yes to all three.</p>
+
+<h2>Why Write an OS?</h2>
+
+<p>Every systems language claims it can do low-level work. But claims aren't proof. Writing an actual bootable kernel forced us to solve real problems:</p>
+
+<ul>
+    <li><strong>No heap at boot.</strong> Memory allocation doesn't exist until you build it.</li>
+    <li><strong>No standard library.</strong> You write <code>print</code> before you can use it.</li>
+    <li><strong>Hardware is unforgiving.</strong> One wrong memory write and the CPU triple-faults.</li>
+    <li><strong>Interrupt handling.</strong> The CPU fires hardware interrupts at any time — your code must handle them.</li>
+</ul>
+
+<p>LateralusOS forced the language to grow. Features that seemed nice-to-have became essential.</p>
+
+<h2>Architecture Overview</h2>
+
+<div class="info-box">
+    <h4>LateralusOS v1.0 Components</h4>
+    <ul>
+        <li><strong>Bootloader</strong> — UEFI boot, framebuffer init, memory map</li>
+        <li><strong>Kernel</strong> — GDT, IDT, interrupt handlers, PIC, PIT timer</li>
+        <li><strong>Memory</strong> — Physical frame allocator, virtual memory (paging), heap allocator</li>
+        <li><strong>Drivers</strong> — VGA text mode, keyboard (PS/2), serial port, PCI enumeration</li>
+        <li><strong>Filesystem</strong> — Basic VFS layer, RAM disk, read/write operations</li>
+        <li><strong>Shell</strong> — Interactive command-line with 12 built-in commands</li>
+        <li><strong>Networking</strong> — Ethernet frames, ARP, basic IP stack</li>
+    </ul>
+</div>
+
+<h2>The Kernel Entry Point</h2>
+
+<p>Here's how LateralusOS boots — the kernel entry point, written entirely in Lateralus:</p>
+
+<pre><code><span class="cm">// kernel/main.ltl — LateralusOS entry point</span>
+<span class="kw">use</span> kernel::{gdt, idt, pic, memory, drivers, shell}
+
+<span class="kw">fn</span> <span class="fn">kernel_main</span>(boot_info: <span class="ty">BootInfo</span>) {
+    boot_info
+        <span class="op">|></span> gdt::<span class="fn">init</span>()
+        <span class="op">|></span> idt::<span class="fn">init</span>()
+        <span class="op">|></span> pic::<span class="fn">init</span>()
+
+    <span class="kw">let</span> allocator = boot_info.memory_map
+        <span class="op">|></span> memory::<span class="fn">init_frame_allocator</span>()
+
+    <span class="kw">let</span> heap = allocator
+        <span class="op">|></span> memory::<span class="fn">init_heap</span>(<span class="num">0x4444_0000</span>, <span class="num">1024</span> * <span class="num">1024</span>)
+
+    drivers::<span class="fn">init_all</span>()
+    shell::<span class="fn">run</span>()
+}</code></pre>
+
+<p>The pipeline operator shines here. Kernel initialization is a <strong>sequence of dependent steps</strong> — exactly what pipelines model.</p>
+
+<h2>Memory Management</h2>
+
+<p>The physical frame allocator uses Lateralus's pattern matching to handle memory regions:</p>
+
+<pre><code><span class="kw">fn</span> <span class="fn">allocate_frame</span>(allocator: &<span class="kw">mut</span> <span class="ty">FrameAllocator</span>) -> <span class="ty">Option</span>&lt;<span class="ty">Frame</span>&gt; {
+    allocator.memory_map
+        <span class="op">|></span> <span class="fn">filter</span>(|region| <span class="kw">match</span> region.kind {
+            <span class="ty">Usable</span>     => <span class="kw">true</span>,
+            <span class="ty">Bootloader</span> => <span class="kw">false</span>,
+            <span class="ty">Reserved</span>   => <span class="kw">false</span>,
+            _          => <span class="kw">false</span>,
+        })
+        <span class="op">|></span> <span class="fn">flat_map</span>(|r| r.start..r.end <span class="op">|></span> <span class="fn">step_by</span>(<span class="num">4096</span>))
+        <span class="op">|></span> <span class="fn">find</span>(|addr| !allocator.used.<span class="fn">contains</span>(addr))
+        <span class="op">|></span> <span class="fn">map</span>(|addr| {
+            allocator.used.<span class="fn">insert</span>(addr)
+            <span class="ty">Frame</span> { address: addr }
+        })
+}</code></pre>
+
+<h2>Interrupt Handling</h2>
+
+<p>Hardware interrupts need pattern matching — the CPU gives you an interrupt number, and you need to dispatch it fast:</p>
+
+<pre><code><span class="kw">fn</span> <span class="fn">interrupt_handler</span>(frame: <span class="ty">InterruptFrame</span>, irq: <span class="ty">u8</span>) {
+    <span class="kw">match</span> irq {
+        <span class="num">0</span>  => timer::<span class="fn">tick</span>(),
+        <span class="num">1</span>  => keyboard::<span class="fn">handle_scancode</span>(
+            port::<span class="fn">read_u8</span>(<span class="num">0x60</span>)
+        ),
+        <span class="num">14</span> => disk::<span class="fn">handle_irq</span>(),
+        n  => <span class="fn">println</span>(<span class="str">"Unhandled IRQ: {n}"</span>),
+    }
+    pic::<span class="fn">end_of_interrupt</span>(irq)
+}</code></pre>
+
+<h2>The Shell</h2>
+
+<p>LateralusOS includes an interactive shell with pipeline support at the OS level:</p>
+
+<pre><code><span class="cm">// Built-in commands</span>
+<span class="kw">fn</span> <span class="fn">execute</span>(cmd: <span class="ty">Command</span>) {
+    <span class="kw">match</span> cmd {
+        <span class="ty">Command</span>::<span class="fn">Help</span>         => <span class="fn">show_help</span>(),
+        <span class="ty">Command</span>::<span class="fn">Clear</span>        => vga::<span class="fn">clear_screen</span>(),
+        <span class="ty">Command</span>::<span class="fn">Ls</span>(path)     => fs::<span class="fn">list_dir</span>(path),
+        <span class="ty">Command</span>::<span class="fn">Cat</span>(path)    => fs::<span class="fn">read_file</span>(path) <span class="op">|></span> <span class="fn">println</span>(),
+        <span class="ty">Command</span>::<span class="fn">Echo</span>(text)   => <span class="fn">println</span>(text),
+        <span class="ty">Command</span>::<span class="fn">Uptime</span>       => timer::<span class="fn">uptime</span>() <span class="op">|></span> <span class="fn">format_duration</span>() <span class="op">|></span> <span class="fn">println</span>(),
+        <span class="ty">Command</span>::<span class="fn">MemInfo</span>      => memory::<span class="fn">stats</span>() <span class="op">|></span> <span class="fn">display</span>(),
+        <span class="ty">Command</span>::<span class="fn">Shutdown</span>     => acpi::<span class="fn">shutdown</span>(),
+        <span class="ty">Command</span>::<span class="fn">Unknown</span>(s)   => <span class="fn">println</span>(<span class="str">"Unknown: {s}"</span>),
+    }
+}</code></pre>
+
+<h2>Lessons Learned</h2>
+
+<p>Building LateralusOS taught us three things about language design:</p>
+
+<ol>
+    <li><strong>Pattern matching is essential for systems code.</strong> Hardware gives you numbers and flags — you need exhaustive matching to handle them safely.</li>
+    <li><strong>Pipelines work at every level.</strong> From kernel init to user shell commands, left-to-right data flow makes code clearer.</li>
+    <li><strong>Zero-cost abstractions matter.</strong> The pipeline operator compiles down to direct function calls — no runtime overhead in a kernel.</li>
+</ol>
+
+<blockquote><p>If your language can boot a computer, it can handle anything.</p></blockquote>
+
+<div class="cta">
+    <a href="https://github.com/bad-antics/lateralus-os" class="btn-p">View LateralusOS on GitHub</a>
+    <a href="/lateralus/blog/" class="btn-s">← Back to Blog</a>
+</div>
+</article>
+
+<footer>© 2025 Lateralus · <a href="/lateralus/">Home</a> · <a href="https://github.com/bad-antics/lateralus-lang">GitHub</a></footer>
+</body>
+</html>

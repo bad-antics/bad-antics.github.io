@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Lateralus Ecosystem Tour | Lateralus Blog</title>
+    <meta name="description" content="22 repos, 2,400+ .ltl files, a compiler, VS Code extension, and more — the full Lateralus ecosystem guide.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root{--bg:#0a0a0f;--bg2:#12121a;--bg3:#1a1a2e;--bg-code:#0d1117;--border:#2a2a3e;--text:#e8e8f0;--text2:#8888a8;--accent:#7c5cfc;--accent2:#a78bfa;--cyan:#22d3ee;--green:#34d399;--orange:#fb923c;--yellow:#fbbf24}
+        *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+        body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.8;-webkit-font-smoothing:antialiased}
+        a{color:var(--accent2);text-decoration:none}a:hover{color:var(--cyan)}
+        code,pre{font-family:'JetBrains Mono',monospace}
+        .topbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,10,15,0.88);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+        .topbar-inner{max-width:760px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px}
+        .topbar-logo{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1.1rem;color:var(--text)}
+        .topbar-logo span{color:var(--accent)}
+        .topbar-links{display:flex;gap:16px}.topbar-links a{color:var(--text2);font-size:.88rem;font-weight:500}
+        article{max-width:760px;margin:0 auto;padding:100px 24px 80px}
+        .meta{color:var(--text2);font-size:.88rem;margin-bottom:32px}.meta a{color:var(--accent2)}
+        h1{font-size:2.4rem;font-weight:800;line-height:1.2;margin-bottom:12px;letter-spacing:-1px}
+        h2{font-size:1.5rem;font-weight:700;margin:48px 0 16px;padding-top:24px;border-top:1px solid var(--border)}
+        h3{font-size:1.15rem;font-weight:700;margin:32px 0 12px;color:var(--text)}
+        p{margin-bottom:20px;color:var(--text2)}strong{color:var(--text)}
+        pre{background:var(--bg-code);border:1px solid var(--border);border-radius:10px;padding:20px;margin:20px 0;overflow-x:auto;font-size:.88rem;line-height:1.7}
+        code{background:rgba(124,92,252,0.1);padding:2px 6px;border-radius:4px;font-size:.88rem;color:var(--accent2)}
+        pre code{background:none;padding:0;color:var(--text)}
+        ul,ol{margin:0 0 20px 24px;color:var(--text2)}li{margin-bottom:8px}
+        table{width:100%;border-collapse:collapse;margin:20px 0}
+        th,td{padding:12px 16px;text-align:left;border-bottom:1px solid var(--border);font-size:.9rem}
+        th{color:var(--text);font-weight:600;background:var(--bg2)}
+        td{color:var(--text2)}td a{color:var(--accent2)}
+        .repo-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}
+        .repo{padding:16px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;transition:border-color .15s}
+        .repo:hover{border-color:var(--accent)}
+        .repo-name{font-weight:700;font-size:.92rem;margin-bottom:4px}
+        .repo-desc{font-size:.82rem;color:var(--text2)}
+        .repo-stat{font-size:.78rem;color:var(--text2);margin-top:6px}
+        .repo-stat span{color:var(--cyan);font-weight:600}
+        .kw{color:var(--accent2)}.fn{color:var(--cyan)}.str{color:var(--green)}.cm{color:var(--text2)}.op{color:var(--orange)}.num{color:var(--orange)}.ty{color:var(--yellow)}
+        .cta{display:flex;gap:12px;flex-wrap:wrap;margin:32px 0;padding:24px;background:var(--bg2);border:1px solid var(--border);border-radius:12px}
+        .cta a{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;font-weight:600;font-size:.9rem}
+        .btn-p{background:var(--accent);color:#fff}.btn-p:hover{background:var(--accent2);color:#fff}
+        .btn-s{background:var(--bg3);color:var(--text);border:1px solid var(--border)}.btn-s:hover{border-color:var(--accent)}
+        footer{max-width:760px;margin:0 auto;padding:40px 24px;border-top:1px solid var(--border);text-align:center;color:var(--text2);font-size:.82rem}
+        @media(max-width:600px){.repo-grid{grid-template-columns:1fr}}
+    </style>
+</head>
+<body>
+<div class="topbar"><div class="topbar-inner">
+    <a href="/lateralus/" class="topbar-logo"><span>|&gt;</span> Lateralus</a>
+    <div class="topbar-links">
+        <a href="/lateralus/blog/">Blog</a>
+        <a href="/lateralus/playground/">Playground</a>
+        <a href="https://github.com/bad-antics/lateralus-lang">GitHub</a>
+    </div>
+</div></div>
+
+<article>
+<h1>The Lateralus Ecosystem Tour</h1>
+<div class="meta">April 2025 · 6 min read · <a href="/lateralus/blog/">← All Posts</a></div>
+
+<p>Lateralus isn't just a compiler. It's <strong>22 repositories</strong>, <strong>2,400+ .ltl files</strong>, a VS Code extension, a PyPI package, an operating system, a web framework, 25 tutorials, and a grammar specification. This post is the map.</p>
+
+<h2>Core Language</h2>
+
+<div class="repo-grid">
+    <a href="https://github.com/bad-antics/lateralus-lang" class="repo">
+        <div class="repo-name">lateralus-lang</div>
+        <div class="repo-desc">Compiler, tokenizer, parser, AST, codegen. The heart of the language.</div>
+        <div class="repo-stat"><span>Python</span> · PyPI v3.0.1</div>
+    </a>
+    <a href="https://github.com/bad-antics/lateralus-grammar" class="repo">
+        <div class="repo-name">lateralus-grammar</div>
+        <div class="repo-desc">TextMate grammar, syntax highlighting rules, tokenization patterns.</div>
+        <div class="repo-stat"><span>JSON</span> · Used by VS Code ext</div>
+    </a>
+    <a href="https://github.com/bad-antics/lateralus-vscode" class="repo">
+        <div class="repo-name">lateralus-vscode</div>
+        <div class="repo-desc">VS Code extension — syntax highlighting, snippets, bracket matching.</div>
+        <div class="repo-stat"><span>v2.6.0</span> · Marketplace</div>
+    </a>
+    <a href="https://github.com/bad-antics/lateralus-starter-kit" class="repo">
+        <div class="repo-name">lateralus-starter-kit</div>
+        <div class="repo-desc">Ready-to-go project template with examples and configs.</div>
+        <div class="repo-stat"><span>Template</span> · GitHub Release</div>
+    </a>
+</div>
+
+<h2>Runtime & VM</h2>
+
+<div class="repo-grid">
+    <a href="https://github.com/bad-antics/lateralus-vm" class="repo">
+        <div class="repo-name">lateralus-vm</div>
+        <div class="repo-desc">Stack-based virtual machine with bytecode execution.</div>
+        <div class="repo-stat"><span>VM</span> · Bytecode interpreter</div>
+    </a>
+    <a href="https://github.com/bad-antics/lateralus-stdlib" class="repo">
+        <div class="repo-name">lateralus-stdlib</div>
+        <div class="repo-desc">Standard library — io, collections, math, string, net.</div>
+        <div class="repo-stat"><span>200+</span> .ltl files</div>
+    </a>
+    <a href="https://github.com/bad-antics/lateralus-pkg" class="repo">
+        <div class="repo-name">lateralus-pkg</div>
+        <div class="repo-desc">Package manager — dependency resolution, registry, builds.</div>
+        <div class="repo-stat"><span>Package Mgr</span> · Registry</div>
+    </a>
+</div>
+
+<h2>Frameworks & Applications</h2>
+
+<div class="repo-grid">
+    <a href="https://github.com/bad-antics/lateralus-os" class="repo">
+        <div class="repo-name">lateralus-os</div>
+        <div class="repo-desc">Full operating system — kernel, drivers, shell, filesystem, networking.</div>
+        <div class="repo-stat"><span>OS</span> · v1.0.0</div>
+    </a>
+    <a href="https://github.com/bad-antics/lateralus-web" class="repo">
+        <div class="repo-name">lateralus-web</div>
+        <div class="repo-desc">Web framework — routing, templates, middleware, WebSocket.</div>
+        <div class="repo-stat"><span>Web</span> · Full-stack</div>
+    </a>
+    <a href="https://github.com/bad-antics/lateralus-cli" class="repo">
+        <div class="repo-name">lateralus-cli</div>
+        <div class="repo-desc">CLI framework — argument parsing, colors, progress bars.</div>
+        <div class="repo-stat"><span>CLI</span> · Builder pattern</div>
+    </a>
+    <a href="https://github.com/bad-antics/lateralus-test" class="repo">
+        <div class="repo-name">lateralus-test</div>
+        <div class="repo-desc">Test framework — assertions, mocks, benchmarks, coverage.</div>
+        <div class="repo-stat"><span>Testing</span> · Built-in</div>
+    </a>
+</div>
+
+<h2>Sample Collections</h2>
+
+<table>
+    <tr><th>Repository</th><th>Files</th><th>Description</th></tr>
+    <tr><td><a href="https://github.com/bad-antics/lateralus-samples">lateralus-samples</a></td><td>115</td><td>Core language examples</td></tr>
+    <tr><td><a href="https://github.com/bad-antics/lateralus-tutorials">lateralus-tutorials</a></td><td>25</td><td>Step-by-step learning path</td></tr>
+    <tr><td><a href="https://github.com/bad-antics/lateralus-grammar-samples">lateralus-grammar-samples</a></td><td>200+</td><td>Syntax highlighting tests</td></tr>
+    <tr><td><a href="https://github.com/bad-antics/lateralus-algorithms">lateralus-algorithms</a></td><td>150+</td><td>Data structures & algorithms</td></tr>
+    <tr><td><a href="https://github.com/bad-antics/lateralus-benchmarks">lateralus-benchmarks</a></td><td>50+</td><td>Performance benchmarks</td></tr>
+</table>
+
+<h2>Ecosystem by the Numbers</h2>
+
+<table>
+    <tr><th>Metric</th><th>Count</th></tr>
+    <tr><td>Total repositories</td><td><strong>22</strong></td></tr>
+    <tr><td>.ltl source files</td><td><strong>2,476</strong></td></tr>
+    <tr><td>Lines of Lateralus code</td><td><strong>~80,000</strong></td></tr>
+    <tr><td>VS Code extension installs</td><td><strong>Marketplace live</strong></td></tr>
+    <tr><td>PyPI downloads</td><td><strong>v3.0.1 published</strong></td></tr>
+    <tr><td>Linguist PR</td><td><strong>#7897 submitted</strong></td></tr>
+    <tr><td>Blog posts</td><td><strong>5 published</strong></td></tr>
+    <tr><td>Playground examples</td><td><strong>14+</strong></td></tr>
+</table>
+
+<h2>Getting Started</h2>
+
+<p>The fastest way to try Lateralus:</p>
+
+<ol>
+    <li><strong>Browser:</strong> Open the <a href="/lateralus/playground/">playground</a> — no install needed.</li>
+    <li><strong>Install:</strong> <code>pip install lateralus-lang</code> then <code>lateralus run hello.ltl</code></li>
+    <li><strong>VS Code:</strong> Search "Lateralus" in the extensions marketplace for syntax highlighting.</li>
+    <li><strong>Starter Kit:</strong> Download the <a href="https://github.com/bad-antics/lateralus-starter-kit">starter-kit</a> template project.</li>
+</ol>
+
+<p>Every repo links to every other repo. The ecosystem is designed to be navigable — pick any entry point and follow the links.</p>
+
+<div class="cta">
+    <a href="/lateralus/playground/" class="btn-p">▶ Try the Playground</a>
+    <a href="https://github.com/bad-antics/lateralus-lang" class="btn-s">View on GitHub</a>
+    <a href="/lateralus/blog/" class="btn-s">← Back to Blog</a>
+</div>
+</article>
+
+<footer>© 2025 Lateralus · <a href="/lateralus/">Home</a> · <a href="https://github.com/bad-antics/lateralus-lang">GitHub</a></footer>
+</body>
+</html>
