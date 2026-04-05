@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introducing Lateralus — A Pipeline-Native Programming Language</title>
+    <meta name="description" content="Lateralus is a new compiled language with pipeline operators, pattern matching, async/await, and zero dependencies. Here's why we built it and how to try it today.">
+    <meta property="og:title" content="Introducing Lateralus — A Pipeline-Native Programming Language">
+    <meta property="og:description" content="Pipeline operators. Pattern matching. Async/await. Zero dependencies. Try it in your browser.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://bad-antics.github.io/lateralus/blog/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Introducing Lateralus — A Pipeline-Native Programming Language">
+    <meta name="twitter:description" content="Pipeline operators. Pattern matching. Async/await. Zero dependencies. Try it in your browser.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --bg2: #12121a;
+            --bg3: #1a1a2e;
+            --bg-code: #0d1117;
+            --border: #2a2a3e;
+            --text: #e8e8f0;
+            --text2: #8888a8;
+            --accent: #7c5cfc;
+            --accent2: #a78bfa;
+            --cyan: #22d3ee;
+            --green: #34d399;
+            --orange: #fb923c;
+            --pink: #f472b6;
+            --yellow: #fbbf24;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+        a { color: var(--accent2); text-decoration: none; }
+        a:hover { color: var(--cyan); }
+        code, pre { font-family: 'JetBrains Mono', monospace; }
+
+        /* ── Top Bar ── */
+        .topbar { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,10,15,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+        .topbar-inner { max-width: 900px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 56px; }
+        .topbar-logo { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1.1rem; color: var(--text); }
+        .topbar-logo span { color: var(--accent); }
+        .topbar-links { display: flex; gap: 20px; align-items: center; }
+        .topbar-links a { color: var(--text2); font-size: 0.88rem; font-weight: 500; }
+        .topbar-links a:hover { color: var(--text); }
+
+        /* ── Article ── */
+        .article { max-width: 760px; margin: 0 auto; padding: 100px 24px 80px; }
+        .article-date { color: var(--text2); font-size: 0.85rem; margin-bottom: 12px; font-weight: 500; }
+        .article h1 { font-size: 2.8rem; font-weight: 900; line-height: 1.15; margin-bottom: 20px; letter-spacing: -1.5px; }
+        .article h1 .gr { background: linear-gradient(135deg, var(--accent2) 0%, var(--cyan) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .article .lede { font-size: 1.2rem; color: var(--text2); line-height: 1.7; margin-bottom: 40px; border-left: 3px solid var(--accent); padding-left: 20px; }
+
+        .article h2 { font-size: 1.6rem; font-weight: 800; margin: 48px 0 16px; letter-spacing: -0.5px; }
+        .article h3 { font-size: 1.15rem; font-weight: 700; margin: 32px 0 12px; color: var(--cyan); }
+        .article p { margin-bottom: 20px; color: var(--text); font-size: 1.02rem; }
+        .article ul { margin-bottom: 20px; padding-left: 24px; }
+        .article li { margin-bottom: 8px; color: var(--text); }
+        .article li::marker { color: var(--accent); }
+        .article strong { color: var(--text); font-weight: 700; }
+        .article em { color: var(--accent2); font-style: normal; }
+
+        /* Code blocks */
+        .article pre {
+            background: var(--bg-code);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px 24px;
+            overflow-x: auto;
+            margin-bottom: 24px;
+            font-size: 0.88rem;
+            line-height: 1.7;
+        }
+        .article code {
+            background: var(--bg3);
+            padding: 2px 8px;
+            border-radius: 5px;
+            font-size: 0.88rem;
+        }
+        .article pre code { background: none; padding: 0; }
+
+        /* Syntax colors in pre blocks */
+        .kw { color: var(--accent2); }
+        .fn { color: var(--cyan); }
+        .str { color: var(--green); }
+        .cm { color: var(--text2); }
+        .op { color: var(--orange); }
+        .ty { color: var(--yellow); }
+        .num { color: var(--orange); }
+
+        /* CTA */
+        .cta-box {
+            background: linear-gradient(135deg, rgba(124,92,252,0.1) 0%, rgba(34,211,238,0.05) 100%);
+            border: 1px solid rgba(124,92,252,0.3);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            margin: 48px 0;
+        }
+        .cta-box h3 { color: var(--text) !important; font-size: 1.4rem; margin-bottom: 8px; }
+        .cta-box p { color: var(--text2); margin-bottom: 20px; }
+        .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; border-radius: 10px; font-weight: 700; font-size: 1rem; transition: all 0.2s; }
+        .btn-primary { background: var(--accent); color: #fff; }
+        .btn-primary:hover { background: var(--accent2); color: #fff; transform: translateY(-1px); }
+        .btn-secondary { background: var(--bg3); color: var(--text); border: 1px solid var(--border); margin-left: 10px; }
+        .btn-secondary:hover { border-color: var(--accent); }
+
+        /* Feature cards */
+        .features-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px; }
+        .feature-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        .feature-card h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; }
+        .feature-card p { font-size: 0.88rem; color: var(--text2); margin-bottom: 0; }
+        .feature-card .icon { font-size: 1.3rem; margin-bottom: 8px; }
+
+        /* Footer */
+        .post-footer { border-top: 1px solid var(--border); margin-top: 60px; padding-top: 30px; color: var(--text2); font-size: 0.88rem; }
+        .post-footer a { color: var(--accent2); }
+
+        @media (max-width: 640px) {
+            .article h1 { font-size: 2rem; }
+            .features-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="topbar">
+    <div class="topbar-inner">
+        <a href="/lateralus/" class="topbar-logo"><span>|&gt;</span> lateralus</a>
+        <div class="topbar-links">
+            <a href="/lateralus/">Home</a>
+            <a href="/lateralus/playground/" style="color:var(--cyan)">Playground</a>
+            <a href="https://github.com/bad-antics/lateralus-lang">GitHub</a>
+        </div>
+    </div>
+</div>
+
+<article class="article">
+    <p class="article-date">June 2025 · 8 min read</p>
+    <h1>Introducing <span class="gr">Lateralus</span></h1>
+    <p class="lede">
+        We built a programming language where data flows left to right, errors are handled without exceptions, and the compiler ships with zero dependencies. Here's why, and how you can try it right now.
+    </p>
+
+    <!-- ── CTA #1 ── -->
+    <div class="cta-box">
+        <h3>Try Lateralus in your browser</h3>
+        <p>No install needed. Write code, hit Run, see results instantly.</p>
+        <a href="/lateralus/playground/" class="btn btn-primary">▶ Open Playground</a>
+        <a href="https://github.com/bad-antics/lateralus-lang" class="btn btn-secondary">GitHub</a>
+    </div>
+
+    <h2>Why another language?</h2>
+    <p>
+        Every modern language has functions that compose. But in practice, composing them reads <strong>inside-out</strong>:
+    </p>
+    <pre><code><span class="cm">// What you write in most languages</span>
+<span class="fn">sort</span>(<span class="fn">filter</span>(<span class="fn">map</span>(data, transform), predicate), comparator)</code></pre>
+    <p>
+        You read <code>sort</code> first, but it runs last. Your eyes jump right-to-left, inside-to-outside, hunting for the data source. This gets worse with every nesting level.
+    </p>
+    <p>
+        <strong>Lateralus inverts this.</strong> The pipeline operator <code>|></code> makes data flow visible and linear:
+    </p>
+    <pre><code><span class="cm">// What you write in Lateralus</span>
+data
+    <span class="op">|></span> <span class="fn">map</span>(transform)
+    <span class="op">|></span> <span class="fn">filter</span>(predicate)
+    <span class="op">|></span> <span class="fn">sort</span>(comparator)</code></pre>
+    <p>
+        Read top-to-bottom, left-to-right. The data source is obvious. Every transformation step is on its own line. You can comment out a single step without rewriting the expression. This isn't just syntax sugar — it changes how you <em>think about</em> data processing.
+    </p>
+
+    <h2>What does Lateralus look like?</h2>
+
+    <h3>Data pipelines</h3>
+    <pre><code><span class="kw">let</span> report = transactions
+    <span class="op">|></span> <span class="fn">filter</span>(|t| t.amount > <span class="num">20.0</span>)
+    <span class="op">|></span> <span class="fn">group_by</span>(|t| t.category)
+    <span class="op">|></span> <span class="fn">map_entries</span>(|cat, txns| {
+        <span class="kw">let</span> total = txns <span class="op">|></span> <span class="fn">map</span>(|t| t.amount) <span class="op">|></span> <span class="fn">sum</span>()
+        (cat, total)
+    })
+    <span class="op">|></span> <span class="fn">sort_by</span>(|e| e.<span class="num">1</span>, descending)</code></pre>
+
+    <h3>Pattern matching with guards</h3>
+    <pre><code><span class="kw">fn</span> <span class="fn">describe</span>(shape: <span class="ty">Shape</span>) -> <span class="ty">String</span> {
+    <span class="kw">match</span> shape {
+        <span class="ty">Circle</span>(r) <span class="kw">if</span> r > <span class="num">100.0</span> => <span class="str">"Large circle"</span>,
+        <span class="ty">Circle</span>(r)                => <span class="str">"Circle (r={r})"</span>,
+        <span class="ty">Rect</span>(w, h) <span class="kw">if</span> w == h      => <span class="str">"Square ({w}x{h})"</span>,
+        <span class="ty">Rect</span>(w, h)                => <span class="str">"Rectangle ({w}x{h})"</span>,
+    }
+}</code></pre>
+
+    <h3>Async concurrency</h3>
+    <pre><code><span class="kw">async fn</span> <span class="fn">fetch_all</span>(urls: [<span class="ty">String</span>]) -> [<span class="ty">Response</span>] {
+    urls
+        <span class="op">|></span> <span class="fn">map</span>(|url| <span class="kw">spawn</span> { <span class="fn">http::get</span>(url) <span class="op">|></span> <span class="kw">await</span> })
+        <span class="op">|></span> <span class="fn">await_all</span>()
+}</code></pre>
+
+    <h3>Error handling (no exceptions)</h3>
+    <pre><code><span class="kw">try</span> {
+    <span class="kw">let</span> config = <span class="fn">parse_config</span>(<span class="str">"app.conf"</span>)?
+    <span class="fn">println</span>(<span class="str">"Loaded: {config.host}:{config.port}"</span>)
+} <span class="kw">recover</span> err {
+    <span class="fn">println</span>(<span class="str">"Failed: {err}"</span>)
+} <span class="kw">ensure</span> {
+    <span class="fn">cleanup</span>()
+}</code></pre>
+
+    <h2>What's in the box</h2>
+
+    <div class="features-row">
+        <div class="feature-card">
+            <div class="icon">|&gt;</div>
+            <h4>Pipeline Operator</h4>
+            <p>First-class <code>|></code> chains. Data flows left to right, always.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">🔀</div>
+            <h4>Pattern Matching</h4>
+            <p>Exhaustive match on enums, structs, tuples, and literals — with guards.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">⚡</div>
+            <h4>Async / Await</h4>
+            <p>Lightweight tasks with <code>spawn</code>, <code>await</code>, and <code>await_all</code>.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">🛡️</div>
+            <h4>try / recover / ensure</h4>
+            <p>Result-based errors — no exceptions, no stack unwinding.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">📦</div>
+            <h4>Zero Dependencies</h4>
+            <p><code>pip install lateralus-lang</code> and you're running. Nothing else needed.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">🧩</div>
+            <h4>VS Code Extension</h4>
+            <p>Syntax highlighting, snippets, bracket matching — on the marketplace now.</p>
+        </div>
+    </div>
+
+    <h2>How to get started</h2>
+
+    <h3>Option 1: Try in your browser (fastest)</h3>
+    <p>
+        Open the <a href="/lateralus/playground/">Lateralus Playground</a>. Pick an example, hit Run, edit the code. No signup, no install.
+    </p>
+
+    <h3>Option 2: Install locally</h3>
+    <pre><code><span class="cm"># Install via pip</span>
+<span class="fn">pip install</span> lateralus-lang
+
+<span class="cm"># Create a file</span>
+<span class="fn">echo</span> <span class="str">'import std::io
+
+fn main() {
+    "hello" |> println()
+}'</span> > hello.ltl
+
+<span class="cm"># Run it</span>
+<span class="fn">lateralus</span> run hello.ltl</code></pre>
+
+    <h3>Option 3: VS Code Extension</h3>
+    <p>
+        Search <strong>"Lateralus"</strong> in the VS Code marketplace, or install directly:
+    </p>
+    <pre><code><span class="fn">code</span> --install-extension lateralus.lateralus-lang</code></pre>
+
+    <h2>The ecosystem</h2>
+    <p>Lateralus isn't just a language — it's a full ecosystem:</p>
+    <ul>
+        <li><a href="https://github.com/bad-antics/lateralus-lang">lateralus-lang</a> — Language spec, grammar, and samples</li>
+        <li><a href="https://github.com/bad-antics/lateralus-compiler">lateralus-compiler</a> — Compiler, VM, and standard library</li>
+        <li><a href="https://github.com/bad-antics/lateralus-tutorials">lateralus-tutorials</a> — Step-by-step learning path</li>
+        <li><a href="https://github.com/bad-antics/lateralus-vscode">lateralus-vscode</a> — VS Code extension (also on <a href="https://marketplace.visualstudio.com/items?itemName=lateralus.lateralus-lang">marketplace</a>)</li>
+        <li><a href="https://github.com/bad-antics/lateralus-os">lateralus-os</a> — An OS kernel written in Lateralus</li>
+        <li><a href="https://github.com/bad-antics/lateralus-web-framework">lateralus-web-framework</a> — HTTP framework with pipeline routing</li>
+        <li><strong>22+ repositories</strong> covering crypto, ML, game engines, security tools, and more</li>
+    </ul>
+
+    <h2>We need testers</h2>
+    <p>
+        Lateralus is young and we want feedback from real developers. Here's how you can help:
+    </p>
+    <ul>
+        <li><strong>Try the <a href="/lateralus/playground/">playground</a></strong> — does the syntax click? What feels weird?</li>
+        <li><strong>File issues</strong> — <a href="https://github.com/bad-antics/lateralus-lang/issues">bug reports and feature requests</a> are invaluable</li>
+        <li><strong>Join the discussion</strong> — <a href="https://github.com/bad-antics/lateralus-lang/discussions">GitHub Discussions</a> is open for questions, ideas, and showcase</li>
+        <li><strong>Write something</strong> — port a script, solve an Advent of Code problem, build a tiny project</li>
+        <li><strong>Star the repo</strong> — visibility helps us attract more contributors</li>
+    </ul>
+
+    <!-- ── CTA #2 ── -->
+    <div class="cta-box">
+        <h3>Ready to try it?</h3>
+        <p>Playground. Zero install. 30 seconds to your first pipeline.</p>
+        <a href="/lateralus/playground/" class="btn btn-primary">▶ Open Playground</a>
+        <a href="https://github.com/bad-antics/lateralus-lang" class="btn btn-secondary">Star on GitHub</a>
+    </div>
+
+    <div class="post-footer">
+        <p>
+            Lateralus is built by <a href="https://github.com/bad-antics">bad-antics</a>.
+            Follow development on <a href="https://github.com/bad-antics/lateralus-lang">GitHub</a>
+            or try the <a href="/lateralus/playground/">playground</a>.
+        </p>
+    </div>
+</article>
+
+</body>
+</html>
