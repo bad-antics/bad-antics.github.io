@@ -129,6 +129,23 @@
         .compare .no { color: var(--text2); }
         .compare .lang-col { font-weight: 600; color: var(--accent2); }
 
+
+        /* ── Get Started ── */
+        .get-started { margin-bottom: 100px; }
+        .get-started h2 { text-align: center; font-size: 2rem; font-weight: 800; margin-bottom: 12px; letter-spacing: -1px; }
+        .get-started .sub { text-align: center; color: var(--text2); margin-bottom: 40px; font-size: 1.05rem; }
+        .gs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .gs-card { padding: 32px; background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; transition: all 0.2s; text-align: center; }
+        .gs-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+        .gs-card .gs-icon { font-size: 2.4rem; margin-bottom: 16px; }
+        .gs-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 8px; color: var(--text); }
+        .gs-card p { color: var(--text2); font-size: 0.9rem; margin-bottom: 16px; line-height: 1.6; }
+        .gs-card .gs-link { display: inline-flex; align-items: center; gap: 6px; padding: 8px 20px; background: var(--accent); color: #fff; border-radius: 8px; font-weight: 600; font-size: 0.88rem; transition: background 0.2s; }
+        .gs-card .gs-link:hover { background: var(--accent2); color: #fff; }
+        .gs-steps { display: flex; flex-direction: column; gap: 8px; text-align: left; margin-bottom: 20px; }
+        .gs-step { display: flex; gap: 10px; align-items: flex-start; font-size: 0.88rem; color: var(--text2); }
+        .gs-step .num { background: var(--accent); color: #fff; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+
         /* ── CTA ── */
         .cta { text-align: center; margin-bottom: 80px; padding: 60px 40px; background: linear-gradient(135deg, rgba(124,92,252,0.06) 0%, rgba(34,211,238,0.04) 100%); border: 1px solid var(--border); border-radius: 20px; }
         .cta h2 { font-size: 2rem; font-weight: 800; margin-bottom: 12px; }
@@ -157,6 +174,7 @@
             <a href="#features">Features</a>
             <a href="/lateralus/playground/" style="color:var(--cyan)">Playground</a>
             <a href="#showcase">Code</a>
+            <a href="#get-started">Get Started</a>
             <a href="#ecosystem">Ecosystem</a>
             <a href="#compare">Compare</a>
             <a href="https://github.com/bad-antics/lateralus-lang" class="gh">
@@ -175,7 +193,7 @@
         <div class="hero-actions">
             <a href="/lateralus/playground/" class="btn btn-primary">▶ Try in Browser</a>
             <a href="#showcase" class="btn btn-secondary">See the Code</a>
-            <a href="https://github.com/bad-antics/lateralus-tutorials" class="btn btn-secondary">Tutorials</a>
+            <a href="https://github.com/bad-antics/learn-lateralus" class="btn btn-secondary">Learn</a>
         </div>
     </div>
 </section>
@@ -461,14 +479,56 @@
     </div>
 </section>
 
+
+<section id="get-started" class="container get-started">
+    <h2>Get Started in 60 Seconds</h2>
+    <p class="sub">Three paths — pick whichever fits you</p>
+    <div class="gs-grid">
+        <div class="gs-card">
+            <div class="gs-icon">🚀</div>
+            <h3>Use the Template</h3>
+            <p>Click one button to get a full project with source files, tests, CI pipeline, and VS Code support.</p>
+            <div class="gs-steps">
+                <div class="gs-step"><span class="num">1</span> Click "Use this template" on GitHub</div>
+                <div class="gs-step"><span class="num">2</span> Clone your new repo</div>
+                <div class="gs-step"><span class="num">3</span> <code>lateralus run src/main.ltl</code></div>
+            </div>
+            <a href="https://github.com/bad-antics/lateralus-quickstart" class="gs-link">Use Template →</a>
+        </div>
+        <div class="gs-card">
+            <div class="gs-icon">📖</div>
+            <h3>Learn the Language</h3>
+            <p>8-chapter tutorial from variables to building a CLI app. Exercises with solutions included.</p>
+            <div class="gs-steps">
+                <div class="gs-step"><span class="num">1</span> Read a chapter (5 min each)</div>
+                <div class="gs-step"><span class="num">2</span> Solve the matching exercise</div>
+                <div class="gs-step"><span class="num">3</span> Check your solution</div>
+            </div>
+            <a href="https://github.com/bad-antics/learn-lateralus" class="gs-link">Start Tutorial →</a>
+        </div>
+        <div class="gs-card">
+            <div class="gs-icon">💡</div>
+            <h3>Browse Examples</h3>
+            <p>Real-world code: algorithms, data pipelines, REST APIs, and coding challenges — all in Lateralus.</p>
+            <div class="gs-steps">
+                <div class="gs-step"><span class="num">1</span> Find an example that interests you</div>
+                <div class="gs-step"><span class="num">2</span> Read the code, run it locally</div>
+                <div class="gs-step"><span class="num">3</span> Contribute your own examples</div>
+            </div>
+            <a href="https://github.com/bad-antics/lateralus-examples" class="gs-link">See Examples →</a>
+        </div>
+    </div>
+</section>
+
 <div class="container">
     <div class="cta">
         <h2>Start Building with Lateralus</h2>
         <p>Install in seconds. Zero dependencies. From scripts to operating systems.</p>
         <div class="hero-actions">
-            <a href="/lateralus/playground/" class="btn btn-primary">▶ Try the Playground</a>
-            <a href="https://github.com/bad-antics/lateralus-lang" class="btn btn-secondary">GitHub</a>
-            <a href="https://github.com/bad-antics/lateralus-tutorials" class="btn btn-secondary">Tutorials</a>
+            <a href="https://github.com/bad-antics/lateralus-quickstart" class="btn btn-primary">🚀 Use Template</a>
+            <a href="/lateralus/playground/" class="btn btn-secondary">▶ Playground</a>
+            <a href="https://github.com/bad-antics/learn-lateralus" class="btn btn-secondary">📖 Tutorial</a>
+            <a href="https://github.com/bad-antics/lateralus-examples" class="btn btn-secondary">💡 Examples</a>
         </div>
     </div>
 </div>
@@ -476,9 +536,10 @@
 <footer>
     <div class="footer-links">
         <a href="https://github.com/bad-antics/lateralus-lang">Language</a>
-        <a href="https://github.com/bad-antics/lateralus-compiler">Compiler</a>
-        <a href="https://github.com/bad-antics/lateralus-tutorials">Tutorials</a>
-        <a href="https://github.com/bad-antics/lateralus-grammar">Grammar</a>
+        <a href="https://github.com/bad-antics/lateralus-quickstart">Quickstart</a>
+        <a href="https://github.com/bad-antics/learn-lateralus">Tutorial</a>
+        <a href="https://github.com/bad-antics/lateralus-examples">Examples</a>
+        <a href="https://github.com/bad-antics/lateralus-action">CI Action</a>
         <a href="https://github.com/bad-antics">bad-antics</a>
     </div>
     <p>Lateralus is open source — built by bad-antics</p>
