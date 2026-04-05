@@ -809,7 +809,7 @@ fn main() {
     http::serve("0.0.0.0:8080", app) |> await
 }`,
 
-generics: \`// Generics — type-safe polymorphism with constraints
+generics: `// Generics — type-safe polymorphism with constraints
 
 import std::io
 import std::collections
@@ -891,9 +891,9 @@ fn main() {
     let pair = Pair { first: 42, second: "hello" }
     let doubled = pair.map_first(|n| n * 2)
     println("Pair: ({doubled.first}, {doubled.second})")
-}\`,
+}`,
 
-closures: \`// Closures & Lambdas — first-class functions
+closures: `// Closures & Lambdas — first-class functions
 
 import std::io
 
@@ -944,9 +944,9 @@ fn main() {
     for adder in adders {
         println("  {base} + ? = {adder(base)}")
     }
-}\`,
+}`,
 
-modules: \`// Modules & Imports — organizing code
+modules: `// Modules & Imports — organizing code
 
 import std::io
 import std::collections::HashMap
@@ -1028,9 +1028,9 @@ fn main() {
     for color in palette {
         println("  {colors::to_hex(color)}")
     }
-}\`,
+}`,
 
-iterators: \`// Iterators — lazy, composable sequences
+iterators: `// Iterators — lazy, composable sequences
 
 import std::io
 
@@ -1105,9 +1105,9 @@ fn main() {
     for entry in ranked {
         println("  {entry}")
     }
-}\`,
+}`,
 
-cli: \`// CLI Tool — building command-line apps
+cli: `// CLI Tool — building command-line apps
 
 import std::io
 import std::env
@@ -1189,9 +1189,9 @@ fn main() {
     println("  Pattern matches: {total.matches}")
     println("  Pipeline density: {total.pipelines * 100 / total.lines}%")
     println("\\nReport saved to: {config.output}")
-}\`,
+}`,
 
-gameloop: \`// Game Loop — entity-component system with pipelines
+gameloop: `// Game Loop — entity-component system with pipelines
 
 import std::io
 import std::math
@@ -1291,7 +1291,7 @@ fn main() {
 
     let alive = state |> filter(|e| e.active) |> len()
     println("\\nActive entities: {alive}/{entities |> len()}")
-}\`,
+}`,
 };
 
 // ── Interpreter / Simulator ──────────────────────────────────
