@@ -427,7 +427,7 @@ fn main() {
 
     println("=== Spending Report (> $20) ===")
     for (category, total, count) in report {
-        println("  {category}: ${total:.2} ({count} transactions)")
+        println("  {category}: \${total:.2} ({count} transactions)")
     }
 
     // Quick stats pipeline
@@ -435,7 +435,7 @@ fn main() {
         |> map(|t| t.amount)
         |> average()
 
-    println("\\nAverage transaction: ${avg:.2}")
+    println("\\nAverage transaction: \${avg:.2}")
 }`,
 
 pattern: `// Pattern Matching — exhaustive and expressive
