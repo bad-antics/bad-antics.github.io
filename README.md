@@ -49,7 +49,7 @@ This is the GitHub Pages portal for **bad-antics** — showcasing 706 repositori
 | Julia Lines | 40,000+ |
 | Total Reach | 56.4k |
 | Open PRs | 93 |
-| Merged PRs | 8 |
+| Merged PRs | 80 |
 
 ---
 
